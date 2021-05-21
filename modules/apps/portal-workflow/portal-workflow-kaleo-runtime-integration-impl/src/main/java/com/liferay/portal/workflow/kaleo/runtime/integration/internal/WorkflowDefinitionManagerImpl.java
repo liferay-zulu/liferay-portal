@@ -437,7 +437,7 @@ public class WorkflowDefinitionManagerImpl
 	}
 
 	protected String getVersion(int version) {
-		return version + StringPool.PERIOD + 0;
+		return String.valueOf(version);
 	}
 
 	@Reference
