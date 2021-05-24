@@ -15,7 +15,6 @@
 package com.liferay.portal.workflow.kaleo.runtime.integration.internal;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
