@@ -128,8 +128,7 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 
 		_kaleoDefinitionVersionLocalService.addKaleoDefinitionVersion(
 			kaleoDefinition.getKaleoDefinitionId(), name, title,
-			StringPool.BLANK, content, _getVersion(version, draftVersion),
-			serviceContext);
+			StringPool.BLANK, content, _getVersion(version), serviceContext);
 	}
 
 	private long _getValidUserId(long companyId, long userId)
@@ -142,32 +141,27 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 		return _userLocalService.getDefaultUserId(companyId);
 	}
 
-	private String _getVersion(int version, int draftVersion) {
+	private int _getVersion(int version) {
 		if (version == 0) {
-			version = 1;
+			return 1;
 		}
 
-		return version + StringPool.PERIOD + --draftVersion;
+		return version;
 	}
 
 	private boolean _hasApprovedKaleoDefinitionVersion(
-		long companyId, String name, int version, int draftVersion) {
+		long companyId, String name, int version) {
 
 		KaleoDefinitionVersion kaleoDefinitionVersion =
 			_kaleoDefinitionVersionLocalService.fetchKaleoDefinitionVersion(
-				companyId, name, _getVersion(version, draftVersion));
+				companyId, name, _getVersion(version));
 
 		if (kaleoDefinitionVersion == null) {
 			return false;
 		}
 
-		if (kaleoDefinitionVersion.getStatus() ==
-				WorkflowConstants.STATUS_APPROVED) {
-
-			return true;
-		}
-
-		return false;
+		return kaleoDefinitionVersion.getStatus() ==
+			   WorkflowConstants.STATUS_APPROVED;
 	}
 
 	private void _removeDuplicatesKaleoDefinitionVersion(
@@ -176,7 +170,7 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 		try {
 			KaleoDefinitionVersion kaleoDefinitionVersion =
 				_kaleoDefinitionVersionLocalService.getKaleoDefinitionVersion(
-					companyId, name, _getVersion(version, draftVersion));
+					companyId, name, _getVersion(version));
 
 			_kaleoDefinitionVersionLocalService.deleteKaleoDefinitionVersion(
 				kaleoDefinitionVersion);
@@ -202,7 +196,7 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 				int draftVersion = resultSet.getInt("draftVersion");
 
 				if (_hasApprovedKaleoDefinitionVersion(
-						companyId, name, version, draftVersion)) {
+						companyId, name, version)) {
 
 					continue;
 				}
