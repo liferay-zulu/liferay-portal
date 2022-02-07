@@ -88,7 +88,7 @@ public class IndexerHelper {
 		).processId(
 			kaleoNode.getKaleoDefinitionId()
 		).processVersion(
-			kaleoDefinitionVersion.getVersion()
+			String.valueOf(kaleoDefinitionVersion.getVersion())
 		).terminal(
 			kaleoNode.isTerminal()
 		).type(
@@ -116,7 +116,7 @@ public class IndexerHelper {
 		).processId(
 			kaleoTask.getKaleoDefinitionId()
 		).processVersion(
-			kaleoDefinitionVersion.getVersion()
+			String.valueOf(kaleoDefinitionVersion.getVersion())
 		).terminal(
 			false
 		).type(

@@ -97,8 +97,7 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 			int version, int draftVersion)
 		throws PortalException {
 
-		_removeDuplicatesKaleoDefinitionVersion(
-			companyId, name, version, draftVersion);
+		_removeDuplicatesKaleoDefinitionVersion(companyId, name, version);
 
 		ServiceContext serviceContext = new ServiceContext();
 
@@ -160,12 +159,17 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 			return false;
 		}
 
-		return kaleoDefinitionVersion.getStatus() ==
-			   WorkflowConstants.STATUS_APPROVED;
+		if (kaleoDefinitionVersion.getStatus() ==
+				WorkflowConstants.STATUS_APPROVED) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _removeDuplicatesKaleoDefinitionVersion(
-		long companyId, String name, int version, int draftVersion) {
+		long companyId, String name, int version) {
 
 		try {
 			KaleoDefinitionVersion kaleoDefinitionVersion =
@@ -193,7 +197,6 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 				long companyId = resultSet.getLong("companyId");
 				String name = resultSet.getString("name");
 				int version = resultSet.getInt("version");
-				int draftVersion = resultSet.getInt("draftVersion");
 
 				if (_hasApprovedKaleoDefinitionVersion(
 						companyId, name, version)) {
@@ -201,6 +204,7 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 					continue;
 				}
 
+				int draftVersion = resultSet.getInt("draftVersion");
 				long groupId = resultSet.getLong("groupId");
 				long userId = resultSet.getLong("userId");
 				Timestamp createDate = resultSet.getTimestamp("createDate");

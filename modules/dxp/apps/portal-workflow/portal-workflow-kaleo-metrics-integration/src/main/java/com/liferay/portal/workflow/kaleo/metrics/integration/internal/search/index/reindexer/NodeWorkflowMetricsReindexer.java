@@ -117,17 +117,8 @@ public class NodeWorkflowMetricsReindexer implements WorkflowMetricsReindexer {
 				}
 
 				_nodeWorkflowMetricsIndexer.addNode(
-<<<<<<< HEAD
 					_indexerHelper.createAddNodeRequest(
 						kaleoDefinitionVersion, kaleoTask));
-=======
-					kaleoTask.getCompanyId(), kaleoTask.getCreateDate(), false,
-					kaleoTask.getModifiedDate(), kaleoTask.getName(),
-					kaleoTask.getKaleoTaskId(),
-					kaleoTask.getKaleoDefinitionId(),
-					String.valueOf(kaleoDefinitionVersion.getVersion()), false,
-					NodeType.TASK.name());
->>>>>>> LPS-107816 Update existing usages of KaleoDefinitionVersion.getVersion()
 
 				_workflowMetricsReindexStatusMessageSender.sendStatusMessage(
 					atomicCounter.incrementAndGet(), total, "node");

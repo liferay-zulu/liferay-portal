@@ -23,12 +23,11 @@ import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v1_4_1.util.KaleoDefinitionTable;
 
-import java.io.IOException;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +42,14 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 
 		_removeDuplicateKaleoDefinitions();
 		_removeStartKaleoNodeId();
+	}
+
+	protected String getVersion(int version, int draftVersion) {
+		if (version == 0) {
+			version = 1;
+		}
+
+		return version + StringPool.PERIOD + --draftVersion;
 	}
 
 	private void _addBatch(
@@ -60,19 +67,17 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 		return version + StringPool.PERIOD + 0;
 	}
 
-	protected void _removeDuplicateKaleoDefinitions()
-		throws SQLException {
-
+	private void _removeDuplicateKaleoDefinitions() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			 PreparedStatement preparedStatement1 = connection.prepareStatement(
-				 "select companyId, name, MAX(version) as version from " +
-				 "KaleoDefinition group by companyId, name");
-			 PreparedStatement preparedStatement2 =
-				 AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-					 connection,
-					 "delete from KaleoDefinition where companyId = ? and " +
-					 "name = ? and version < ?");
-			 ResultSet resultSet = preparedStatement1.executeQuery()) {
+			PreparedStatement preparedStatement1 = connection.prepareStatement(
+				"select companyId, name, MAX(version) as version from " +
+					"KaleoDefinition group by companyId, name");
+			PreparedStatement preparedStatement2 =
+				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+					connection,
+					"delete from KaleoDefinition where companyId = ? and " +
+						"name = ? and version < ?");
+			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
 			while (resultSet.next()) {
 				long companyId = resultSet.getLong("companyId");
@@ -88,14 +93,6 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 
 			preparedStatement2.executeBatch();
 		}
-	}
-
-	protected String getVersion(int version, int draftVersion) {
-		if (version == 0) {
-			version = 1;
-		}
-
-		return version + StringPool.PERIOD + --draftVersion;
 	}
 
 	private void _removeStartKaleoNodeId() throws Exception {
@@ -207,13 +204,13 @@ public class KaleoDefinitionVersionUpgradeProcess extends UpgradeProcess {
 					String userName = resultSet2.getString("userName");
 					Timestamp createDate = resultSet2.getTimestamp(
 						"createDate");
+					int draftVersion = resultSet2.getInt("draftVersion");
 					Timestamp modifiedDate = resultSet2.getTimestamp(
 						"modifiedDate");
 					String name = resultSet2.getString("name");
 					String title = resultSet2.getString("title");
 					String content = resultSet2.getString("content");
 					int version = resultSet2.getInt("version");
-					int draftVersion = resultSet2.getInt("draftVersion");
 
 					preparedStatement2.setLong(1, kaleoDefinitionVersionId);
 					preparedStatement2.setLong(2, groupId);
