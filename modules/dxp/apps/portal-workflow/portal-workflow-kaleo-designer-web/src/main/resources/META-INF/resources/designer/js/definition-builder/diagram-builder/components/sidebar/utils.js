@@ -22,6 +22,14 @@ function isIdDuplicated(elements, id) {
 }
 
 function getModalInfo(itemType) {
+	if (itemType === 'actions') {
+		return {
+			message: Liferay.Language.get(
+				'are-you-sure-you-want-to-delete-all-actions-and-their-settings'
+			),
+			title: Liferay.Language.get('delete-actions'),
+		};
+	}
 	if (itemType === 'assignments') {
 		return {
 			message: Liferay.Language.get(
@@ -30,7 +38,7 @@ function getModalInfo(itemType) {
 			title: Liferay.Language.get('delete-assignments'),
 		};
 	}
-	else if (itemType === 'condition') {
+	if (itemType === 'condition') {
 		return {
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-delete-the-selected-condition-node'
