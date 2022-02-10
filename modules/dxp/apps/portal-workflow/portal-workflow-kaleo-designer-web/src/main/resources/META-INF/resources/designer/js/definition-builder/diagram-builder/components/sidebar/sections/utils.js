@@ -56,4 +56,22 @@ function getUpdatedLabelItem(key, selectedItem, target) {
 	};
 }
 
-export {checkLabelErrors, checkIdErrors, getUpdatedLabelItem};
+function limitValue({defaultValue, min, value}) {
+	if (isNaN(value) || value < min) {
+		return defaultValue;
+	}
+
+	return value;
+}
+
+function sortElements(array, property) {
+	array.sort((a, b) => (a[property] > b[property] ? 1 : -1));
+}
+
+export {
+	checkLabelErrors,
+	checkIdErrors,
+	getUpdatedLabelItem,
+	limitValue,
+	sortElements,
+};
