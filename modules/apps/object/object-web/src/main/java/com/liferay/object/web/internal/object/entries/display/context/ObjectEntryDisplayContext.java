@@ -79,8 +79,10 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 import com.liferay.taglib.servlet.PipingServletResponseFactory;
 
+import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.PageContext;
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -89,11 +91,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import javax.portlet.PortletRequest;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Marco Leo
@@ -305,6 +302,26 @@ public class ObjectEntryDisplayContext {
 					"selectRelatedModalEntry",
 				infoItemItemSelectorCriterion)
 		).buildString();
+	}
+
+	public boolean hasModelResourcePermission(String actionId) {
+		try {
+			ObjectEntry objectEntry = getObjectEntry();
+
+			if (objectEntry == null) {
+				return true;
+			}
+
+			return _objectEntryService.hasModelResourcePermission(
+				objectEntry, actionId);
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException, portalException);
+			}
+		}
+
+		return false;
 	}
 
 	public Map<String, String> getRelationshipContextParams()

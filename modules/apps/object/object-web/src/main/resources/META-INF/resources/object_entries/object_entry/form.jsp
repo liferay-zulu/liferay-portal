@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.liferay.portal.kernel.security.permission.ActionKeys" %><%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -53,7 +53,9 @@ portletDisplay.setURLBack(backURL);
 		</liferay-frontend:fieldset-group>
 	</liferay-frontend:edit-form-body>
 
-	<c:if test="<%= !objectEntryDisplayContext.isReadOnly() %>">
+	<c:if test="<%= !objectEntryDisplayContext.isReadOnly() &&
+	 	 (objectEntryDisplayContext.hasModelResourcePermission("ADD_OBJECT_ENTRY") ||
+	 	 objectEntryDisplayContext.hasModelResourcePermission(ActionKeys.UPDATE)) %>">
 		<liferay-frontend:edit-form-footer>
 			<aui:button name="save" onClick='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "submitObjectEntry();" %>' type="submit" value="save" />
 
