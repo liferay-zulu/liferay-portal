@@ -12,11 +12,13 @@
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import ClayForm, {ClayInput, ClaySelect} from '@clayui/form';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
+import {DiagramBuilderContext} from '../../../../DiagramBuilderContext';
 import ScriptInput from '../../../shared-components/ScriptInput';
 import SidebarPanel from '../../SidebarPanel';
 import Role from './Role';
+import User from './User';
 
 const executionTypeOptions = [
 	{
@@ -63,7 +65,6 @@ const recipientTypeOptions = [
 		value: 'scriptedRecipient',
 	},
 	{
-		disabled: true,
 		label: Liferay.Language.get('user'),
 		value: 'user',
 	},
@@ -88,25 +89,70 @@ const templateLanguageOptions = [
 	},
 ];
 
+const notificationTypeComponents = {
+	role: Role,
+	scriptedRecipient: ScriptInput,
+	user: User,
+};
+
 const NotificationsInfo = ({
 	identifier,
 	index,
 	sectionsLength,
 	setSections,
+	...restProps
 }) => {
+	const {setSelectedItem} = useContext(DiagramBuilderContext);
 	const [executionType, setExecutionType] = useState('');
 	const [notificationDescription, setNotificationDescription] = useState('');
 	const [notificationName, setNotificationName] = useState('');
 	const [notificationType, setNotificationType] = useState('');
 	const [recipientType, setRecipientType] = useState('assetCreator');
+	const [internalSections, setInternalSections] = useState([
+		{identifier: `${Date.now()}-0`},
+	]);
 	const [template, setTemplate] = useState('');
 	const [templateLanguage, setTemplateLanguage] = useState('');
+
+	const updateSelectedItem = (values) => {
+		setSelectedItem((previousItem) => ({
+			...previousItem,
+			data: {
+				...previousItem.data,
+				notifications: {
+					...previousItem.data.notifications,
+					description: values.map(({description}) => description),
+					executionType: values.map(
+						({executionType}) => executionType
+					),
+					name: values.map(({name}) => name),
+					notificationType: values.map(
+						({notificationType}) => notificationType
+					),
+					recipients: [
+						{
+							...previousItem.data.notifications?.recipients,
+							receptionType: values.map(
+								({recipientType}) => recipientType
+							),
+						},
+					],
+					template: values.map(({template}) => template),
+					templateLanguage: values.map(
+						({templateLanguage}) => templateLanguage
+					),
+				},
+			},
+		}));
+	};
 
 	const deleteSection = () => {
 		setSections((prevSections) => {
 			const newSections = prevSections.filter(
 				(prevSection) => prevSection.identifier !== identifier
 			);
+
+			updateSelectedItem(newSections);
 
 			return newSections;
 		});
@@ -119,11 +165,15 @@ const NotificationsInfo = ({
 				...item,
 			};
 
+			updateSelectedItem(prev);
+
 			return prev;
 		});
 
 		setRecipientType(item.recipientType);
 	};
+
+	const NotificationTypeComponent = notificationTypeComponents[recipientType];
 
 	return (
 		<SidebarPanel panelTitle={Liferay.Language.get('information')}>
@@ -268,11 +318,17 @@ const NotificationsInfo = ({
 				recipientType !== 'taskAssignees' && (
 					<SidebarPanel panelTitle={Liferay.Language.get('type')}>
 						<ClayForm.Group className="recipient-type-form-group">
-							{recipientType === 'role' && <Role />}
-
-							{recipientType === 'scriptedRecipient' && (
-								<ScriptInput inputValue="" />
-							)}
+							{internalSections.map(({identifier}, index) => (
+								<NotificationTypeComponent
+									identifier={identifier}
+									index={index}
+									inputValue=""
+									key={`section-${identifier}`}
+									sectionsLength={internalSections.length}
+									setSections={setInternalSections}
+									{...restProps}
+								/>
+							))}
 						</ClayForm.Group>
 					</SidebarPanel>
 				)}
