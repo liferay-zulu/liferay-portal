@@ -56,7 +56,6 @@ let recipientTypeOptions = [
 		value: 'role',
 	},
 	{
-		disabled: true,
 		label: Liferay.Language.get('role-type'),
 		value: 'roleType',
 	},
@@ -98,7 +97,7 @@ const NotificationsInfo = ({
 	setSections,
 	...restProps
 }) => {
-	const {selectedItem, setSelectedItem} = useContext(DiagramBuilderContext);
+	const {setSelectedItem} = useContext(DiagramBuilderContext);
 	const [executionType, setExecutionType] = useState('');
 	const [notificationDescription, setNotificationDescription] = useState('');
 	const [notificationName, setNotificationName] = useState('');
@@ -110,6 +109,7 @@ const NotificationsInfo = ({
 	const [template, setTemplate] = useState('');
 	const [templateLanguage, setTemplateLanguage] = useState('');
 
+	const {selectedItem} = useContext(DiagramBuilderContext);
 	const updateSelectedItem = (values) => {
 		setSelectedItem((previousItem) => ({
 			...previousItem,
@@ -185,6 +185,7 @@ const NotificationsInfo = ({
 			return value !== 'taskAssignees';
 		});
 	}
+	const NotificationTypeComponent = notificationTypeComponents[recipientType];
 
 	const NotificationTypeComponent = notificationTypeComponents[recipientType];
 
