@@ -9,7 +9,21 @@
  * distribution rights of the Software.
  */
 
-export default function parseAssignments(node) {
+export function parseActions(node) {
+	const actions = {};
+
+	node.actions.forEach((item) => {
+		actions.name = parseProperty(actions, item, 'name');
+		actions.description = parseProperty(actions, item, 'description');
+		actions.executionType = parseProperty(actions, item, 'execution-type');
+		actions.priority = parseProperty(actions, item, 'priority');
+		actions.script = parseProperty(actions, item, 'script');
+	});
+
+	return actions;
+}
+
+export function parseAssignments(node) {
 	const assignments = {};
 	const autoCreateValues = [];
 	const roleNames = [];
@@ -58,4 +72,17 @@ export default function parseAssignments(node) {
 	}
 
 	return assignments;
+}
+
+function parseProperty(actions, item, property) {
+	const newProperty =
+		property === 'execution-type' ? 'executionType' : property;
+
+	if (Array.isArray(actions[newProperty])) {
+		actions[newProperty].push(item[property]);
+
+		return actions[newProperty];
+	}
+
+	return new Array(item[property]);
 }

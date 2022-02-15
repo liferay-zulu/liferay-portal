@@ -15,7 +15,7 @@ import {isEdge} from 'react-flow-renderer';
 import {defaultLanguageId} from '../constants';
 import {removeNewLine, replaceTabSpaces} from '../util/utils';
 import {DEFAULT_LANGUAGE} from './constants';
-import parseAssignments from './utils';
+import {parseActions, parseAssignments} from './utils';
 import XMLDefinition from './xmlDefinition';
 
 export default function DeserializeUtil(content) {
@@ -77,6 +77,8 @@ DeserializeUtil.prototype = {
 					data.scriptLanguage =
 						node.scriptLanguage || DEFAULT_LANGUAGE;
 				}
+
+				data.actions = node.actions && parseActions(node);
 
 				let nodeId;
 
