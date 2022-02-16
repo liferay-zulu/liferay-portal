@@ -18,6 +18,7 @@ import {DiagramBuilderContext} from '../../../../DiagramBuilderContext';
 import ScriptInput from '../../../shared-components/ScriptInput';
 import SidebarPanel from '../../SidebarPanel';
 import Role from './Role';
+import RoleType from './RoleType';
 import User from './User';
 
 const executionTypeOptions = [
@@ -87,6 +88,7 @@ const templateLanguageOptions = [
 
 const notificationTypeComponents = {
 	role: Role,
+	roleType: RoleType,
 	scriptedRecipient: ScriptInput,
 	user: User,
 };
