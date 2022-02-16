@@ -110,6 +110,14 @@ function getModalInfo(itemType) {
 			title: Liferay.Language.get('delete-transition'),
 		};
 	}
+	else if (itemType === 'timers') {
+		return {
+			message: Liferay.Language.get(
+				'are-you-sure-you-want-to-delete-all-timers-and-their-settings'
+			),
+			title: Liferay.Language.get('delete-timers'),
+		};
+	}
 	else {
 		return {};
 	}
