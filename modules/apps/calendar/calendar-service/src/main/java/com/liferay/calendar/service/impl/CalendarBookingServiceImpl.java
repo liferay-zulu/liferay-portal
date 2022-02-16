@@ -18,10 +18,13 @@ import com.liferay.calendar.configuration.CalendarServiceConfigurationValues;
 import com.liferay.calendar.constants.CalendarActionKeys;
 import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarBooking;
+import com.liferay.calendar.recurrence.Frequency;
+import com.liferay.calendar.recurrence.Recurrence;
 import com.liferay.calendar.service.CalendarLocalService;
 import com.liferay.calendar.service.CalendarService;
 import com.liferay.calendar.service.base.CalendarBookingServiceBaseImpl;
 import com.liferay.calendar.util.JCalendarUtil;
+import com.liferay.calendar.util.comparator.CalendarBookingStartTimeComparator;
 import com.liferay.calendar.workflow.constants.CalendarBookingWorkflowConstants;
 import com.liferay.petra.content.ContentUtil;
 import com.liferay.petra.string.StringPool;
@@ -35,8 +38,10 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -419,6 +424,83 @@ public class CalendarBookingServiceImpl extends CalendarBookingServiceBaseImpl {
 		calendarBooking.setEndTime(calendarBooking.getStartTime() + duration);
 
 		return calendarBooking;
+	}
+
+	public CalendarBooking getNextCalendarBooking(
+		long companyId, long[] calendarIds,
+		CalendarBooking firstCalendarBooking, int[] statuses,
+		TimeZone timeZone) {
+
+		if (firstCalendarBooking.getRecurrenceObj() == null) {
+			return null;
+		}
+
+		java.util.Calendar startTimeJCalendar = JCalendarUtil.getJCalendar(
+			firstCalendarBooking.getStartTime(), timeZone);
+
+		java.util.Calendar nextCalendarBookingStarts =
+			java.util.Calendar.getInstance();
+
+		nextCalendarBookingStarts.setTime(startTimeJCalendar.getTime());
+
+		Recurrence recurrence = firstCalendarBooking.getRecurrenceObj();
+
+		List<String> exceptionJCalendars = Stream.of(
+			recurrence.getExceptionJCalendars()
+		).flatMap(
+			List::stream
+		).map(
+			exception -> DateUtil.getDate(
+				exception.getTime(), "yyyy-MM-dd'T", LocaleUtil.getDefault())
+		).collect(
+			Collectors.toList()
+		);
+
+		do {
+			if (recurrence.getFrequency() == Frequency.DAILY) {
+				nextCalendarBookingStarts.add(
+					java.util.Calendar.DATE, recurrence.getInterval());
+			}
+			else if (recurrence.getFrequency() == Frequency.MONTHLY) {
+				nextCalendarBookingStarts.add(
+					java.util.Calendar.MONTH, recurrence.getInterval());
+			}
+			else if (recurrence.getFrequency() == Frequency.WEEKLY) {
+				nextCalendarBookingStarts.add(
+					java.util.Calendar.DATE, recurrence.getInterval() * 7);
+			}
+			else {
+				nextCalendarBookingStarts.add(
+					java.util.Calendar.YEAR, recurrence.getInterval());
+			}
+		}
+		while (exceptionJCalendars.contains(
+					DateUtil.getDate(
+						nextCalendarBookingStarts.getTime(), "yyyy-MM-dd'T",
+						LocaleUtil.getDefault())));
+
+		List<CalendarBooking> calendarBookings =
+			calendarBookingLocalService.search(
+				companyId, new long[] {firstCalendarBooking.getGroupId()},
+				calendarIds,
+				new long[] {firstCalendarBooking.getCalendarResourceId()},
+				firstCalendarBooking.getParentCalendarBookingId(), null,
+				startTimeJCalendar.getTimeInMillis(),
+				nextCalendarBookingStarts.getTimeInMillis(), true, statuses,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				new CalendarBookingStartTimeComparator(true));
+
+		for (CalendarBooking calendarBooking : calendarBookings) {
+			int compare = DateUtil.compareTo(
+				DateUtil.newDate(calendarBooking.getStartTime()),
+				new Date(firstCalendarBooking.getStartTime()));
+
+			if (compare == 1) {
+				return calendarBooking;
+			}
+		}
+
+		return null;
 	}
 
 	@Override
