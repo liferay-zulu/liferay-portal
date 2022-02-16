@@ -18,6 +18,8 @@ import AssignmentsSummary from './assignments/AssignmentsSummary';
 import SourceCode from './assignments/SourceCode';
 import Notifications from './notifications/Notifications';
 import NotificationsSummary from './notifications/NotificationsSummary';
+import Timers from './timers/Timers';
+import TimersSummary from './timers/TimersSummary';
 
 const sectionComponents = {
 	actions: Actions,
@@ -29,6 +31,8 @@ const sectionComponents = {
 	notifications: Notifications,
 	notificationsSummary: NotificationsSummary,
 	sourceCode: SourceCode,
+	timers: Timers,
+	timersSummary: TimersSummary,
 };
 
 export default sectionComponents;
