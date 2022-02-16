@@ -94,9 +94,24 @@ const contents = {
 			'assignmentsSummary',
 			'notificationsSummary',
 			'actionsSummary',
+			'timersSummary',
 		],
 		showDeleteButton: true,
 		title: Liferay.Language.get('task'),
+	},
+	'timers': {
+		backButton: (setContentName) => () => setContentName('task'),
+		deleteFunction: (setSelectedItem) => () =>
+			setSelectedItem((previousValue) => ({
+				...previousValue,
+				data: {
+					...previousValue.data,
+					timers: null,
+				},
+			})),
+		sections: ['timers'],
+		showDeleteButton: true,
+		title: Liferay.Language.get('timers'),
 	},
 	'transition': {
 		sections: ['edgeInformation'],
