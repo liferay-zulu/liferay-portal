@@ -27,6 +27,10 @@ export default function ConditionNode({
 		};
 	}
 
+	if (!script) {
+		script = 'returnValue = "Transition Name"';
+	}
+
 	return (
 		<BaseNode
 			actions={actions}

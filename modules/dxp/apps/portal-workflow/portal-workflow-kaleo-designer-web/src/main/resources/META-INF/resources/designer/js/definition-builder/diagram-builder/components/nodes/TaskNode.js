@@ -27,6 +27,10 @@ export default function TaskNode({
 		};
 	}
 
+	if (!assignments) {
+		assignments = {assignmentType: ['user']};
+	}
+
 	return (
 		<BaseNode
 			actions={actions}
