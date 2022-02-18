@@ -346,18 +346,6 @@ function appendXMLNotifications(buffer, notifications, nodeName) {
 				recipientsAttrs.receptionType = recipients[index].receptionType;
 			}
 
-			// if (
-			// 	isObject(recipients[index]) &&
-			// 	!isObjectEmpty(recipients[index])
-			// ) {
-			// 	appendXMLAssignments(
-			// 		buffer,
-			// 		recipients[index],
-			// 		'recipients',
-			// 		recipientsAttrs
-			// 	);
-			// }
-
 			if (executionType) {
 				buffer.push(
 					XMLUtil.create('executionType', executionType[index])
