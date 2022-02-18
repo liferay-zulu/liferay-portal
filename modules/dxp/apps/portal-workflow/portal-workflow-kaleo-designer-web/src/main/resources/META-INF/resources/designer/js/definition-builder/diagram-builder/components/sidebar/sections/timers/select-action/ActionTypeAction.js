@@ -12,6 +12,8 @@
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import React, {useState} from 'react';
 
+import BaseAction from '../../shared-components/BaseAction';
+
 const ActionTypeAction = () => {
 	const [scriptSections, setScriptSections] = useState([
 		{identifier: `${Date.now()}-0`},
@@ -30,7 +32,7 @@ const ActionTypeAction = () => {
 	return scriptSections.map(({identifier}) => {
 		return (
 			<div key={`section-${identifier}`}>
-				<div>Script Placeholder {identifier}</div>
+				<BaseAction />
 
 				<div className="section-buttons-area">
 					<ClayButton
@@ -49,7 +51,7 @@ const ActionTypeAction = () => {
 							})
 						}
 					>
-						Add Button Placeholder
+						{Liferay.Language.get('add-script')}
 					</ClayButton>
 
 					{scriptSections.length > 1 && (
