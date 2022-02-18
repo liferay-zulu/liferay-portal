@@ -10,14 +10,50 @@
  */
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 import SidebarPanel from '../../SidebarPanel';
+import ActionTypeAction from './select-action/ActionTypeAction';
+import ActionTypeNotification from './select-action/ActionTypeNotification';
+import ActionTypeReassignment from './select-action/ActionTypeReassignment';
+import SelectActionType from './select-action/SelectActionType';
+
+const actionSectionComponents = {
+	actions: ActionTypeAction,
+	notifications: ActionTypeNotification,
+	reassignments: ActionTypeReassignment,
+};
 
 const TimerAction = () => {
+	const [actionSection, setActionSection] = useState('actions');
+	const [actionSections, setActionSections] = useState([
+		{identifier: `${Date.now()}-0`},
+	]);
+
+	const ActionSectionComponent = actionSectionComponents[actionSection];
+
 	return (
 		<SidebarPanel panelTitle={Liferay.Language.get('action')}>
-			Action Placeholder
+			<SelectActionType
+				actionSection={actionSection}
+				setActionSection={setActionSection}
+				setActionSections={setActionSections}
+			/>
+
+			{actionSections.map(({identifier, ...restProps}, index) => {
+				return (
+					ActionSectionComponent && (
+						<ActionSectionComponent
+							{...restProps}
+							identifier={identifier}
+							index={index}
+							key={`section-${identifier}`}
+							sectionsLength={actionSections?.length}
+							setSections={setActionSections}
+						/>
+					)
+				);
+			})}
 		</SidebarPanel>
 	);
 };
