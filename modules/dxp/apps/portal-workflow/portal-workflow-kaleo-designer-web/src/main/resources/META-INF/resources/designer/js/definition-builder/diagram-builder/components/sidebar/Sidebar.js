@@ -22,6 +22,14 @@ const contents = {
 	'actions': {
 		backButton: (setContentName, selectedItemType) => () =>
 			setContentName(selectedItemType),
+		deleteFunction: (setSelectedItem) => () =>
+			setSelectedItem((previousValue) => ({
+				...previousValue,
+				data: {
+					...previousValue.data,
+					actions: null,
+				},
+			})),
 		sections: ['actions'],
 		showDeleteButton: true,
 		title: Liferay.Language.get('actions'),
