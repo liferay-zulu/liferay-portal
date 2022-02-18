@@ -24,7 +24,7 @@ import {
 import {titleCase} from '../../../../../util/utils';
 
 const BaseRoleType = ({
-	autoCreate = true,
+	autoCreate = false,
 	buttonName,
 	identifier,
 	index,

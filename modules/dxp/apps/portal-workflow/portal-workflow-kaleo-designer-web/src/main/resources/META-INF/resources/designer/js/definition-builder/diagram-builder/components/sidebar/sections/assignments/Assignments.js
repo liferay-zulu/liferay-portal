@@ -47,7 +47,7 @@ const Assignments = (props) => {
 
 			for (let i = 0; i < assignments.roleType.length; i++) {
 				sectionsData.push({
-					autoCreate: assignments.autoCreate[i],
+					autoCreate: assignments?.autoCreate?.[i],
 					identifier: `${Date.now()}-${i}`,
 					roleName: assignments.roleName[i],
 					roleType: assignments.roleType[i],
