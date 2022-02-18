@@ -38,7 +38,7 @@ java.util.Calendar endTimeJCalendar = JCalendarUtil.getJCalendar(endTime, userTi
 AssetEntry layoutAssetEntry = AssetEntryLocalServiceUtil.getEntry(CalendarBooking.class.getName(), calendarBooking.getCalendarBookingId());
 %>
 
-<c:if test="<%= (calendar != null) && CalendarPermission.contains(themeDisplay.getPermissionChecker(), calendar, CalendarActionKeys.VIEW_BOOKING_DETAILS) %>">
+<c:if test="<%= CalendarPermission.contains(themeDisplay.getPermissionChecker(), calendar, CalendarActionKeys.VIEW_BOOKING_DETAILS) %>">
 	<div class="mt-4">
 		<clay:container-fluid
 			class="mt-4"
