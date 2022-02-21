@@ -11,17 +11,41 @@
 
 import ClayButton from '@clayui/button';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useContext} from 'react';
 
+import {DiagramBuilderContext} from '../../../../DiagramBuilderContext';
 import SidebarPanel from '../../SidebarPanel';
 
 const TimersSummary = ({setContentName}) => {
+	const {setSelectedItem} = useContext(DiagramBuilderContext);
+
+	const createTimer = () => {
+		setSelectedItem((previousItem) => ({
+			...previousItem,
+			data: {
+				...previousItem.data,
+				taskTimers: {
+					blocking: [true],
+					delay: [{duration: [''], scale: ['']}],
+					description: [''],
+					name: [''],
+					reassignments: [{}],
+					timerActions: [{}],
+					timerNotifications: [{}],
+				},
+			},
+		}));
+	};
+
 	return (
 		<SidebarPanel panelTitle={Liferay.Language.get('timers')}>
 			<ClayButton
 				className="mr-3"
 				displayType="secondary"
-				onClick={() => setContentName('timers')}
+				onClick={() => {
+					setContentName('timers');
+					createTimer();
+				}}
 			>
 				{Liferay.Language.get('new')}
 			</ClayButton>
