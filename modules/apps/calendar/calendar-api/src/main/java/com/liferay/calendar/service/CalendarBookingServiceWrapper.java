@@ -244,6 +244,16 @@ public class CalendarBookingServiceWrapper
 				calendarBookingId, offset, duration);
 	}
 
+	@Override
+	public CalendarBooking getNextCalendarBooking(
+		long companyId, long[] calendarIds,
+		CalendarBooking firstCalendarBooking, int[] statuses,
+		java.util.TimeZone timeZone) {
+
+		return _calendarBookingService.getNextCalendarBooking(
+			companyId, calendarIds, firstCalendarBooking, statuses, timeZone);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

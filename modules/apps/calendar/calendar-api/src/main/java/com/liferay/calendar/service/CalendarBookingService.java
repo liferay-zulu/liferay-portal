@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -164,6 +165,12 @@ public interface CalendarBookingService extends BaseService {
 	public CalendarBooking getNewStartTimeAndDurationCalendarBooking(
 			long calendarBookingId, long offset, long duration)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CalendarBooking getNextCalendarBooking(
+		long companyId, long[] calendarIds,
+		CalendarBooking firstCalendarBooking, int[] statuses,
+		TimeZone timeZone);
 
 	/**
 	 * Returns the OSGi service identifier.

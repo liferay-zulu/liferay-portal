@@ -222,6 +222,15 @@ public class CalendarBookingServiceUtil {
 			calendarBookingId, offset, duration);
 	}
 
+	public static CalendarBooking getNextCalendarBooking(
+		long companyId, long[] calendarIds,
+		CalendarBooking firstCalendarBooking, int[] statuses,
+		java.util.TimeZone timeZone) {
+
+		return getService().getNextCalendarBooking(
+			companyId, calendarIds, firstCalendarBooking, statuses, timeZone);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
