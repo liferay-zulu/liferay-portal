@@ -10,12 +10,44 @@
  */
 
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
-import React, {useState} from 'react';
+import PropTypes from 'prop-types';
+import React, {useContext, useState} from 'react';
 
-const ActionTypeNotification = () => {
+import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
+import BaseNotificationsInfo from '../../shared-components/BaseNotificationsInfo';
+
+const ActionTypeNotification = ({index, updateSelectedItem}) => {
 	const [notificationSections, setNotificationSections] = useState([
 		{identifier: `${Date.now()}-0`},
 	]);
+	const {selectedItem} = useContext(DiagramBuilderContext);
+
+	const updateTimerNotification = (values) => {
+		updateSelectedItem({
+			timerNotifications: {
+				...selectedItem.data.taskTimers.timerNotifications[index],
+				description: values.map(({description}) => description),
+				executionType: values.map(({executionType}) => executionType),
+				name: values.map(({name}) => name),
+				notificationType: values.map(
+					({notificationType}) => notificationType
+				),
+				recipients: [
+					{
+						...selectedItem.data.taskTimers.timerNotifications
+							?.recipients,
+						receptionType: values.map(
+							({recipientType}) => recipientType
+						),
+					},
+				],
+				template: values.map(({template}) => template),
+				templateLanguage: values.map(
+					({templateLanguage}) => templateLanguage
+				),
+			},
+		});
+	};
 
 	const deleteSection = (identifier) => {
 		setNotificationSections((prevSections) => {
@@ -27,43 +59,50 @@ const ActionTypeNotification = () => {
 		});
 	};
 
-	return notificationSections.map(({identifier}) => {
-		return (
-			<div key={`section-${identifier}`}>
-				<div>Notification Placeholder {identifier}</div>
+	return notificationSections.map(({identifier}, index) => (
+		<div key={`section-${identifier}`}>
+			<BaseNotificationsInfo
+				identifier={identifier}
+				index={index}
+				sectionsLength={notificationSections?.length}
+				setSections={setNotificationSections}
+				updateSelectedItem={updateTimerNotification}
+			/>
 
-				<div className="section-buttons-area">
-					<ClayButton
-						className="mr-3"
-						displayType="secondary"
-						onClick={() =>
-							setNotificationSections((prev) => {
-								return [
-									...prev,
-									{
-										identifier: `${Date.now()}-${
-											prev.length
-										}`,
-									},
-								];
-							})
-						}
-					>
-						Add Button Placeholder
-					</ClayButton>
+			<div className="mb-4 mt-4 section-buttons-area">
+				<ClayButton
+					className="mr-3"
+					displayType="secondary"
+					onClick={() =>
+						setNotificationSections((prev) => {
+							return [
+								...prev,
+								{
+									identifier: `${Date.now()}-${prev.length}`,
+								},
+							];
+						})
+					}
+				>
+					{Liferay.Language.get('add-notification')}
+				</ClayButton>
 
-					{notificationSections.length > 1 && (
-						<ClayButtonWithIcon
-							className="delete-button"
-							displayType="unstyled"
-							onClick={() => deleteSection(identifier)}
-							symbol="trash"
-						/>
-					)}
-				</div>
+				{notificationSections.length > 1 && (
+					<ClayButtonWithIcon
+						className="delete-button"
+						displayType="unstyled"
+						onClick={() => deleteSection(identifier)}
+						symbol="trash"
+					/>
+				)}
 			</div>
-		);
-	});
+		</div>
+	));
+};
+
+ActionTypeNotification.propTypes = {
+	index: PropTypes.number.isRequired,
+	updateSelectedItem: PropTypes.func.isRequired,
 };
 
 export default ActionTypeNotification;
