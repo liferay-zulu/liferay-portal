@@ -43,7 +43,9 @@ const BaseRoleType = ({
 	const [roleNameDropdownActive, setRoleNameDropdownActive] = useState(false);
 	const [roleTypeDropdownActive, setRoleTypeDropdownActive] = useState(false);
 	const [selectedRoleName, setSelectedRoleName] = useState(roleName);
-	const [selectedRoleType, setSelectedRoleType] = useState(roleType);
+	const [selectedRoleType, setSelectedRoleType] = useState(
+		titleCase(roleType)
+	);
 
 	const {resource} = useResource({
 		fetchOptions: {
@@ -142,10 +144,11 @@ const BaseRoleType = ({
 		event.persist();
 
 		setFilterRoleName(true);
+
 		setSelectedRoleName(event.target.value);
 	};
 
-	const roleNameItemClick = (item) => {
+	const roleNameItemUpdate = (item) => {
 		setSelectedRoleName(item.roleName);
 		setRoleNameDropdownActive(false);
 
@@ -242,6 +245,15 @@ const BaseRoleType = ({
 						autoComplete="off"
 						disabled={!selectedRoleType}
 						id="role-name"
+						onBlur={(event) => {
+							if (selectedRoleName !== '') {
+								roleNameItemUpdate({
+									autoCreate: checked,
+									roleName: titleCase(event.target.value),
+									roleType: selectedRoleType.toLowerCase(),
+								});
+							}
+						}}
 						onChange={(event) => roleNameInputChange(event)}
 						onFocus={() => roleNameInputFocus()}
 						value={selectedRoleName}
@@ -267,11 +279,11 @@ const BaseRoleType = ({
 								filteredRoleNames().map((item, index) => (
 									<ClayAutocomplete.Item
 										key={index}
-										onClickCapture={() =>
-											roleNameItemClick({
+										onMouseDown={() =>
+											roleNameItemUpdate({
 												autoCreate: checked,
 												roleName: item.roleName,
-												roleType: item.roleType,
+												roleType: item.roleType.toLowerCase(),
 											})
 										}
 										value={item.roleName}
