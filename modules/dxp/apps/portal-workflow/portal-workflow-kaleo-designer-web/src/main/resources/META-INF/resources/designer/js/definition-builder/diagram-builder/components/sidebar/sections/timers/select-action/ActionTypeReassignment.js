@@ -9,58 +9,59 @@
  * distribution rights of the Software.
  */
 
-import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
-const ActionTypeReassignment = () => {
-	const [reassignmentSections, setReassignmentSections] = useState([
-		{identifier: `${Date.now()}-0`},
-	]);
+import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
+import AssetCreator from '../select-reassignment/AssetCreator';
+import ResourceActions from '../select-reassignment/ResourceActions';
+import Role from '../select-reassignment/Role';
+import RoleType from '../select-reassignment/RoleType';
+import ScriptedAssignment from '../select-reassignment/ScriptedReassignment';
+import {SelectReassignment} from '../select-reassignment/SelectReassignment';
+import User from '../select-reassignment/User';
 
-	const deleteSection = (identifier) => {
-		setReassignmentSections((prevSections) => {
-			const newSections = prevSections.filter(
-				(prevSection) => prevSection.identifier !== identifier
-			);
+const assignmentSectionComponents = {
+	assetCreator: AssetCreator,
+	resourceActions: ResourceActions,
+	roleId: Role,
+	roleType: RoleType,
+	scriptedAssignment: ScriptedAssignment,
+	user: User,
+};
 
-			return newSections;
-		});
-	};
+const ActionTypeReassignment = (props) => {
+	const {selectedItem} = useContext(DiagramBuilderContext);
+	const assignmentType = selectedItem?.data?.assignments;
+	const [section, setSection] = useState(assignmentType || 'assetCreator');
+	const [sections, setSections] = useState([{identifier: `${Date.now()}-0`}]);
+	const ReassignmentSectionComponent = assignmentSectionComponents[section];
 
-	return reassignmentSections.map(({identifier}) => {
+	const [scriptSections] = useState([{identifier: `${Date.now()}-0`}]);
+
+	return scriptSections.map(({identifier}) => {
 		return (
 			<div key={`section-${identifier}`}>
-				<div>Reassignment Placeholder {identifier}</div>
+				<SelectReassignment
+					section={section}
+					setSection={setSection}
+					setSections={setSections}
+				/>
 
-				<div className="section-buttons-area">
-					<ClayButton
-						className="mr-3"
-						displayType="secondary"
-						onClick={() =>
-							setReassignmentSections((prev) => {
-								return [
-									...prev,
-									{
-										identifier: `${Date.now()}-${
-											prev.length
-										}`,
-									},
-								];
-							})
-						}
-					>
-						Add Button Placeholder
-					</ClayButton>
-
-					{reassignmentSections.length > 1 && (
-						<ClayButtonWithIcon
-							className="delete-button"
-							displayType="unstyled"
-							onClick={() => deleteSection(identifier)}
-							symbol="trash"
-						/>
-					)}
-				</div>
+				{sections.map(({identifier, ...restProps}, index) => {
+					return (
+						ReassignmentSectionComponent && (
+							<ReassignmentSectionComponent
+								{...props}
+								{...restProps}
+								identifier={identifier}
+								index={index}
+								key={`section-${identifier}`}
+								sectionsLength={sections?.length}
+								setSections={setSections}
+							/>
+						)
+					);
+				})}
 			</div>
 		);
 	});
