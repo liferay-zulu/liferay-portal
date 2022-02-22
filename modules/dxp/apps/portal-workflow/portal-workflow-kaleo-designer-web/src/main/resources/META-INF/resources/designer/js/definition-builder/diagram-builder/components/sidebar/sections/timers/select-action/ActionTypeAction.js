@@ -32,7 +32,10 @@ const ActionTypeAction = () => {
 	return scriptSections.map(({identifier}) => {
 		return (
 			<div key={`section-${identifier}`}>
-				<BaseAction />
+				<BaseAction
+					templateLabel={Liferay.Language.get('script')}
+					templateLabelSecondary={Liferay.Language.get('groovy')}
+				/>
 
 				<div className="section-buttons-area">
 					<ClayButton

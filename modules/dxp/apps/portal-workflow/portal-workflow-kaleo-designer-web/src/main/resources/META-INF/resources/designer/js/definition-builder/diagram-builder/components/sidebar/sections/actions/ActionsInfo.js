@@ -17,42 +17,18 @@ import {DiagramBuilderContext} from '../../../../DiagramBuilderContext';
 import SidebarPanel from '../../SidebarPanel';
 import BaseAction from '../shared-components/BaseAction';
 
-const ActionsInfo = ({identifier, index, sectionsLength, setSections}) => {
+const ActionsInfo = ({
+	identifier,
+	index,
+	executionTypeInput = () => {
+		'';
+	},
+	sectionsLength,
+	setSections,
+}) => {
 	const {selectedItem, setSelectedItem} = useContext(DiagramBuilderContext);
 	const {actions} = selectedItem.data;
 
-	const [description, setDescription] = useState(
-		actions?.description?.[index]
-	);
-
-	const [name, setName] = useState(actions?.name?.[index]);
-	const [priority, setPriority] = useState(actions?.priority?.[index]);
-	const [template, setTemplate] = useState(actions?.script?.[index]);
-
-	if (
-		selectedItem.type === 'task' &&
-		!executionTypeOptions
-			.map((option) => option.value)
-			.includes('onAssignment')
-	) {
-		executionTypeOptions.push({
-			label: Liferay.Language.get('on-assignment'),
-			value: 'onAssignment',
-		});
-	}
-	sortElements(executionTypeOptions, 'value');
-
-	const [executionType, setExecutionType] = useState(
-		actions?.executionType?.[index] ?? executionTypeOptions[0].value
-	);
-
-	useEffect(() => {
-		return function cleanup() {
-			executionTypeOptions = executionTypeOptions.filter(({value}) => {
-				return value !== 'onAssignment';
-			});
-		};
-	}, []);
 	const [template] = useState(actions?.script?.[index]);
 
 	const deleteSection = () => {
@@ -104,9 +80,12 @@ const ActionsInfo = ({identifier, index, sectionsLength, setSections}) => {
 	return (
 		<SidebarPanel panelTitle={Liferay.Language.get('information')}>
 			<BaseAction
+				executionTypeInput={executionTypeInput}
 				index={index}
 				placeholderName={Liferay.Language.get('my-action')}
 				placeholderTemplate="${userName} sent you a ${entryType} for review in the workflow."
+				templateLabel={Liferay.Language.get('template')}
+				templateLabelSecondary={Liferay.Language.get('groovy')}
 				updateActionInfo={updateActionInfo}
 			/>
 

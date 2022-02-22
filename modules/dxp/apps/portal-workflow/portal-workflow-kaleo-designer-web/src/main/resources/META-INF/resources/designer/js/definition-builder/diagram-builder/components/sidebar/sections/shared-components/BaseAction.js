@@ -32,9 +32,12 @@ let executionTypeOptions = [
 ];
 
 const BaseAction = ({
+	executionTypeInput,
 	index,
 	placeholderName,
 	placeholderTemplate,
+	templateLabel,
+	templateLabelSecondary,
 	updateActionInfo,
 }) => {
 	const {selectedItem} = useContext(DiagramBuilderContext);
@@ -127,9 +130,7 @@ const BaseAction = ({
 			</ClayForm.Group>
 			<ClayForm.Group>
 				<label htmlFor="template">
-					{`${Liferay.Language.get(
-						'template'
-					)} (${Liferay.Language.get('groovy')})`}
+					{`${templateLabel} (${templateLabelSecondary})`}
 
 					<span className="ml-1 mr-1 text-warning">*</span>
 				</label>
@@ -154,37 +155,41 @@ const BaseAction = ({
 					value={template}
 				/>
 			</ClayForm.Group>
-			<ClayForm.Group>
-				<label htmlFor="execution-type">
-					{Liferay.Language.get('execution-type')}
-				</label>
 
-				<ClaySelect
-					aria-label="Select"
-					id="execution-type"
-					onChange={({target}) => {
-						setExecutionType(target.value);
-					}}
-					onClickCapture={() =>
-						updateActionInfo({
-							description,
-							executionType,
-							name,
-							priority,
-							template,
-						})
-					}
-				>
-					{executionTypeOptions.map((item) => (
-						<ClaySelect.Option
-							key={item.value}
-							label={item.label}
-							selected={item.value === executionType}
-							value={item.value}
-						/>
-					))}
-				</ClaySelect>
-			</ClayForm.Group>
+			{typeof executionTypeInput !== 'undefined' && (
+				<ClayForm.Group>
+					<label htmlFor="execution-type">
+						{Liferay.Language.get('execution-type')}
+					</label>
+
+					<ClaySelect
+						aria-label="Select"
+						id="execution-type"
+						onChange={({target}) => {
+							setExecutionType(target.value);
+						}}
+						onClickCapture={() =>
+							updateActionInfo({
+								description,
+								executionType,
+								name,
+								priority,
+								template,
+							})
+						}
+					>
+						{executionTypeOptions.map((item) => (
+							<ClaySelect.Option
+								key={item.value}
+								label={item.label}
+								selected={item.value === executionType}
+								value={item.value}
+							/>
+						))}
+					</ClaySelect>
+				</ClayForm.Group>
+			)}
+
 			<ClayForm.Group>
 				<label htmlFor="priority">
 					{Liferay.Language.get('priority')}
