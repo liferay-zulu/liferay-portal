@@ -31,7 +31,7 @@ let executionTypeOptions = [
 	},
 ];
 
-const BaseAction = ({
+const BaseActionsInfo = ({
 	executionTypeInput,
 	index,
 	placeholderName,
@@ -245,8 +245,8 @@ const BaseAction = ({
 	);
 };
 
-BaseAction.propTypes = {
+BaseActionsInfo.propTypes = {
 	setContentName: PropTypes.func.isRequired,
 };
 
-export default BaseAction;
+export default BaseActionsInfo;

@@ -12,7 +12,7 @@
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import React, {useState} from 'react';
 
-import BaseAction from '../../shared-components/BaseAction';
+import BaseActionsInfo from '../../shared-components/BaseActionsInfo';
 
 const ActionTypeAction = () => {
 	const [scriptSections, setScriptSections] = useState([
@@ -32,7 +32,7 @@ const ActionTypeAction = () => {
 	return scriptSections.map(({identifier}) => {
 		return (
 			<div key={`section-${identifier}`}>
-				<BaseAction
+				<BaseActionsInfo
 					templateLabel={Liferay.Language.get('script')}
 					templateLabelSecondary={Liferay.Language.get('groovy')}
 				/>
@@ -54,7 +54,7 @@ const ActionTypeAction = () => {
 							})
 						}
 					>
-						{Liferay.Language.get('add-script')}
+						{Liferay.Language.get('new-section')}
 					</ClayButton>
 
 					{scriptSections.length > 1 && (

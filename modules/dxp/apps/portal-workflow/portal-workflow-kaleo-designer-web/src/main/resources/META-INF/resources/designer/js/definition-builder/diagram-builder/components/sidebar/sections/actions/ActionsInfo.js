@@ -15,7 +15,7 @@ import React, {useContext, useState} from 'react';
 
 import {DiagramBuilderContext} from '../../../../DiagramBuilderContext';
 import SidebarPanel from '../../SidebarPanel';
-import BaseAction from '../shared-components/BaseAction';
+import BaseActionsInfo from '../shared-components/BaseActionsInfo';
 
 const ActionsInfo = ({
 	identifier,
@@ -79,7 +79,7 @@ const ActionsInfo = ({
 
 	return (
 		<SidebarPanel panelTitle={Liferay.Language.get('information')}>
-			<BaseAction
+			<BaseActionsInfo
 				executionTypeInput={executionTypeInput}
 				index={index}
 				placeholderName={Liferay.Language.get('my-action')}
