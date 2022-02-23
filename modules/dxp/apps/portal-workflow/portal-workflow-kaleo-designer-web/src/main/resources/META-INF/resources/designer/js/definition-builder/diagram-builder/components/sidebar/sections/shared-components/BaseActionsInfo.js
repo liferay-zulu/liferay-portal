@@ -246,7 +246,13 @@ const BaseActionsInfo = ({
 };
 
 BaseActionsInfo.propTypes = {
-	setContentName: PropTypes.func.isRequired,
+	executionTypeInput: PropTypes.func,
+	index: PropTypes.number,
+	placeholderName: PropTypes.string,
+	placeholderTemplate: PropTypes.string,
+	templateLabel: PropTypes.string,
+	templateLabelSecondary: PropTypes.string,
+	updateActionInfo: PropTypes.func,
 };
 
 export default BaseActionsInfo;

@@ -105,7 +105,10 @@ const TimerDuration = ({
 };
 
 TimerDuration.propTypes = {
-	setContentName: PropTypes.func.isRequired,
+	index: PropTypes.number,
+	selectedItem: PropTypes.object,
+	setSelectedItem: PropTypes.func,
+	updateSelectedItem: PropTypes.func,
 };
 
 export default TimerDuration;

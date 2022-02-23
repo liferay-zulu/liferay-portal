@@ -9,7 +9,6 @@
  * distribution rights of the Software.
  */
 
-import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import SidebarPanel from '../../SidebarPanel';
@@ -56,10 +55,6 @@ const TimerAction = () => {
 			})}
 		</SidebarPanel>
 	);
-};
-
-TimerAction.propTypes = {
-	setContentName: PropTypes.func.isRequired,
 };
 
 export default TimerAction;

@@ -173,7 +173,10 @@ const Timer = ({identifier, index, sectionsLength, setSections}) => {
 };
 
 Timer.propTypes = {
-	setContentName: PropTypes.func.isRequired,
+	identifier: PropTypes.string,
+	index: PropTypes.number,
+	sectionsLength: PropTypes.number,
+	setSections: PropTypes.func,
 };
 
 export default Timer;
