@@ -73,6 +73,35 @@ AssetEntry layoutAssetEntry = AssetEntryLocalServiceUtil.getEntry(CalendarBookin
 						</dd>
 
 						<%
+						CalendarBooking nextCalendarBooking = CalendarBookingServiceUtil.getNextCalendarBooking(themeDisplay.getCompanyId(), new long[] {calendar.getCalendarId()}, calendarBooking, null, user.getTimeZone());
+						%>
+
+						<c:if test="<%= nextCalendarBooking != null %>">
+
+							<%
+							java.util.Calendar nextEventStartTimeJCalendar = JCalendarUtil.getJCalendar(nextCalendarBooking.getStartTime(), user.getTimeZone());
+							%>
+
+							<dt>
+								<liferay-ui:message key="next-event-starts" />:
+							</dt>
+							<dd>
+								<%= dateFormatLongDate.format(nextEventStartTimeJCalendar.getTime()) + ", " + dateFormatTime.format(nextEventStartTimeJCalendar.getTime()) %>
+							</dd>
+							<dt>
+								<liferay-ui:message key="next-event-ends" />:
+							</dt>
+
+							<%
+							java.util.Calendar nextEventEndTimeJCalendar = JCalendarUtil.getJCalendar(nextCalendarBooking.getEndTime(), user.getTimeZone());
+							%>
+
+							<dd>
+								<%= dateFormatLongDate.format(nextEventEndTimeJCalendar.getTime()) + ", " + dateFormatTime.format(nextEventEndTimeJCalendar.getTime()) %>
+							</dd>
+						</c:if>
+
+						<%
 						List<CalendarBooking> childCalendarBookings = calendarDisplayContext.getChildCalendarBookings(calendarBooking);
 						%>
 
