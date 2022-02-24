@@ -17,11 +17,13 @@ package com.liferay.calendar.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarBooking;
+import com.liferay.calendar.recurrence.Recurrence;
 import com.liferay.calendar.service.CalendarBookingLocalService;
 import com.liferay.calendar.service.CalendarBookingService;
 import com.liferay.calendar.test.util.CalendarBookingTestUtil;
 import com.liferay.calendar.test.util.CalendarStagingTestUtil;
 import com.liferay.calendar.test.util.CalendarTestUtil;
+import com.liferay.calendar.test.util.RecurrenceTestUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
@@ -39,12 +41,14 @@ import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,6 +85,58 @@ public class CalendarBookingServiceTest {
 	@After
 	public void tearDown() {
 		CalendarStagingTestUtil.cleanUp();
+	}
+
+	@Test
+	public void testGetNextCalendarBooking() throws Exception {
+		ServiceContext serviceContext = createServiceContext();
+
+		Calendar calendar = CalendarTestUtil.addCalendar(
+			_omnidminUser, serviceContext);
+
+		Recurrence recurrence = RecurrenceTestUtil.getDailyRecurrence();
+
+		recurrence.setInterval(1);
+
+		java.util.Calendar calendar1 = java.util.Calendar.getInstance();
+
+		java.util.Calendar calendar2 = java.util.Calendar.getInstance();
+
+		calendar2.add(java.util.Calendar.DATE, 1);
+
+		CalendarBooking calendarBooking =
+			CalendarBookingTestUtil.addRecurringCalendarBooking(
+				_omnidminUser, calendar, calendar1.getTimeInMillis(),
+				calendar2.getTimeInMillis(), recurrence, serviceContext);
+
+		CalendarBooking nextCalendarBooking =
+			_calendarBookingService.getNextCalendarBooking(
+				calendar.getCompanyId(),
+				new long[] {calendarBooking.getCalendarId()}, calendarBooking,
+				null, TimeZoneUtil.getDefault());
+
+		Assert.assertEquals(
+			calendar2.getTimeInMillis(), nextCalendarBooking.getStartTime());
+
+		List<java.util.Calendar> exceptionJCalendars = new ArrayList<>();
+
+		exceptionJCalendars.add(calendar2);
+
+		recurrence.setExceptionJCalendars(exceptionJCalendars);
+
+		calendarBooking = CalendarBookingTestUtil.addRecurringCalendarBooking(
+			_omnidminUser, calendar, calendar1.getTimeInMillis(),
+			calendar2.getTimeInMillis(), recurrence, serviceContext);
+
+		nextCalendarBooking = _calendarBookingService.getNextCalendarBooking(
+			calendar.getCompanyId(),
+			new long[] {calendarBooking.getCalendarId()}, calendarBooking, null,
+			TimeZoneUtil.getDefault());
+
+		calendar2.add(java.util.Calendar.DATE, 1);
+
+		Assert.assertEquals(
+			calendar2.getTimeInMillis(), nextCalendarBooking.getStartTime());
 	}
 
 	@Test
