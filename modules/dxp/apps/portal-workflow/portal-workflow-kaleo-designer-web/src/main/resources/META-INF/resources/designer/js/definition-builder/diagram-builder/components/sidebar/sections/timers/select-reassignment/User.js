@@ -9,36 +9,25 @@
  * distribution rights of the Software.
  */
 
-import React, {useContext} from 'react';
+import React from 'react';
 
-import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
 import SidebarPanel from '../../../SidebarPanel';
 import BaseUser from '../../shared-components/BaseUser';
 
 const User = (props) => {
-	const {setSelectedItem} = useContext(DiagramBuilderContext);
-
-	const updateSelectedItem = (values) => {
-		setSelectedItem((previousItem) => ({
-			...previousItem,
-			data: {
-				...previousItem.data,
-				taskTimers: {
-					reassignments: {
-						assignmentType: ['user'],
-						emailAddress: values.map(
-							({emailAddress}) => emailAddress
-						),
-						sectionsData: values.map((values) => values),
-					},
-				},
+	const updateUser = (values) => {
+		props.updateSelectedItem({
+			reassignments: {
+				assignmentType: ['user'],
+				emailAddress: values.map(({emailAddress}) => emailAddress),
+				sectionsData: values.map((values) => values),
 			},
-		}));
+		});
 	};
 
 	return (
 		<SidebarPanel panelTitle={Liferay.Language.get('section')}>
-			<BaseUser updateSelectedItem={updateSelectedItem} {...props} />
+			<BaseUser {...props} updateSelectedItem={updateUser} />
 		</SidebarPanel>
 	);
 };

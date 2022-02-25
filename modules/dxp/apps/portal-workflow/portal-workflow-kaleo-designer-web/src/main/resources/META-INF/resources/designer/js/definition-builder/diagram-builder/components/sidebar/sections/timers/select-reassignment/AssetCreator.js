@@ -9,25 +9,17 @@
  * distribution rights of the Software.
  */
 
-import {useContext, useEffect} from 'react';
+import {useEffect} from 'react';
 
-import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
-
-const AssetCreator = () => {
-	const {setSelectedItem} = useContext(DiagramBuilderContext);
+const AssetCreator = ({updateSelectedItem}) => {
 	useEffect(() => {
-		setSelectedItem((previousValue) => ({
-			...previousValue,
-			data: {
-				...previousValue.data,
-				taskTimes: {
-					reassignments: {
-						assignmentType: ['user'],
-					},
-				},
+		updateSelectedItem({
+			reassignments: {
+				assignmentType: ['user'],
 			},
-		}));
-	}, [setSelectedItem]);
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return null;
 };

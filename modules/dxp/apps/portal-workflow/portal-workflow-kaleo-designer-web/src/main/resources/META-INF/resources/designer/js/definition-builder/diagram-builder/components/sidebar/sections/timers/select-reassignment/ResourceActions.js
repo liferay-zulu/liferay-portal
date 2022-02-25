@@ -16,25 +16,17 @@ import React, {useContext, useEffect, useState} from 'react';
 import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
 import SidebarPanel from '../../../SidebarPanel';
 
-const ResourceActions = () => {
-	const {selectedItem, setSelectedItem} = useContext(DiagramBuilderContext);
+const ResourceActions = ({updateSelectedItem}) => {
+	const {selectedItem} = useContext(DiagramBuilderContext);
 	const [resourceActions, setResourceActions] = useState('');
 
 	const onChange = ({target: {value}}) => {
-		setSelectedItem((previousValue) => ({
-			...previousValue,
-			data: {
-				...previousValue.data,
-				taskTimers: value
-					? {
-							reassignments: {
-								assignmentType: ['resourceActions'],
-								resourceAction: value,
-							},
-					  }
-					: null,
+		updateSelectedItem({
+			reassignments: {
+				assignmentType: ['resourceActions'],
+				resourceAction: value,
 			},
-		}));
+		});
 
 		setResourceActions(value);
 	};

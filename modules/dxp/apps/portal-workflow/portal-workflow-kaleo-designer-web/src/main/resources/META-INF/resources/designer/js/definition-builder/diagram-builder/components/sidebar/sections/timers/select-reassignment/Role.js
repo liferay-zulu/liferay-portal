@@ -15,27 +15,21 @@ import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
 import SidebarPanel from '../../../SidebarPanel';
 import BaseRole from '../../shared-components/BaseRole';
 
-const Role = () => {
-	const {selectedItem, setSelectedItem} = useContext(DiagramBuilderContext);
+const Role = ({updateSelectedItem}) => {
+	const {selectedItem} = useContext(DiagramBuilderContext);
 
-	const updateSelectedItem = (role) => {
-		setSelectedItem((previousValue) => ({
-			...previousValue,
-			data: {
-				...previousValue.data,
-				taskTimers: {
-					reassignments: {
-						assignmentType: ['roleId'],
-						roleId: role.id,
-						sectionsData: {
-							id: role.id,
-							name: role.name,
-							roleType: role.roleType,
-						},
-					},
+	const updateRole = (role) => {
+		updateSelectedItem({
+			reassignments: {
+				assignmentType: ['roleId'],
+				roleId: role.id,
+				sectionsData: {
+					id: role.id,
+					name: role.name,
+					roleType: role.roleType,
 				},
 			},
-		}));
+		});
 	};
 
 	return (
@@ -48,7 +42,7 @@ const Role = () => {
 				}}
 				inputLabel={Liferay.Language.get('role-id')}
 				selectLabel={Liferay.Language.get('role')}
-				updateSelectedItem={updateSelectedItem}
+				updateSelectedItem={updateRole}
 			/>
 		</SidebarPanel>
 	);

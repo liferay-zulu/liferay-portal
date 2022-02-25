@@ -37,8 +37,8 @@ const options = [
 		label: Liferay.Language.get('role-type'),
 	},
 	{
-		assignmentType: 'scriptedAssignment',
-		label: Liferay.Language.get('scripted-assignment'),
+		assignmentType: 'scriptedReassignment',
+		label: Liferay.Language.get('scripted-reassignment'),
 	},
 ];
 
@@ -46,7 +46,7 @@ const SelectReassignment = ({section, setSection, setSections}) => {
 	return (
 		<SidebarPanel panelTitle={Liferay.Language.get('select-reassignment')}>
 			<ClayForm.Group>
-				<label htmlFor="assignment-type">
+				<label htmlFor="reassignment-type">
 					{Liferay.Language.get('reassignment-type')}
 
 					<span
@@ -64,7 +64,7 @@ const SelectReassignment = ({section, setSection, setSections}) => {
 
 				<ClaySelect
 					aria-label="Select"
-					id="assignment-type"
+					id="reassignment-type"
 					onChange={(event) => {
 						setSection(event.target.value);
 						setSections([{identifier: `${Date.now()}-0`}]);
@@ -85,4 +85,4 @@ const SelectReassignment = ({section, setSection, setSections}) => {
 	);
 };
 
-export {SelectReassignment, options};
+export {SelectReassignment};

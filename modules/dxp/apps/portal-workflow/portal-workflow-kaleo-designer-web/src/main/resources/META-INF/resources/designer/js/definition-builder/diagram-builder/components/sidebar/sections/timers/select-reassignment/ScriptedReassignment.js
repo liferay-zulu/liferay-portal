@@ -17,11 +17,11 @@ import React, {useContext, useEffect, useState} from 'react';
 import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
 import SidebarPanel from '../../../SidebarPanel';
 
-const ScriptedAssignment = ({setContentName}) => {
+const ScriptedReassignment = ({setContentName}) => {
 	const {selectedItem, setSelectedItem} = useContext(DiagramBuilderContext);
 
 	const [showScriptData, setShowScriptData] = useState(
-		selectedItem?.data.assignments?.script
+		selectedItem?.data.taskTimers?.reassignments?.script
 	);
 
 	const addSourceButtonName = Liferay.Language.get('add-source-code');
@@ -29,19 +29,22 @@ const ScriptedAssignment = ({setContentName}) => {
 		'source-code'
 	)} (${Liferay.Language.get('groovy')})`;
 
-	const goToEditor = () => setContentName('scripted-assignment');
+	const goToEditor = () => setContentName('scripted-reassignment');
 
 	const deleteScript = () => {
 		setSelectedItem((previous) => {
 			return {
 				...previous,
-				data: {...previous.data, assignments: null},
+				data: {
+					...previous.data,
+					reassignments: null,
+				},
 			};
 		});
 	};
 
 	useEffect(() => {
-		setShowScriptData(selectedItem?.data.assignments?.script);
+		setShowScriptData(selectedItem?.data.taskTimers?.reassignments?.script);
 	}, [selectedItem]);
 
 	return (
@@ -79,4 +82,4 @@ const ScriptedAssignment = ({setContentName}) => {
 	);
 };
 
-export default ScriptedAssignment;
+export default ScriptedReassignment;

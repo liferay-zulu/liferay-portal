@@ -9,30 +9,21 @@
  * distribution rights of the Software.
  */
 
-import React, {useContext} from 'react';
+import React from 'react';
 
-import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
 import SidebarPanel from '../../../SidebarPanel';
 import BaseRoleType from '../../shared-components/BaseRoleType';
 
 const RoleType = (props) => {
-	const {setSelectedItem} = useContext(DiagramBuilderContext);
-
-	const updateSelectedItem = (values) => {
-		setSelectedItem((previousItem) => ({
-			...previousItem,
-			data: {
-				...previousItem.data,
-				taskTimers: {
-					reassignments: {
-						assignmentType: ['roleType'],
-						autoCreate: values.map(({autoCreate}) => autoCreate),
-						roleName: values.map(({roleName}) => roleName),
-						roleType: values.map(({roleType}) => roleType),
-					},
-				},
+	const updateRoleType = (values) => {
+		props.updateSelectedItem({
+			reassignments: {
+				assignmentType: ['roleType'],
+				autoCreate: values.map(({autoCreate}) => autoCreate),
+				roleName: values.map(({roleName}) => roleName),
+				roleType: values.map(({roleType}) => roleType),
 			},
-		}));
+		});
 	};
 
 	return (
@@ -40,8 +31,8 @@ const RoleType = (props) => {
 			<BaseRoleType
 				buttonName={Liferay.Language.get('new-section')}
 				inputLabel={Liferay.Language.get('role')}
-				updateSelectedItem={updateSelectedItem}
 				{...props}
+				updateSelectedItem={updateRoleType}
 			/>
 		</SidebarPanel>
 	);
