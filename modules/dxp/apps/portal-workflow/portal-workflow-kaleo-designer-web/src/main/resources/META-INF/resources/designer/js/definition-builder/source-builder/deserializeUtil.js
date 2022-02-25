@@ -32,6 +32,16 @@ DeserializeUtil.prototype = {
 
 		const elements = [];
 
+		const transitionsIDs = [];
+
+		const nodesIDs = [];
+
+		instance.definition.forEachField((_, fieldData) => {
+			fieldData.results.forEach((node) => {
+				nodesIDs.push(node.name);
+			});
+		});
+
 		instance.definition.forEachField((tagName, fieldData) => {
 			fieldData.results.forEach((node) => {
 				const position = {};
@@ -128,6 +138,16 @@ DeserializeUtil.prototype = {
 						}
 						else {
 							return;
+						}
+
+						if (
+							transitionsIDs.includes(transitionId) ||
+							nodesIDs.includes(transitionId)
+						) {
+							transitionId = `${nodeId}_${transitionId}_${transition.target}`;
+						}
+						else {
+							transitionsIDs.push(transitionId);
 						}
 
 						const hasDefaultEdge = elements.find(
