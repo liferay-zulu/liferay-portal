@@ -16,7 +16,7 @@ import AssetCreator from '../select-reassignment/AssetCreator';
 import ResourceActions from '../select-reassignment/ResourceActions';
 import Role from '../select-reassignment/Role';
 import RoleType from '../select-reassignment/RoleType';
-import ScriptedAssignment from '../select-reassignment/ScriptedReassignment';
+import ScriptedReassignment from '../select-reassignment/ScriptedReassignment';
 import {SelectReassignment} from '../select-reassignment/SelectReassignment';
 import User from '../select-reassignment/User';
 
@@ -25,7 +25,7 @@ const assignmentSectionComponents = {
 	resourceActions: ResourceActions,
 	roleId: Role,
 	roleType: RoleType,
-	scriptedAssignment: ScriptedAssignment,
+	scriptedReassignment: ScriptedReassignment,
 	user: User,
 };
 
@@ -36,9 +36,9 @@ const ActionTypeReassignment = (props) => {
 	const [sections, setSections] = useState([{identifier: `${Date.now()}-0`}]);
 	const ReassignmentSectionComponent = assignmentSectionComponents[section];
 
-	const [scriptSections] = useState([{identifier: `${Date.now()}-0`}]);
+	const [reassignmentSections] = useState([{identifier: `${Date.now()}-0`}]);
 
-	return scriptSections.map(({identifier}) => {
+	return reassignmentSections.map(({identifier}) => {
 		return (
 			<div key={`section-${identifier}`}>
 				<SelectReassignment
