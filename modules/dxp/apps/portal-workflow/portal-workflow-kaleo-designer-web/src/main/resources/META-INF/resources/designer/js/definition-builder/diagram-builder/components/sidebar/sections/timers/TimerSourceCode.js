@@ -15,21 +15,27 @@ import {DEFAULT_LANGUAGE} from '../../../../../source-builder/constants';
 import {DiagramBuilderContext} from '../../../../DiagramBuilderContext';
 import BaseSourceCode from '../shared-components/BaseSourceCode';
 
-const SourceCode = () => {
+const TimerSourceCode = () => {
 	const {selectedItem, setSelectedItem} = useContext(DiagramBuilderContext);
 
-	const scriptSourceCode = selectedItem.data?.assignments?.script;
+	const scriptSourceCode =
+		selectedItem.data?.taskTimers?.reassignments?.script;
 
-	const updateSelectedItem = (editor) => {
+	const updateTimer = (editor) => {
 		if (editor.getData().trim() !== '') {
 			setSelectedItem((previousValue) => ({
 				...previousValue,
 				data: {
 					...previousValue.data,
-					assignments: {
-						assignmentType: ['scriptedAssignment'],
-						script: [editor.getData()],
-						scriptLanguage: [DEFAULT_LANGUAGE],
+					taskTimers: {
+						...previousValue.data.taskTimers,
+						reassignments: [
+							{
+								assignmentType: ['scriptedAssignment'],
+								script: [editor.getData()],
+								scriptLanguage: [DEFAULT_LANGUAGE],
+							},
+						],
 					},
 				},
 			}));
@@ -39,9 +45,9 @@ const SourceCode = () => {
 	return (
 		<BaseSourceCode
 			scriptSourceCode={scriptSourceCode}
-			updateSelectedItem={updateSelectedItem}
+			updateSelectedItem={updateTimer}
 		/>
 	);
 };
 
-export default SourceCode;
+export default TimerSourceCode;
