@@ -517,6 +517,26 @@ public class CalendarBookingServiceImpl extends CalendarBookingServiceBaseImpl {
 		return filterCalendarBookings(calendarBookings, ActionKeys.VIEW);
 	}
 
+	@AccessControlled(guestAccessEnabled = true)
+	@Override
+	public List<CalendarBooking> search(
+			long companyId, long[] groupIds, long[] calendarIds,
+			long[] calendarResourceIds, long parentCalendarBookingId,
+			String keywords, long startTime, long endTime, boolean recurring,
+			int[] statuses, TimeZone displayTimeZone, int start, int end,
+			OrderByComparator<CalendarBooking> orderByComparator)
+		throws PortalException {
+
+		List<CalendarBooking> calendarBookings =
+			calendarBookingLocalService.search(
+				companyId, groupIds, calendarIds, calendarResourceIds,
+				parentCalendarBookingId, keywords, startTime, endTime,
+				recurring, statuses, displayTimeZone, start, end,
+				orderByComparator);
+
+		return filterCalendarBookings(calendarBookings, ActionKeys.VIEW);
+	}
+
 	@Override
 	public List<CalendarBooking> search(
 			long companyId, long[] groupIds, long[] calendarIds,

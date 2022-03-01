@@ -45,11 +45,20 @@ public class RecurrenceUtil {
 		CalendarBooking calendarBooking, long startTime, long endTime,
 		int maxSize) {
 
+		return expandCalendarBooking(
+			calendarBooking, startTime, endTime, maxSize,
+			calendarBooking.getTimeZone());
+	}
+
+	public static List<CalendarBooking> expandCalendarBooking(
+		CalendarBooking calendarBooking, long startTime, long endTime,
+		int maxSize, TimeZone displayTimeZone) {
+
 		List<CalendarBooking> expandedCalendarBookings = new ArrayList<>();
 
 		try {
 			CalendarBookingIterator calendarBookingIterator =
-				new CalendarBookingIterator(calendarBooking);
+				new CalendarBookingIterator(calendarBooking, displayTimeZone);
 
 			while (calendarBookingIterator.hasNext()) {
 				CalendarBooking newCalendarBooking =
@@ -100,6 +109,32 @@ public class RecurrenceUtil {
 		}
 
 		return expandedCalendarBookings;
+	}
+
+	public static List<CalendarBooking> expandCalendarBookings(
+		List<CalendarBooking> calendarBookings, long startTime, long endTime,
+		int maxSize, TimeZone displayTimeZone) {
+
+		List<CalendarBooking> expandedCalendarBookings = new ArrayList<>();
+
+		for (CalendarBooking calendarBooking : calendarBookings) {
+			List<CalendarBooking> expandedCalendarBooking =
+				expandCalendarBooking(
+					calendarBooking, startTime, endTime, maxSize,
+					displayTimeZone);
+
+			expandedCalendarBookings.addAll(expandedCalendarBooking);
+		}
+
+		return expandedCalendarBookings;
+	}
+
+	public static List<CalendarBooking> expandCalendarBookings(
+		List<CalendarBooking> calendarBookings, long startTime, long endTime,
+		TimeZone displayTimeZone) {
+
+		return expandCalendarBookings(
+			calendarBookings, startTime, endTime, 0, displayTimeZone);
 	}
 
 	public static CalendarBooking getCalendarBookingInstance(
