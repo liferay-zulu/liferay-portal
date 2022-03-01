@@ -1332,6 +1332,8 @@ public class CalendarPortlet extends MVCPortlet {
 		long[] calendarIds = ParamUtil.getLongValues(
 			resourceRequest, "calendarIds");
 
+		TimeZone timeZone = _getTimeZone(resourceRequest);
+
 		if (!ArrayUtil.isEmpty(calendarIds)) {
 			java.util.Calendar endTimeJCalendar = _getJCalendar(
 				resourceRequest, "endTime");
@@ -1343,7 +1345,7 @@ public class CalendarPortlet extends MVCPortlet {
 			calendarBookings = _calendarBookingService.search(
 				themeDisplay.getCompanyId(), new long[0], calendarIds,
 				new long[0], -1, null, startTimeJCalendar.getTimeInMillis(),
-				endTimeJCalendar.getTimeInMillis(), true, statuses,
+				endTimeJCalendar.getTimeInMillis(), timeZone, true, statuses,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				new CalendarBookingStartTimeComparator(true));
 
@@ -1358,7 +1360,7 @@ public class CalendarPortlet extends MVCPortlet {
 		}
 
 		JSONArray jsonArray = CalendarUtil.toCalendarBookingsJSONArray(
-			themeDisplay, calendarBookings, _getTimeZone(resourceRequest));
+			themeDisplay, calendarBookings, timeZone);
 
 		writeJSON(resourceRequest, resourceResponse, jsonArray);
 	}
