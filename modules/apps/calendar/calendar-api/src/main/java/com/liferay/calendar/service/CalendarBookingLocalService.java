@@ -47,6 +47,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -481,6 +482,14 @@ public interface CalendarBookingLocalService
 		long[] calendarResourceIds, long parentCalendarBookingId,
 		String keywords, long startTime, long endTime, boolean recurring,
 		int[] statuses, int start, int end,
+		OrderByComparator<CalendarBooking> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CalendarBooking> search(
+		long companyId, long[] groupIds, long[] calendarIds,
+		long[] calendarResourceIds, long parentCalendarBookingId,
+		String keywords, long startTime, long endTime, boolean recurring,
+		int[] statuses, TimeZone displayTimeZone, int start, int end,
 		OrderByComparator<CalendarBooking> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
