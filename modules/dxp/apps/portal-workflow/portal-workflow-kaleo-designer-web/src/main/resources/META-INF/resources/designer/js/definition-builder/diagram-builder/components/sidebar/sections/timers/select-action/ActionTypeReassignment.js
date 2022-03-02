@@ -36,35 +36,31 @@ const ActionTypeReassignment = (props) => {
 	const [sections, setSections] = useState([{identifier: `${Date.now()}-0`}]);
 	const ReassignmentSectionComponent = assignmentSectionComponents[section];
 
-	const [reassignmentSections] = useState([{identifier: `${Date.now()}-0`}]);
+	return (
+		<>
+			<SelectReassignment
+				section={section}
+				setSection={setSection}
+				setSections={setSections}
+			/>
 
-	return reassignmentSections.map(({identifier}) => {
-		return (
-			<div key={`section-${identifier}`}>
-				<SelectReassignment
-					section={section}
-					setSection={setSection}
-					setSections={setSections}
-				/>
-
-				{sections.map(({identifier, ...restProps}, index) => {
-					return (
-						ReassignmentSectionComponent && (
-							<ReassignmentSectionComponent
-								{...props}
-								{...restProps}
-								identifier={identifier}
-								index={index}
-								key={`section-${identifier}`}
-								sectionsLength={sections?.length}
-								setSections={setSections}
-							/>
-						)
-					);
-				})}
-			</div>
-		);
-	});
+			{sections.map(({identifier, ...restProps}, index) => {
+				return (
+					ReassignmentSectionComponent && (
+						<ReassignmentSectionComponent
+							{...props}
+							{...restProps}
+							identifier={identifier}
+							index={index}
+							key={`section-${identifier}`}
+							sectionsLength={sections?.length}
+							setSections={setSections}
+						/>
+					)
+				);
+			})}
+		</>
+	);
 };
 
 export default ActionTypeReassignment;
