@@ -12,6 +12,8 @@
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import React, {useState} from 'react';
 
+import NotificationsInfo from '../select-notifications/NotificationsInfo';
+
 const ActionTypeNotification = () => {
 	const [notificationSections, setNotificationSections] = useState([
 		{identifier: `${Date.now()}-0`},
@@ -30,7 +32,7 @@ const ActionTypeNotification = () => {
 	return notificationSections.map(({identifier}) => {
 		return (
 			<div key={`section-${identifier}`}>
-				<div>Notification Placeholder {identifier}</div>
+				<NotificationsInfo />
 
 				<div className="section-buttons-area">
 					<ClayButton

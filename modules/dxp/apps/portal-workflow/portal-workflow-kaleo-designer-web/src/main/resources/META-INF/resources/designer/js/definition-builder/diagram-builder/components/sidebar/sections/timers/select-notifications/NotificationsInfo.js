@@ -12,9 +12,9 @@
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 
-import {DiagramBuilderContext} from '../../../../DiagramBuilderContext';
-import ScriptInput from '../../../shared-components/ScriptInput';
-import BaseNotificationsInfo from '../shared-components/BaseNotificationsInfo';
+import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
+import ScriptInput from '../../../../shared-components/ScriptInput';
+import BaseNotificationsInfo from '../../shared-components/BaseNotificationsInfo';
 import Role from './Role';
 import RoleType from './RoleType';
 import User from './User';
