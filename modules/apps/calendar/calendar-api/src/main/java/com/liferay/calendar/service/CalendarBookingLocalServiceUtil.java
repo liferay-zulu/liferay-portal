@@ -619,14 +619,16 @@ public class CalendarBookingLocalServiceUtil {
 	public static List<CalendarBooking> search(
 		long companyId, long[] groupIds, long[] calendarIds,
 		long[] calendarResourceIds, long parentCalendarBookingId,
-		String keywords, long startTime, long endTime, boolean recurring,
-		int[] statuses, int start, int end,
+		String keywords, long startTime, long endTime,
+		java.util.TimeZone displayTimeZone, boolean recurring, int[] statuses,
+		int start, int end,
 		OrderByComparator<CalendarBooking> orderByComparator) {
 
 		return getService().search(
 			companyId, groupIds, calendarIds, calendarResourceIds,
-			parentCalendarBookingId, keywords, startTime, endTime, recurring,
-			statuses, start, end, orderByComparator);
+			parentCalendarBookingId, keywords, startTime, endTime,
+			displayTimeZone, recurring, statuses, start, end,
+			orderByComparator);
 	}
 
 	public static List<CalendarBooking> search(

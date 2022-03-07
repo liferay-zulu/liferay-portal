@@ -305,7 +305,8 @@ public class CalendarBookingServiceWrapper
 	public java.util.List<CalendarBooking> search(
 			long companyId, long[] groupIds, long[] calendarIds,
 			long[] calendarResourceIds, long parentCalendarBookingId,
-			String keywords, long startTime, long endTime, boolean recurring,
+			String keywords, long startTime, long endTime,
+			java.util.TimeZone displayTimeZone, boolean recurring,
 			int[] statuses, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking>
 				orderByComparator)
@@ -313,8 +314,9 @@ public class CalendarBookingServiceWrapper
 
 		return _calendarBookingService.search(
 			companyId, groupIds, calendarIds, calendarResourceIds,
-			parentCalendarBookingId, keywords, startTime, endTime, recurring,
-			statuses, start, end, orderByComparator);
+			parentCalendarBookingId, keywords, startTime, endTime,
+			displayTimeZone, recurring, statuses, start, end,
+			orderByComparator);
 	}
 
 	@Override
