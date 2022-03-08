@@ -58,6 +58,9 @@ const BaseRoleType = ({
 		fetchPolicy: 'cache-first',
 		link: `${window.location.origin}${userBaseURL}/roles`,
 		onNetworkStatusChange: setNetworkStatus,
+		variables: {
+			pageSize: -1,
+		},
 	});
 
 	const userId = Liferay.ThemeDisplay.getUserId();

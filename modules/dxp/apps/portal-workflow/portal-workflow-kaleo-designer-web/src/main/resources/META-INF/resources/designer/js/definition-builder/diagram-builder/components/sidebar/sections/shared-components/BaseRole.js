@@ -39,6 +39,9 @@ export default function BaseRole({
 		fetchPolicy: 'cache-first',
 		link: `${window.location.origin}${userBaseURL}/roles`,
 		onNetworkStatusChange: setNetworkStatus,
+		variables: {
+			pageSize: -1,
+		},
 	});
 
 	const initialLoading = networkStatus === 1;
