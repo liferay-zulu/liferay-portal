@@ -12,9 +12,9 @@
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 
-import {DiagramBuilderContext} from '../../../../DiagramBuilderContext';
-import ScriptInput from '../../../shared-components/ScriptInput';
-import BaseNotificationsInfo from '../shared-components/BaseNotificationsInfo';
+import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
+import ScriptInput from '../../../../shared-components/ScriptInput';
+import BaseNotificationsInfo from '../../shared-components/BaseNotificationsInfo';
 import Role from './Role';
 import RoleType from './RoleType';
 import User from './User';
@@ -22,7 +22,8 @@ import User from './User';
 const NotificationsInfo = ({index: notificationIndex, setSections}) => {
 	const {selectedItem, setSelectedItem} = useContext(DiagramBuilderContext);
 
-	const pathDataNotificationsInfo = selectedItem.data.notifications;
+	const pathDataNotificationsInfo =
+		selectedItem.data.taskTimers?.timerNotifications;
 
 	const recipientTypeComponents = {
 		role: Role,
@@ -36,26 +37,33 @@ const NotificationsInfo = ({index: notificationIndex, setSections}) => {
 			...previousItem,
 			data: {
 				...previousItem.data,
-				notifications: {
-					description: values.map(({description}) => description),
-					executionType: values.map(
-						({executionType}) => executionType
-					),
-					name: values.map(({name}) => name),
-					notificationTypes: values.map(
-						({notificationTypes}) => notificationTypes
-					),
-					recipients: !previousItem.data.notifications?.recipients
-						? [
-								{
-									assignmentType: ['user'],
-								},
-						  ]
-						: [...previousItem.data.notifications.recipients],
-					template: values.map(({template}) => template),
-					templateLanguage: values.map(
-						({templateLanguage}) => templateLanguage
-					),
+				taskTimers: {
+					...previousItem.data.taskTimers,
+					timerNotifications: {
+						description: values.map(({description}) => description),
+						executionType: values.map(
+							({executionType}) => executionType
+						),
+						name: values.map(({name}) => name),
+						notificationTypes: values.map(
+							({notificationTypes}) => notificationTypes
+						),
+						recipients: !previousItem.data.taskTimers
+							?.timerNotifications?.recipients
+							? [
+									{
+										assignmentType: ['user'],
+									},
+							  ]
+							: [
+									...previousItem.data.taskTimers
+										?.timerNotifications?.recipients,
+							  ],
+						template: values.map(({template}) => template),
+						templateLanguage: values.map(
+							({templateLanguage}) => templateLanguage
+						),
+					},
 				},
 			},
 		}));
