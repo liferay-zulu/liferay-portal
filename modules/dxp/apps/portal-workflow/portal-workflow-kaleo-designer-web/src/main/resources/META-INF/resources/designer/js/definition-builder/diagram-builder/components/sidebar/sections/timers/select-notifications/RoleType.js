@@ -11,14 +11,16 @@
 
 import React from 'react';
 
-import NotificationsInfo from '../select-notifications/NotificationsInfo';
+import BaseRoleType from '../../shared-components/BaseRoleType';
 
-const ActionTypeNotification = (props) => {
+const RoleType = (props) => {
 	return (
-		<>
-			<NotificationsInfo {...props} />
-		</>
+		<BaseRoleType
+			buttonName={Liferay.Language.get('new-role-type')}
+			inputLabel={Liferay.Language.get('role-type')}
+			{...props}
+		/>
 	);
 };
 
-export default ActionTypeNotification;
+export default RoleType;

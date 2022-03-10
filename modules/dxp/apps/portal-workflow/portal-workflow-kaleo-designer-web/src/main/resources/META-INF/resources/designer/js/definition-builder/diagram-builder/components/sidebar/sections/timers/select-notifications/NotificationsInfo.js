@@ -12,17 +12,22 @@
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 
-import {DiagramBuilderContext} from '../../../../DiagramBuilderContext';
-import ScriptInput from '../../../shared-components/ScriptInput';
-import BaseNotificationsInfo from '../shared-components/BaseNotificationsInfo';
+import {DiagramBuilderContext} from '../../../../../DiagramBuilderContext';
+import ScriptInput from '../../../../shared-components/ScriptInput';
+import BaseNotificationsInfo from '../../shared-components/BaseNotificationsInfo';
 import Role from './Role';
 import RoleType from './RoleType';
 import User from './User';
 
-const NotificationsInfo = ({index: notificationIndex, setSections}) => {
-	const {selectedItem, setSelectedItem} = useContext(DiagramBuilderContext);
+const NotificationsInfo = ({
+	index: notificationIndex,
+	setSections,
+	timerIndex,
+	updateSelectedItem,
+}) => {
+	const {selectedItem} = useContext(DiagramBuilderContext);
 
-	const notifications = selectedItem.data.notifications;
+	const notifications = selectedItem.data.taskTimers?.timerNotifications;
 
 	const recipientTypeComponents = {
 		role: Role,
@@ -31,34 +36,28 @@ const NotificationsInfo = ({index: notificationIndex, setSections}) => {
 		user: User,
 	};
 
-	const updateSelectedItem = (values) => {
-		setSelectedItem((previousItem) => ({
-			...previousItem,
-			data: {
-				...previousItem.data,
-				notifications: {
-					description: values.map(({description}) => description),
-					executionType: values.map(
-						({executionType}) => executionType
-					),
-					name: values.map(({name}) => name),
-					notificationTypes: values.map(
-						({notificationTypes}) => notificationTypes
-					),
-					recipients: !previousItem.data.notifications?.recipients
-						? [
-								{
-									assignmentType: ['user'],
-								},
-						  ]
-						: [...previousItem.data.notifications.recipients],
-					template: values.map(({template}) => template),
-					templateLanguage: values.map(
-						({templateLanguage}) => templateLanguage
-					),
-				},
+	const updateNotificationsInfo = (values) => {
+		updateSelectedItem({
+			timerNotifications: {
+				description: values.map(({description}) => description),
+				executionType: values.map(({executionType}) => executionType),
+				name: values.map(({name}) => name),
+				notificationTypes: values.map(
+					({notificationTypes}) => notificationTypes
+				),
+				recipients: !notifications?.recipients
+					? [
+							{
+								assignmentType: ['user'],
+							},
+					  ]
+					: [...notifications?.recipients],
+				template: values.map(({template}) => template),
+				templateLanguage: values.map(
+					({templateLanguage}) => templateLanguage
+				),
 			},
-		}));
+		});
 	};
 
 	const updateNotificationInfo = (item) => {
@@ -69,7 +68,7 @@ const NotificationsInfo = ({index: notificationIndex, setSections}) => {
 					...item,
 				};
 
-				updateSelectedItem(prev);
+				updateNotificationsInfo(prev);
 
 				return prev;
 			});
@@ -81,10 +80,11 @@ const NotificationsInfo = ({index: notificationIndex, setSections}) => {
 			notificationIndex={notificationIndex}
 			notifications={notifications}
 			recipientTypeComponents={recipientTypeComponents}
-			regularNotification
 			setSections={setSections}
+			taskTimerNotification
+			timerIndex={timerIndex}
 			updateNotificationInfo={updateNotificationInfo}
-			updateSelectedItem={updateSelectedItem}
+			updateSelectedItem={updateNotificationsInfo}
 		/>
 	);
 };
