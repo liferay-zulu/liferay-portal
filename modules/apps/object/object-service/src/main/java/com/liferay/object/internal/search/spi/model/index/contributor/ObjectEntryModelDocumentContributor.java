@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
@@ -189,6 +190,12 @@ public class ObjectEntryModelDocumentContributor
 				ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
 
 			value = _getFileName(GetterUtil.getLong(value));
+		}
+		else if (StringUtil.equals(
+					objectField.getBusinessType(),
+					ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
+
+			value = HtmlUtil.extractText(GetterUtil.getString(value));
 		}
 
 		String objectFieldName = objectField.getName();
