@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -258,6 +259,14 @@ public class ObjectEntryDTOConverter
 				}
 
 				map.put(objectFieldName, dlFileEntry.getFileName());
+			}
+			else if (Objects.equals(
+						objectField.getBusinessType(),
+						ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
+
+				map.put(
+					objectFieldName,
+					HtmlUtil.extractText((String)serializable));
 			}
 			else if ((nestedFieldsDepth > 0) &&
 					 Objects.equals(
