@@ -531,13 +531,14 @@ public class ObjectFieldLocalServiceImpl
 
 		if (((!Objects.equals(
 				businessType, ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT) &&
+			  !Objects.equals(dbType, ObjectFieldConstants.DB_TYPE_CLOB) &&
 			  !Objects.equals(dbType, ObjectFieldConstants.DB_TYPE_STRING)) ||
 			 indexedAsKeyword) &&
 			!Validator.isBlank(indexedLanguageId)) {
 
 			throw new ObjectFieldDBTypeException(
-				"Indexed language ID can only be applied with type " +
-					"\"String\" that is not indexed as a keyword");
+				"Indexed language ID can only be applied with type \"Clob\" " +
+					"or \"String\" that is not indexed as a keyword");
 		}
 	}
 
