@@ -125,10 +125,18 @@ export function parseNotifications(node) {
 				assignmentType: ['taskAssignees'],
 			};
 		}
-		else if (item.roles) {
+		else if (!item['role-type']) {
 			notifications.recipients[index] = {
 				assignmentType: ['roleId'],
 				roleId: replaceTabSpaces(removeNewLine(item.roles[0])),
+			};
+		}
+		else if (item['role-type']) {
+			notifications.recipients[index] = {
+				assignmentType: ['roleType'],
+				autoCreate: item['auto-create'],
+				roleName: item['role-name'],
+				roleType: item['role-type'],
 			};
 		}
 		else if (item['scripted-recipient']) {

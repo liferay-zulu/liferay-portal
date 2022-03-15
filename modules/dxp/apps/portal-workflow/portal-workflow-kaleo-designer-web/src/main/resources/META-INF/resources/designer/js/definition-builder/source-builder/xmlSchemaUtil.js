@@ -90,10 +90,30 @@ function getLocationValue(field, context) {
 					else {
 						for (const item of child.children) {
 							if (item.children.length) {
+								let childNodesAttributes = [];
 								for (const itemChild of item.children) {
-									const childNodesAttributes = getChildAttributes(
+									childNodesAttributes = getChildAttributes(
 										itemChild.childNodes
 									);
+
+									for (const item of itemChild.childNodes) {
+										if (item.children) {
+											for (const itemChildren of item.children) {
+												const tagName =
+													itemChildren.tagName ===
+													'name'
+														? `${item.tagName}-name`
+														: itemChildren.tagName;
+												if (!childContent[tagName]) {
+													childContent[tagName] = [];
+												}
+
+												childContent[tagName].push(
+													itemChildren.textContent
+												);
+											}
+										}
+									}
 
 									const itemChildNodesAttributes = getChildAttributes(
 										item.childNodes
