@@ -171,13 +171,14 @@ function appendXMLAssignments(
 						XMLUtil.create('name', roleName)
 					);
 
-					if (dataAssignments.autoCreate?.[index]) {
-						buffer.push(
-							XMLUtil.create(
-								'autoCreate',
-								dataAssignments.autoCreate[index]
-							)
-						);
+					let autoCreate = dataAssignments.autoCreate?.[index];
+
+					if (autoCreate !== undefined && autoCreate !== null) {
+						if (!autoCreate) {
+							autoCreate = 'false';
+						}
+
+						buffer.push(XMLUtil.create('autoCreate', autoCreate));
 					}
 
 					buffer.push(xmlRole.close);
