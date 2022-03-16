@@ -48,7 +48,7 @@ const getRecipientType = (assignmentType) => {
 		return 'taskAssignees';
 	}
 	else if (assignmentType === 'user') {
-		return 'assetCreator';
+		return 'user';
 	}
 	else {
 		return null;
@@ -297,12 +297,11 @@ const NotificationsInfo = ({
 	}, [notificationIndex, recipientType, setSelectedItem]);
 
 	useEffect(() => {
-		if (recipientType === 'roleType') {
-			const sectionsData = [];
+		let sectionsData = [];
 
-			const recipients =
-				selectedItem.data.notifications.recipients[notificationIndex];
-
+		const recipients =
+		selectedItem.data.notifications && selectedItem.data.notifications.recipients[notificationIndex];
+		if (recipients && recipientType === 'roleType') {
 			for (let i = 0; i < recipients.roleName.length; i++) {
 				sectionsData.push({
 					autoCreate: recipients.autoCreate?.[i],
@@ -311,11 +310,21 @@ const NotificationsInfo = ({
 					roleType: recipients.roleType[i],
 				});
 			}
+		}
+		else if (recipients 
+			 && selectedItem.data.notifications.recipients[notificationIndex].sectionsData 
+			 && recipientType === 'user') {
+			sectionsData =
+				selectedItem.data.notifications.recipients[notificationIndex]
+					.sectionsData;
+		}
 
+		if(sectionsData.length) {
 			setInternalSections(sectionsData);
 		}
+		
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [])
 
 	const deleteSection = () => {
 		setSections((prevSections) => {
