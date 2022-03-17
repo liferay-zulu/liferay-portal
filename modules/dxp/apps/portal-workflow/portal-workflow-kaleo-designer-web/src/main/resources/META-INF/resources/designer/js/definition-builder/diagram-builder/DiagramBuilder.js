@@ -48,14 +48,13 @@ export default function DiagramBuilder({version}) {
 	const {
 		currentEditor,
 		definitionId,
-		definitionTitle,
 		deserialize,
 		elements,
 		selectedLanguageId,
 		setActive,
 		setDefinitionDescription,
 		setDefinitionId,
-		setDefinitionTitle,
+		setDefinitionName,
 		setDeserialize,
 		setElements,
 	} = useContext(DefinitionBuilderContext);
@@ -295,7 +294,7 @@ export default function DiagramBuilder({version}) {
 			const metadata = deserializeUtil.getMetadata();
 
 			setDefinitionDescription(metadata.description);
-			setDefinitionTitle(metadata.name);
+			setDefinitionName(metadata.name);
 
 			setElements(elements);
 
@@ -305,7 +304,7 @@ export default function DiagramBuilder({version}) {
 			setDeserialize(false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentEditor, definitionTitle, deserialize, version]);
+	}, [currentEditor, deserialize, version]);
 
 	useEffect(() => {
 		if (version !== '0' && !deserialize) {

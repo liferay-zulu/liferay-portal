@@ -40,6 +40,7 @@ export default function UpperToolbar({displayNames, languageIds, version}) {
 		currentEditor,
 		definitionDescription,
 		definitionId,
+		definitionName,
 		definitionTitle,
 		elements,
 		selectedLanguageId,
@@ -86,7 +87,7 @@ export default function UpperToolbar({displayNames, languageIds, version}) {
 				xmlNamespace,
 				{
 					description: definitionDescription,
-					name: definitionTitle,
+					name: definitionName,
 					version,
 				},
 				elements.filter(isNode),

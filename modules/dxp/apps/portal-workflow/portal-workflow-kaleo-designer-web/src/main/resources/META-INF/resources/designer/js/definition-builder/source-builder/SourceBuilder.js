@@ -28,7 +28,7 @@ export default function SourceBuilder({version}) {
 	const {
 		currentEditor,
 		definitionDescription,
-		definitionTitle,
+		definitionName,
 		elements,
 		setCurrentEditor,
 		setShowInvalidContentMessage,
@@ -43,7 +43,7 @@ export default function SourceBuilder({version}) {
 		if (elements) {
 			const metada = {
 				description: definitionDescription,
-				name: definitionTitle,
+				name: definitionName,
 				version,
 			};
 
@@ -60,7 +60,7 @@ export default function SourceBuilder({version}) {
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentEditor, definitionTitle, elements, version]);
+	}, [currentEditor, definitionName, elements, version]);
 
 	useEffect(() => {
 		if (showInvalidContentMessage) {
