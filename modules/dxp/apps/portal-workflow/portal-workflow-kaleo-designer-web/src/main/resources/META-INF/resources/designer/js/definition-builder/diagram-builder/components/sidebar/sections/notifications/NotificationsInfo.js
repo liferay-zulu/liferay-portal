@@ -300,7 +300,9 @@ const NotificationsInfo = ({
 		let sectionsData = [];
 
 		const recipients =
-		selectedItem.data.notifications && selectedItem.data.notifications.recipients[notificationIndex];
+			selectedItem.data.notifications &&
+			selectedItem.data.notifications.recipients[notificationIndex];
+
 		if (recipients && recipientType === 'roleType') {
 			for (let i = 0; i < recipients.roleName.length; i++) {
 				sectionsData.push({
@@ -311,20 +313,23 @@ const NotificationsInfo = ({
 				});
 			}
 		}
-		else if (recipients 
-			 && selectedItem.data.notifications.recipients[notificationIndex].sectionsData 
-			 && recipientType === 'user') {
+		else if (
+			recipients &&
+			selectedItem.data.notifications.recipients[notificationIndex]
+				.sectionsData &&
+			recipientType === 'user'
+		) {
 			sectionsData =
 				selectedItem.data.notifications.recipients[notificationIndex]
 					.sectionsData;
 		}
 
-		if(sectionsData.length) {
+		if (sectionsData.length) {
 			setInternalSections(sectionsData);
 		}
-		
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	const deleteSection = () => {
 		setSections((prevSections) => {

@@ -14,21 +14,24 @@ import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import {useResource} from '@clayui/data-provider';
 import ClayDropDown from '@clayui/drop-down';
 import ClayForm, {ClayInput} from '@clayui/form';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {headers, userBaseURL} from '../../../../../util/fetchUtil';
 
 const BaseUser = ({
+	errors,
 	emailAddress = '',
 	identifier,
 	index,
+	notificationIndex,
 	screenName = '',
 	sectionsLength,
 	setSections,
+	setErrors,
 	updateSelectedItem = () => {},
 	userId = null,
 }) => {
-	const [search, setSearch] = useState('');
+	const [search, setSearch] = useState(null);
 	const [networkStatus, setNetworkStatus] = useState(4);
 	const [user, setUser] = useState({
 		emailAddress,
@@ -66,6 +69,28 @@ const BaseUser = ({
 		setSearch('');
 	};
 
+	const checkSearchErrors = (errors, user) => {
+		const temp = errors.user ? [...errors.user] : [];
+
+		if (!temp[notificationIndex]) {
+			temp[notificationIndex] = [];
+		}
+		if (!temp[notificationIndex][index]) {
+			temp[notificationIndex][index] = [];
+		}
+		temp[notificationIndex][index] = user.screenName === '';
+
+		return {...errors, user: temp};
+	};
+
+	useEffect(() => {
+		if (search !== null) {
+			setErrors(checkSearchErrors(errors, user));
+		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [search, user]);
+
 	const deleteSection = () => {
 		setSections((prevSections) => {
 			const newSections = prevSections.filter(
@@ -91,7 +116,13 @@ const BaseUser = ({
 					<ClayAutocomplete.Input
 						autoComplete="off"
 						id="search"
-						onChange={(event) => setSearch(event.target.value)}
+						onBlur={(event) => {
+							setSearch(event.target.value);
+							setErrors(checkSearchErrors(errors, user));
+						}}
+						onChange={(event) => {
+							setSearch(event.target.value);
+						}}
 						value={search}
 					/>
 
@@ -129,7 +160,11 @@ const BaseUser = ({
 				</ClayAutocomplete>
 			</ClayForm.Group>
 
-			<ClayForm.Group>
+			<ClayForm.Group
+				className={
+					errors.user?.[notificationIndex]?.[index] ? 'has-error' : ''
+				}
+			>
 				<label htmlFor="screen-name">
 					{Liferay.Language.get('screen-name')}
 
@@ -143,9 +178,23 @@ const BaseUser = ({
 					type="text"
 					value={user?.screenName}
 				/>
+
+				<ClayForm.FeedbackItem>
+					{errors.user?.[notificationIndex]?.[index] && (
+						<>
+							<ClayForm.FeedbackIndicator symbol="exclamation-full" />
+
+							{Liferay.Language.get('this-field-is-required')}
+						</>
+					)}
+				</ClayForm.FeedbackItem>
 			</ClayForm.Group>
 
-			<ClayForm.Group>
+			<ClayForm.Group
+				className={
+					errors.user?.[notificationIndex]?.[index] ? 'has-error' : ''
+				}
+			>
 				<label htmlFor="email-address">
 					{Liferay.Language.get('email-address')}
 
@@ -159,9 +208,23 @@ const BaseUser = ({
 					type="text"
 					value={user?.emailAddress}
 				/>
+
+				<ClayForm.FeedbackItem>
+					{errors.user?.[notificationIndex]?.[index] && (
+						<>
+							<ClayForm.FeedbackIndicator symbol="exclamation-full" />
+
+							{Liferay.Language.get('this-field-is-required')}
+						</>
+					)}
+				</ClayForm.FeedbackItem>
 			</ClayForm.Group>
 
-			<ClayForm.Group>
+			<ClayForm.Group
+				className={
+					errors.user?.[notificationIndex]?.[index] ? 'has-error' : ''
+				}
+			>
 				<label htmlFor="user-id">
 					{Liferay.Language.get('user-id')}
 
@@ -175,6 +238,16 @@ const BaseUser = ({
 					type="text"
 					value={user?.userId}
 				/>
+
+				<ClayForm.FeedbackItem>
+					{errors.user?.[notificationIndex]?.[index] && (
+						<>
+							<ClayForm.FeedbackIndicator symbol="exclamation-full" />
+
+							{Liferay.Language.get('this-field-is-required')}
+						</>
+					)}
+				</ClayForm.FeedbackItem>
 			</ClayForm.Group>
 
 			<div className="section-buttons-area">

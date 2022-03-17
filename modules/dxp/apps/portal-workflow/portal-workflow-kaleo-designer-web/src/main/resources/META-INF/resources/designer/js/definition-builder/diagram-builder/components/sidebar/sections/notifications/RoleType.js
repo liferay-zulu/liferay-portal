@@ -34,6 +34,7 @@ const RoleType = ({notificationIndex, updateSelectedItem: _, ...restProps}) => {
 		<BaseRoleType
 			buttonName={Liferay.Language.get('new-role-type')}
 			inputLabel={Liferay.Language.get('role-type')}
+			notificationIndex={notificationIndex}
 			updateSelectedItem={updateSelectedItem}
 			{...restProps}
 		/>

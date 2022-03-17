@@ -124,17 +124,18 @@ export function parseNotifications(node) {
 			notifications.recipients[index] = {
 				assignmentType: ['taskAssignees'],
 			};
-		}	
+		}
 		else if (item['user']) {
 			const emailAddress = [];
 
-			item['user'].forEach(item => emailAddress.push(replaceTabSpaces(removeNewLine(item))));
-			
+			item['user'].forEach((item) =>
+				emailAddress.push(replaceTabSpaces(removeNewLine(item)))
+			);
+
 			notifications.recipients[index] = {
 				assignmentType: ['user'],
 				emailAddress,
 			};
-			
 		}
 		else if (item['role-type']) {
 			notifications.recipients[index] = {
@@ -144,14 +145,12 @@ export function parseNotifications(node) {
 				roleType: item['role-type'],
 			};
 		}
-
 		else if (item['role-id']) {
 			notifications.recipients[index] = {
 				assignmentType: ['roleId'],
 				roleId: replaceTabSpaces(removeNewLine(item.roles[0])),
 			};
 		}
-
 		else if (item['scripted-recipient']) {
 			let script = item['scripted-recipient'][0];
 
