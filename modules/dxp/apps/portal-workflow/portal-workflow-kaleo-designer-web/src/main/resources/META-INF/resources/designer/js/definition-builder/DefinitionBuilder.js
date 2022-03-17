@@ -24,6 +24,7 @@ export default function DefinitionBuilder(props) {
 	const [currentEditor, setCurrentEditor] = useState(null);
 	const [definitionDescription, setDefinitionDescription] = useState('');
 	const [definitionId, setDefinitionId] = useState(props.definitionName);
+	const [definitionName, setDefinitionName] = useState(null);
 	const [definitionTitle, setDefinitionTitle] = useState(props.title);
 	const [deserialize, setDeserialize] = useState(false);
 	const [elements, setElements] = useState(defaultNodes);
@@ -41,6 +42,7 @@ export default function DefinitionBuilder(props) {
 		currentEditor,
 		definitionDescription,
 		definitionId,
+		definitionName,
 		definitionTitle,
 		deserialize,
 		elements,
@@ -50,6 +52,7 @@ export default function DefinitionBuilder(props) {
 		setCurrentEditor,
 		setDefinitionDescription,
 		setDefinitionId,
+		setDefinitionName,
 		setDefinitionTitle,
 		setDeserialize,
 		setElements,
