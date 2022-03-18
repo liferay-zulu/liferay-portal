@@ -57,9 +57,9 @@ export default function UpperToolbar({displayNames, languageIds}) {
 		version,
 	} = useContext(DefinitionBuilderContext);
 	const inputRef = useRef(null);
-	const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-	const [showDangerAlert, setShowDangerAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
+	const [alertType, setAlertType] = useState(null);
+	const [showAlert, setShowAlert] = useState(false);
 
 	const availableLocales = getAvailableLocalesObject(
 		displayNames,
@@ -129,8 +129,11 @@ export default function UpperToolbar({displayNames, languageIds}) {
 
 		if (!definitionTitle) {
 			alertMessage = Liferay.Language.get('name-workflow-before-publish');
+
 			setAlertMessage(alertMessage);
-			setShowDangerAlert(true);
+			setAlertType('danger');
+
+			setShowAlert(true);
 		}
 		else {
 			if (definitionNotPublished) {
@@ -155,11 +158,21 @@ export default function UpperToolbar({displayNames, languageIds}) {
 				version,
 			}).then((response) => {
 				if (response.ok) {
-					setShowSuccessAlert(true);
+					setAlertType('success');
+
+					setShowAlert(true);
 
 					response.json().then(({name, version}) => {
 						setDefinitionId(name);
 						setVersion(`${version}.0`);
+					});
+				}
+				else {
+					response.json().then(({title}) => {
+						setAlertMessage(title);
+						setAlertType('danger');
+
+						setShowAlert(true);
 					});
 				}
 			});
@@ -177,12 +190,16 @@ export default function UpperToolbar({displayNames, languageIds}) {
 
 		if (blockingErrors.errorType === 'emptyField') {
 			setAlertMessage(emptyFieldAlertMessage);
-			setShowDangerAlert(true);
+			setAlertType('danger');
+
+			setShowAlert(true);
 		}
 
 		if (blockingErrors.errorType === 'duplicated') {
 			setAlertMessage(duplicatedAlertMessage);
-			setShowDangerAlert(true);
+			setAlertType('danger');
+
+			setShowAlert(true);
 		}
 
 		if (blockingErrors.errorType === '') {
@@ -195,8 +212,9 @@ export default function UpperToolbar({displayNames, languageIds}) {
 			}).then((response) => {
 				if (response.ok) {
 					setAlertMessage(successMessage);
+					setAlertType('success');
 
-					setShowSuccessAlert(true);
+					setShowAlert(true);
 
 					response.json().then(({name, version}) => {
 						setDefinitionId(name);
@@ -338,26 +356,17 @@ export default function UpperToolbar({displayNames, languageIds}) {
 				</ClayLayout.ContainerFluid>
 			</ClayToolbar>
 
-			{showSuccessAlert && (
+			{showAlert && (
 				<ClayAlert.ToastContainer>
 					<ClayAlert
 						autoClose={5000}
-						displayType="success"
-						onClose={() => setShowSuccessAlert(false)}
-						title={`${Liferay.Language.get('success')}:`}
-					>
-						{alertMessage}
-					</ClayAlert>
-				</ClayAlert.ToastContainer>
-			)}
-
-			{showDangerAlert && (
-				<ClayAlert.ToastContainer>
-					<ClayAlert
-						autoClose={5000}
-						displayType="danger"
-						onClose={() => setShowDangerAlert(false)}
-						title={errorTitle()}
+						displayType={alertType}
+						onClose={() => setShowAlert(false)}
+						title={
+							alertType === 'success'
+								? `${Liferay.Language.get('success')}:`
+								: `${errorTitle()}:`
+						}
 					>
 						{alertMessage}
 					</ClayAlert>
