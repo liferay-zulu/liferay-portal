@@ -21,6 +21,7 @@ import SourceBuilder from './source-builder/SourceBuilder';
 
 export default function DefinitionBuilder(props) {
 	const [active, setActive] = useState(true);
+	const [blockingErrors, setBlockingErrors] = useState({errorType: ''});
 	const [currentEditor, setCurrentEditor] = useState(null);
 	const [definitionDescription, setDefinitionDescription] = useState('');
 	const [definitionId, setDefinitionId] = useState(props.definitionName);
@@ -34,7 +35,7 @@ export default function DefinitionBuilder(props) {
 	);
 	const [sourceView, setSourceView] = useState(false);
 	const [translations, setTranslations] = useState(props.translations);
-	const [blockingErrors, setBlockingErrors] = useState({errorType: ''});
+	const [version, setVersion] = useState(props.version);
 
 	const contextProps = {
 		active,
@@ -60,9 +61,11 @@ export default function DefinitionBuilder(props) {
 		setShowInvalidContentMessage,
 		setSourceView,
 		setTranslations,
+		setVersion,
 		showInvalidContentMessage,
 		sourceView,
 		translations,
+		version,
 	};
 
 	return (
@@ -71,11 +74,7 @@ export default function DefinitionBuilder(props) {
 				<ReactFlowProvider>
 					<UpperToolbar {...props} />
 
-					{sourceView ? (
-						<SourceBuilder version={props.version} />
-					) : (
-						<DiagramBuilder version={props.version} />
-					)}
+					{sourceView ? <SourceBuilder /> : <DiagramBuilder />}
 				</ReactFlowProvider>
 			</div>
 		</DefinitionBuilderContextProvider>

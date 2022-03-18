@@ -24,7 +24,7 @@ import {editorConfig} from '../constants';
 import {xmlNamespace} from './constants';
 import {serializeDefinition} from './serializeUtil';
 
-export default function SourceBuilder({version}) {
+export default function SourceBuilder() {
 	const {
 		currentEditor,
 		definitionDescription,
@@ -33,6 +33,7 @@ export default function SourceBuilder({version}) {
 		setCurrentEditor,
 		setShowInvalidContentMessage,
 		showInvalidContentMessage,
+		version,
 	} = useContext(DefinitionBuilderContext);
 	const editorRef = useRef();
 	const [showImportSuccessMessage, setShowImportSuccessMessage] = useState(

@@ -9,7 +9,6 @@
  * distribution rights of the Software.
  */
 
-import PropTypes from 'prop-types';
 import React, {
 	useCallback,
 	useContext,
@@ -44,7 +43,7 @@ const getId = () => `item_${id++}`;
 
 const deserializeUtil = new DeserializeUtil();
 
-export default function DiagramBuilder({version}) {
+export default function DiagramBuilder() {
 	const {
 		currentEditor,
 		definitionId,
@@ -53,10 +52,10 @@ export default function DiagramBuilder({version}) {
 		selectedLanguageId,
 		setActive,
 		setDefinitionDescription,
-		setDefinitionId,
 		setDefinitionName,
 		setDeserialize,
 		setElements,
+		version,
 	} = useContext(DefinitionBuilderContext);
 	const reactFlowWrapperRef = useRef(null);
 	const [collidingElements, setCollidingElements] = useState(null);
@@ -307,13 +306,12 @@ export default function DiagramBuilder({version}) {
 	}, [currentEditor, deserialize, version]);
 
 	useEffect(() => {
-		if (version !== '0' && !deserialize) {
+		if (definitionId && version !== '0' && !deserialize) {
 			retrieveDefinitionRequest(definitionId)
 				.then((response) => response.json())
-				.then(({active, content, description, name}) => {
+				.then(({active, content, description}) => {
 					setActive(active);
 					setDefinitionDescription(description);
-					setDefinitionId(name);
 
 					deserializeUtil.updateXMLDefinition(content);
 
@@ -327,7 +325,7 @@ export default function DiagramBuilder({version}) {
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [version]);
+	}, [definitionId, version]);
 
 	const contextProps = {
 		collidingElements,
@@ -370,7 +368,3 @@ export default function DiagramBuilder({version}) {
 		</DiagramBuilderContextProvider>
 	);
 }
-
-DiagramBuilder.propTypes = {
-	version: PropTypes.string.isRequired,
-};
