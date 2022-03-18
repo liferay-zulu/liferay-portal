@@ -437,7 +437,7 @@ function appendXMLTaskTimers(buffer, taskTimers) {
 	}
 }
 
-function appendXMLTransitions(buffer, transitions, publishing) {
+function appendXMLTransitions(buffer, transitions) {
 	if (transitions.length) {
 		const xmlTransitions = XMLUtil.createObj('transitions');
 
@@ -463,7 +463,7 @@ function appendXMLTransitions(buffer, transitions, publishing) {
 
 			buffer.push(xmlLabels.close);
 
-			const tagTransitionNameId = publishing ? 'name' : 'id';
+			const tagTransitionNameId = 'name';
 
 			buffer.push(XMLUtil.create(`${tagTransitionNameId}`, item.id));
 
@@ -527,7 +527,7 @@ function serializeDefinition(
 
 		const xmlNode = XMLUtil.createObj(xmlType);
 
-		const tagNodeNameId = publishing ? 'name' : 'id';
+		const tagNodeNameId = 'name';
 
 		buffer.push(xmlNode.open, XMLUtil.create(`${tagNodeNameId}`, id));
 
@@ -582,7 +582,7 @@ function serializeDefinition(
 			(transition) => transition.source === id
 		);
 
-		appendXMLTransitions(buffer, nodeTransitions, publishing);
+		appendXMLTransitions(buffer, nodeTransitions, publishing, version);
 
 		buffer.push(xmlNode.close);
 	});

@@ -75,25 +75,18 @@ export default function UpperToolbar({displayNames, languageIds, version}) {
 		}
 	};
 
-	const getXMLContent = () => {
-		let xmlContent;
-
-		if (currentEditor) {
-			xmlContent = currentEditor.getData();
-		}
-		else {
-			xmlContent = serializeDefinition(
-				xmlNamespace,
-				{
-					description: definitionDescription,
-					name: definitionTitle,
-					version,
-				},
-				elements.filter(isNode),
-				elements.filter(isEdge),
-				true
-			);
-		}
+	const getXMLContent = (publishing) => {
+		const xmlContent = serializeDefinition(
+			xmlNamespace,
+			{
+				description: definitionDescription,
+				name: definitionTitle,
+				version,
+			},
+			elements.filter(isNode),
+			elements.filter(isEdge),
+			publishing
+		);
 
 		return xmlContent;
 	};
@@ -144,7 +137,7 @@ export default function UpperToolbar({displayNames, languageIds, version}) {
 
 			publishDefinitionRequest({
 				active,
-				content: getXMLContent(),
+				content: getXMLContent(true),
 				name: definitionId,
 				title: definitionTitle,
 				title_i18n: translations,
@@ -181,7 +174,7 @@ export default function UpperToolbar({displayNames, languageIds, version}) {
 		if (blockingErrors.errorType === '') {
 			saveDefinitionRequest({
 				active,
-				content: getXMLContent(),
+				content: getXMLContent(false),
 				name: definitionId,
 				title: definitionTitle,
 				version,
