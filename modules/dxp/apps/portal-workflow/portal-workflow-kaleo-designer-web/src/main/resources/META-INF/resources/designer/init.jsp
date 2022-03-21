@@ -77,7 +77,8 @@ page import="com.liferay.taglib.search.ResultRow" %>
 page import="java.util.Objects" %>
 
 <%@ page import="javax.portlet.PortletRequest" %><%@
-page import="javax.portlet.PortletURL" %>
+page import="javax.portlet.PortletURL" %><%@
+page import="javax.portlet.WindowState" %>
 
 <liferay-frontend:defineObjects />
 

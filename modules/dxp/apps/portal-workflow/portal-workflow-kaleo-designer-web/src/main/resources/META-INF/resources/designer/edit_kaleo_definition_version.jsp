@@ -236,7 +236,7 @@ String successMessageKey = KaleoDesignerPortletKeys.KALEO_DESIGNER + "requestPro
 
 			<div class="sidenav-content">
 				<clay:container-fluid
-					size='<%= Objects.equals(renderRequest.getWindowState(), LiferayWindowState.POP_UP) ? "xl" : "lg" %>'
+					size='<%= (Objects.equals(renderRequest.getWindowState(), LiferayWindowState.POP_UP) || Objects.equals(renderRequest.getWindowState(), WindowState.MAXIMIZED)) ? "xl" : "lg" %>'
 				>
 					<aui:form cssClass="full-width-content" method="post" name="fm" onSubmit="event.preventDefault();">
 						<aui:model-context bean="<%= kaleoDefinitionVersion %>" model="<%= KaleoDefinitionVersion.class %>" />
