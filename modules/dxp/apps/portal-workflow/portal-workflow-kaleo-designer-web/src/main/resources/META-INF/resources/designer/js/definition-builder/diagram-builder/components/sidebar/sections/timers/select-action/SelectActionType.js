@@ -20,7 +20,7 @@ const options = [
 	},
 	{
 		actionType: 'timerNotifications',
-		disabled: false,
+		disabled: true,
 		label: Liferay.Language.get('notification'),
 	},
 	{
