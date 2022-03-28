@@ -198,7 +198,7 @@ export function parseNotifications(node) {
 		else if (item['role-id']) {
 			notifications.recipients[index] = {
 				assignmentType: ['roleId'],
-				roleId: replaceTabSpaces(removeNewLine(item.roles[0])),
+				roleId: item['role-id'][0],
 			};
 		}
 		else if (item['scripted-recipient']) {
