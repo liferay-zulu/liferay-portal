@@ -14,7 +14,6 @@
 
 package com.liferay.object.rest.internal.dto.v1_0.converter;
 
-import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
@@ -33,13 +32,13 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.object.util.ObjectEntryFieldValueUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -248,25 +247,15 @@ public class ObjectEntryDTOConverter
 			}
 			else if (Objects.equals(
 						objectField.getBusinessType(),
-						ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
-
-				DLFileEntry dlFileEntry =
-					_dlFileEntryLocalService.fetchDLFileEntry(
-						GetterUtil.getLong(serializable));
-
-				if (dlFileEntry == null) {
-					continue;
-				}
-
-				map.put(objectFieldName, dlFileEntry.getFileName());
-			}
-			else if (Objects.equals(
-						objectField.getBusinessType(),
-						ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
+						ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT) ||
+					 Objects.equals(
+						 objectField.getBusinessType(),
+						 ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
 
 				map.put(
 					objectFieldName,
-					HtmlUtil.extractText((String)serializable));
+					ObjectEntryFieldValueUtil.getValueString(
+						objectField, values));
 			}
 			else if ((nestedFieldsDepth > 0) &&
 					 Objects.equals(

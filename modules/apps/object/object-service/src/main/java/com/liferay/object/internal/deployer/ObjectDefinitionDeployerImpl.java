@@ -160,8 +160,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				new ObjectEntryModelDocumentContributor(
 					objectDefinition.getClassName(),
 					_objectDefinitionLocalService, _objectEntryLocalService,
-					_objectFieldLocalService,
-					_persistedModelLocalServiceRegistry),
+					_objectFieldLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"indexer.class.name", objectDefinition.getClassName()
 				).build()),
