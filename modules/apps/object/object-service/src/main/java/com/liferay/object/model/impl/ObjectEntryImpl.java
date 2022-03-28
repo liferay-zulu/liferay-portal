@@ -14,26 +14,24 @@
 
 package com.liferay.object.model.impl;
 
-import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectEntryLocalServiceUtil;
 import com.liferay.object.service.ObjectFieldLocalServiceUtil;
+import com.liferay.object.util.ObjectEntryFieldValueUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.cache.CacheField;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
 
 import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author Marco Leo
@@ -88,17 +86,8 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 					objectDefinition.getTitleObjectFieldId());
 
 			if (objectField != null) {
-				Map<String, Serializable> values = getValues();
-
-				if (Objects.equals(
-						objectField.getBusinessType(),
-						ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
-
-					return HtmlUtil.extractText(
-						String.valueOf(values.get(objectField.getName())));
-				}
-
-				return String.valueOf(values.get(objectField.getName()));
+				return ObjectEntryFieldValueUtil.getValueString(
+					objectField, getValues());
 			}
 		}
 
