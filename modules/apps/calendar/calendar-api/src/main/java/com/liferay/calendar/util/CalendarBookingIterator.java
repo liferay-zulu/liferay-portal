@@ -16,19 +16,23 @@ package com.liferay.calendar.util;
 
 import com.google.ical.iter.RecurrenceIterator;
 import com.google.ical.iter.RecurrenceIteratorFactory;
+import com.google.ical.values.DateTimeValueImpl;
 import com.google.ical.values.DateValue;
-import com.google.ical.values.DateValueImpl;
 
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.recurrence.Recurrence;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.TimeZone;
@@ -49,13 +53,13 @@ public class CalendarBookingIterator implements Iterator<CalendarBooking> {
 		throws ParseException {
 
 		_calendarBooking = calendarBooking;
+
 		_displayTimeZone = displayTimeZone;
 
 		_recurrenceIterator =
 			RecurrenceIteratorFactory.createRecurrenceIterator(
 				calendarBooking.getRecurrence(),
-				_toDateValue(calendarBooking.getStartTime()),
-				calendarBooking.getTimeZone());
+				_toDateValue(calendarBooking.getStartTime()), _displayTimeZone);
 	}
 
 	@Override
@@ -147,14 +151,24 @@ public class CalendarBookingIterator implements Iterator<CalendarBooking> {
 		return false;
 	}
 
-	private DateValue _toDateValue(long time) {
-		Calendar jCalendar = JCalendarUtil.getJCalendar(
-			time, _getTimeZone(_calendarBooking));
+	private DateValue _toDateValue(long time) throws ParseException {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(_DATE_FORMAT);
 
-		return new DateValueImpl(
+		simpleDateFormat.setTimeZone(_displayTimeZone);
+
+		Date date = DateUtil.parseDate(
+			_DATE_FORMAT, simpleDateFormat.format(new Date(time)),
+			LocaleUtil.getMostRelevantLocale());
+
+		Calendar jCalendar = JCalendarUtil.getJCalendar(date.getTime());
+
+		return new DateTimeValueImpl(
 			jCalendar.get(Calendar.YEAR), jCalendar.get(Calendar.MONTH) + 1,
-			jCalendar.get(Calendar.DAY_OF_MONTH));
+			jCalendar.get(Calendar.DAY_OF_MONTH), jCalendar.get(Calendar.HOUR),
+			jCalendar.get(Calendar.MINUTE), jCalendar.get(Calendar.SECOND));
 	}
+
+	private static final String _DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CalendarBookingIterator.class);
