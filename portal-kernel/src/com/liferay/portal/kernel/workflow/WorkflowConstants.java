@@ -24,6 +24,8 @@ public class WorkflowConstants {
 
 	public static final int ACTION_SAVE_DRAFT = 2;
 
+	public static final String ASSIGN_TASK = "ASSIGN_TASK";
+
 	public static final String CONTEXT_COMMAND = "command";
 
 	public static final String CONTEXT_COMPANY_ID = "companyId";
@@ -106,6 +108,9 @@ public class WorkflowConstants {
 	public static final int TYPE_ASSIGN = 10000;
 
 	public static final int TYPE_COMPLETE = 10001;
+
+	public static final String VIEW_TASK_NOTIFICATION =
+		"VIEW_TASK_NOTIFICATION";
 
 	public static int getLabelStatus(String label) {
 		if (label.equals(LABEL_ANY)) {
