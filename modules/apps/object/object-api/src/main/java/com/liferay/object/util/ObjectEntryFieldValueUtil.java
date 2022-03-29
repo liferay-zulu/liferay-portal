@@ -22,7 +22,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.HtmlParserUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
@@ -49,7 +49,7 @@ public class ObjectEntryFieldValueUtil {
 					objectField.getBusinessType(),
 					ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
 
-			return HtmlUtil.extractText(GetterUtil.getString(value));
+			return HtmlParserUtil.extractText(GetterUtil.getString(value));
 		}
 
 		return String.valueOf(value);
