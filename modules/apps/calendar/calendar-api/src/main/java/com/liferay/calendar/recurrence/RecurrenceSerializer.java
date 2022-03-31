@@ -14,9 +14,10 @@
 
 package com.liferay.calendar.recurrence;
 
+import com.google.ical.util.TimeUtils;
 import com.google.ical.values.DateTimeValue;
+import com.google.ical.values.DateTimeValueImpl;
 import com.google.ical.values.DateValue;
-import com.google.ical.values.DateValueImpl;
 import com.google.ical.values.RDateList;
 import com.google.ical.values.RRule;
 import com.google.ical.values.WeekdayNum;
@@ -169,7 +170,8 @@ public class RecurrenceSerializer {
 			recurrence.getExceptionJCalendars();
 
 		if (!exceptionJCalendars.isEmpty()) {
-			DateValue[] dateValues = new DateValue[exceptionJCalendars.size()];
+			DateValue[] dateValues =
+				new DateTimeValue[exceptionJCalendars.size()];
 
 			for (int i = 0; i < exceptionJCalendars.size(); i++) {
 				dateValues[i] = _toDateValue(exceptionJCalendars.get(i));
@@ -189,9 +191,13 @@ public class RecurrenceSerializer {
 	}
 
 	private static DateValue _toDateValue(Calendar jCalendar) {
-		return new DateValueImpl(
-			jCalendar.get(Calendar.YEAR), jCalendar.get(Calendar.MONTH) + 1,
-			jCalendar.get(Calendar.DATE));
+		return TimeUtils.toUtc(
+			new DateTimeValueImpl(
+				jCalendar.get(Calendar.YEAR), jCalendar.get(Calendar.MONTH) + 1,
+				jCalendar.get(Calendar.DAY_OF_MONTH),
+				jCalendar.get(Calendar.HOUR), jCalendar.get(Calendar.MINUTE),
+				jCalendar.get(Calendar.SECOND)),
+			jCalendar.getTimeZone());
 	}
 
 	private static Calendar _toJCalendar(
