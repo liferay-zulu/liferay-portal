@@ -21,9 +21,12 @@ import com.liferay.calendar.recurrence.Recurrence;
 import com.liferay.calendar.recurrence.RecurrenceSerializer;
 import com.liferay.calendar.recurrence.Weekday;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.util.CalendarFactoryImpl;
+import com.liferay.portal.util.DateFormatFactoryImpl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,6 +67,8 @@ public class RecurrenceUtilTest {
 		CalendarFactoryUtil calendarFactoryUtil = new CalendarFactoryUtil();
 
 		calendarFactoryUtil.setCalendarFactory(new CalendarFactoryImpl());
+
+		_setUpFastDateFormatFactory();
 	}
 
 	@Test
@@ -448,6 +453,12 @@ public class RecurrenceUtilTest {
 		).getTimeZone();
 
 		return calendarBooking;
+	}
+
+	private static void _setUpFastDateFormatFactory() {
+		ReflectionTestUtil.setFieldValue(
+			DateFormatFactoryUtil.class, "_fastDateFormatFactory",
+			new DateFormatFactoryImpl());
 	}
 
 	private static final TimeZone _losAngelesTimeZone = TimeZone.getTimeZone(

@@ -18,13 +18,17 @@ import com.liferay.calendar.recurrence.Recurrence;
 import com.liferay.calendar.recurrence.RecurrenceSerializer;
 import com.liferay.calendar.util.JCalendarUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.util.DateFormatFactoryImpl;
 
 import java.util.Calendar;
 import java.util.TimeZone;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,6 +42,11 @@ public class RecurrenceSplitterTest {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() {
+		_setUpFastDateFormatFactory();
+	}
 
 	@Before
 	public void setUp() {
@@ -58,7 +67,8 @@ public class RecurrenceSplitterTest {
 		_assertSplit(recurrenceSplit);
 
 		_assertFirstRecurrenceEquals(
-			recurrenceSplit, "RRULE:FREQ=DAILY;UNTIL=20170109;INTERVAL=1");
+			recurrenceSplit,
+			"RRULE:FREQ=DAILY;UNTIL=20170109T010000Z;INTERVAL=1");
 
 		_assertSecondRecurrenceEquals(
 			recurrenceSplit, "RRULE:FREQ=DAILY;INTERVAL=1");
@@ -137,14 +147,14 @@ public class RecurrenceSplitterTest {
 		_assertSplit(recurrenceSplit);
 
 		Assert.assertEquals(
-			"RRULE:FREQ=DAILY;UNTIL=20170109;INTERVAL=1\n" +
-				"EXDATE;TZID=\"UTC\";VALUE=DATE:20170108",
+			"RRULE:FREQ=DAILY;UNTIL=20170109T010000Z;INTERVAL=1\n" +
+				"EXDATE;TZID=\"UTC\";VALUE=DATE-TIME:20170108T000000Z",
 			RecurrenceSerializer.serialize(
 				recurrenceSplit.getFirstRecurrence()));
 
 		Assert.assertEquals(
 			"RRULE:FREQ=DAILY;INTERVAL=1\n" +
-				"EXDATE;TZID=\"UTC\";VALUE=DATE:20170112",
+				"EXDATE;TZID=\"UTC\";VALUE=DATE-TIME:20170112T000000Z",
 			RecurrenceSerializer.serialize(
 				recurrenceSplit.getSecondRecurrence()));
 	}
@@ -152,7 +162,7 @@ public class RecurrenceSplitterTest {
 	@Test
 	public void testSplitRecurrenceWithSplitDateAfterUntilDate() {
 		Recurrence recurrence = _getRecurrence(
-			"RRULE:FREQ=DAILY;INTERVAL=1;UNTIL=20170108");
+			"RRULE:FREQ=DAILY;INTERVAL=1;UNTIL=20170108T010000Z");
 
 		Calendar startTimeJCalendar = _getJCalendar(1);
 
@@ -164,7 +174,8 @@ public class RecurrenceSplitterTest {
 		_assertNotSplit(recurrenceSplit);
 
 		_assertFirstRecurrenceEquals(
-			recurrenceSplit, "RRULE:FREQ=DAILY;UNTIL=20170108;INTERVAL=1");
+			recurrenceSplit,
+			"RRULE:FREQ=DAILY;UNTIL=20170108T010000Z;INTERVAL=1");
 	}
 
 	@Test
@@ -187,7 +198,7 @@ public class RecurrenceSplitterTest {
 	@Test
 	public void testSplitRecurrenceWithUntilDate() {
 		Recurrence recurrence = _getRecurrence(
-			"RRULE:FREQ=DAILY;INTERVAL=1;UNTIL=20170131");
+			"RRULE:FREQ=DAILY;INTERVAL=1;UNTIL=20170131T010000Z");
 
 		Calendar startTimeJCalendar = _getJCalendar(1);
 
@@ -199,10 +210,18 @@ public class RecurrenceSplitterTest {
 		_assertSplit(recurrenceSplit);
 
 		_assertFirstRecurrenceEquals(
-			recurrenceSplit, "RRULE:FREQ=DAILY;UNTIL=20170109;INTERVAL=1");
+			recurrenceSplit,
+			"RRULE:FREQ=DAILY;UNTIL=20170109T010000Z;INTERVAL=1");
 
 		_assertSecondRecurrenceEquals(
-			recurrenceSplit, "RRULE:FREQ=DAILY;UNTIL=20170131;INTERVAL=1");
+			recurrenceSplit,
+			"RRULE:FREQ=DAILY;UNTIL=20170131T010000Z;INTERVAL=1");
+	}
+
+	private static void _setUpFastDateFormatFactory() {
+		ReflectionTestUtil.setFieldValue(
+			DateFormatFactoryUtil.class, "_fastDateFormatFactory",
+			new DateFormatFactoryImpl());
 	}
 
 	private void _assertFirstRecurrenceEquals(
