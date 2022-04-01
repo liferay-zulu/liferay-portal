@@ -13,7 +13,6 @@
 import ClayAlert from '@clayui/alert';
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import {ClayInput} from '@clayui/form';
-import ClayLabel from '@clayui/label';
 import ClayLayout from '@clayui/layout';
 import ClayToolbar from '@clayui/toolbar';
 import {TranslationAdminSelector} from 'frontend-js-components-web';
@@ -43,10 +42,12 @@ export default function UpperToolbar({displayNames, languageIds}) {
 		definitionName,
 		definitionTitle,
 		elements,
+		infoVersion,
 		selectedLanguageId,
 		setDefinitionId,
 		setDefinitionTitle,
 		setDeserialize,
+		setInfoVersion,
 		setSelectedLanguageId,
 		setShowInvalidContentMessage,
 		setSourceView,
@@ -73,8 +74,7 @@ export default function UpperToolbar({displayNames, languageIds}) {
 
 		if (blockingErrors.errorType === 'emptyField') {
 			return Liferay.Language.get('some-fields-need-to-be-filled');
-		}
-		else {
+		} else {
 			return Liferay.Language.get('error');
 		}
 	};
@@ -84,8 +84,7 @@ export default function UpperToolbar({displayNames, languageIds}) {
 
 		if (currentEditor && !exporting) {
 			xmlContent = currentEditor.getData();
-		}
-		else {
+		} else {
 			xmlContent = serializeDefinition(
 				xmlNamespace,
 				{
@@ -134,14 +133,12 @@ export default function UpperToolbar({displayNames, languageIds}) {
 			setAlertType('danger');
 
 			setShowAlert(true);
-		}
-		else {
+		} else {
 			if (definitionNotPublished) {
 				alertMessage = Liferay.Language.get(
 					'workflow-published-successfully'
 				);
-			}
-			else {
+			} else {
 				alertMessage = Liferay.Language.get(
 					'workflow-updated-successfully'
 				);
@@ -166,8 +163,7 @@ export default function UpperToolbar({displayNames, languageIds}) {
 						setDefinitionId(name);
 						setVersion(`${version}.0`);
 					});
-				}
-				else {
+				} else {
 					response.json().then(({title}) => {
 						setAlertMessage(title);
 						setAlertType('danger');
@@ -225,6 +221,14 @@ export default function UpperToolbar({displayNames, languageIds}) {
 		}
 	};
 
+	const setInfoVersionClick = () => {
+		if (infoVersion) {
+			setInfoVersion(false);
+		} else {
+			setInfoVersion(true);
+		}
+	};
+
 	useEffect(() => {
 		if (isObjectEmpty(translations)) {
 			setTranslations({
@@ -275,18 +279,14 @@ export default function UpperToolbar({displayNames, languageIds}) {
 
 						{version !== '0' && (
 							<ClayToolbar.Item>
-								<ClayLabel
-									className="version"
+								<ClayButtonWithIcon
 									displayType="secondary"
-								>
-									<div>
-										{`${Liferay.Language.get('version')}:`}
-
-										<span className="version-text">
-											{version}
-										</span>
-									</div>
-								</ClayLabel>
+									onClick={setInfoVersionClick}
+									symbol="info-circle-open"
+									title={`${Liferay.Language.get(
+										'info'
+									)} ${Liferay.Language.get('version')}`}
+								/>
 							</ClayToolbar.Item>
 						)}
 
@@ -335,8 +335,7 @@ export default function UpperToolbar({displayNames, languageIds}) {
 										) {
 											setSourceView(false);
 											setDeserialize(true);
-										}
-										else {
+										} else {
 											setShowInvalidContentMessage(true);
 										}
 									}}

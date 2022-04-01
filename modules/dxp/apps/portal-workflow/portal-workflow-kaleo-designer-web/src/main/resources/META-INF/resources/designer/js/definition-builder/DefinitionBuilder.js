@@ -36,6 +36,7 @@ export default function DefinitionBuilder(props) {
 	const [sourceView, setSourceView] = useState(false);
 	const [translations, setTranslations] = useState(props.translations);
 	const [version, setVersion] = useState(props.version);
+	const [infoVersion, setInfoVersion] = useState(false);
 
 	const contextProps = {
 		active,
@@ -47,6 +48,7 @@ export default function DefinitionBuilder(props) {
 		definitionTitle,
 		deserialize,
 		elements,
+		infoVersion,
 		selectedLanguageId,
 		setActive,
 		setBlockingErrors,
@@ -57,6 +59,7 @@ export default function DefinitionBuilder(props) {
 		setDefinitionTitle,
 		setDeserialize,
 		setElements,
+		setInfoVersion,
 		setSelectedLanguageId,
 		setShowInvalidContentMessage,
 		setSourceView,
