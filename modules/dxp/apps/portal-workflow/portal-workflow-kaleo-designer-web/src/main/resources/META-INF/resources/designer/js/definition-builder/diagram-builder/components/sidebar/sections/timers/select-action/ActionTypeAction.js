@@ -21,9 +21,6 @@ const ActionTypeAction = ({
 	actionData,
 	actionSectionsIndex,
 	actionType,
-	executionTypeInput = () => {
-		'';
-	},
 	setActionSections,
 }) => {
 	const {selectedItem} = useContext(DiagramBuilderContext);
@@ -33,24 +30,11 @@ const ActionTypeAction = ({
 	const [description, setDescription] = useState(
 		validActionData?.description || ''
 	);
-	const [executionTypeOptions, setExecutionTypeOptions] = useState([
-		{
-			label: Liferay.Language.get('on-entry'),
-			value: 'onEntry',
-		},
-		{
-			label: Liferay.Language.get('on-exit'),
-			value: 'onExit',
-		},
-	]);
-	const [executionType, setExecutionType] = useState(
-		validActionData?.executionType ?? executionTypeOptions[0].value
-	);
 	const [name, setName] = useState(validActionData?.name || '');
 	const [priority, setPriority] = useState(validActionData?.priority || 1);
 
 	const updateActionInfo = (item) => {
-		if (item.name && item.script && item.executionType) {
+		if (item.name && item.script) {
 			setActionSections((previousSections) => {
 				const updatedSections = [...previousSections];
 
@@ -68,9 +52,6 @@ const ActionTypeAction = ({
 	return (
 		<BaseActionsInfo
 			description={description}
-			executionType={executionType}
-			executionTypeInput={executionTypeInput}
-			executionTypeOptions={executionTypeOptions}
 			name={name}
 			placeholderName={Liferay.Language.get('my-action')}
 			placeholderScript="${userName} sent you a ${entryType} for review in the workflow."
@@ -80,8 +61,6 @@ const ActionTypeAction = ({
 			scriptLabelSecondary={Liferay.Language.get('groovy')}
 			selectedItem={selectedItem}
 			setDescription={setDescription}
-			setExecutionType={setExecutionType}
-			setExecutionTypeOptions={setExecutionTypeOptions}
 			setName={setName}
 			setPriority={setPriority}
 			setScript={setScript}
