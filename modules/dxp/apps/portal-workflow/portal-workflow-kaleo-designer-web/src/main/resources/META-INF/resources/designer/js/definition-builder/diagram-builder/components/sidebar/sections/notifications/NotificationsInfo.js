@@ -22,6 +22,7 @@ import SidebarPanel from '../../SidebarPanel';
 import Role from './Role';
 import RoleType from './RoleType';
 import User from './User';
+import {getRecipientType} from './utils';
 
 let executionTypeOptions = [
 	{
@@ -33,27 +34,6 @@ let executionTypeOptions = [
 		value: 'onExit',
 	},
 ];
-
-const getRecipientType = (assignmentType) => {
-	if (assignmentType === 'roleId') {
-		return 'role';
-	}
-	else if (assignmentType === 'roleType') {
-		return 'roleType';
-	}
-	else if (assignmentType === 'scriptedRecipient') {
-		return 'scriptedRecipient';
-	}
-	else if (assignmentType === 'taskAssignees') {
-		return 'taskAssignees';
-	}
-	else if (assignmentType === 'user') {
-		return 'user';
-	}
-	else {
-		return null;
-	}
-};
 
 const recipientTypeComponents = {
 	role: Role,
@@ -142,7 +122,6 @@ const NotificationsInfo = ({
 	const [recipientType, setRecipientType] = useState(
 		getRecipientType(
 			selectedItem.data.notifications?.recipients?.[notificationIndex]
-				?.assignmentType?.[0]
 		) || 'assetCreator'
 	);
 	const [template, setTemplate] = useState(
