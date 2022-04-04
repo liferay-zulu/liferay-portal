@@ -282,7 +282,7 @@ const Timers = ({setContentName, setErrors}) => {
 					section.recurrence =
 						selectedItem.data.taskTimers.delay[index].duration[1];
 					section.recurrenceScale =
-						selectedItem.data.taskTimers.delay[index].duration[1];
+						selectedItem.data.taskTimers.delay[index].scale[1];
 				}
 
 				desserializedSections.push(section);
