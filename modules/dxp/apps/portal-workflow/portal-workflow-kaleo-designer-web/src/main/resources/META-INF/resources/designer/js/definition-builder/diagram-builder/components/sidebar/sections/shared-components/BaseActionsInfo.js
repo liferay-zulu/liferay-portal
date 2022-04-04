@@ -43,6 +43,7 @@ const BaseActionsInfo = ({
 	useEffect(() => {
 		if (
 			selectedItem.type === 'task' &&
+			executionTypeOptions &&
 			!executionTypeOptions
 				.map((option) => option.value)
 				.includes('onAssignment')
@@ -52,16 +53,17 @@ const BaseActionsInfo = ({
 				value: 'onAssignment',
 			});
 		}
+		if (executionTypeOptions) {
+			sortElements(executionTypeOptions, 'value');
 
-		sortElements(executionTypeOptions, 'value');
-
-		return function cleanup() {
-			setExecutionTypeOptions(
-				executionTypeOptions.filter(({value}) => {
-					return value !== 'onAssignment';
-				})
-			);
-		};
+			return function cleanup() {
+				setExecutionTypeOptions(
+					executionTypeOptions.filter(({value}) => {
+						return value !== 'onAssignment';
+					})
+				);
+			};
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -167,13 +169,14 @@ const BaseActionsInfo = ({
 							})
 						}
 					>
-						{executionTypeOptions.map((item) => (
-							<ClaySelect.Option
-								key={item.value}
-								label={item.label}
-								value={item.value}
-							/>
-						))}
+						{executionTypeOptions &&
+							executionTypeOptions.map((item) => (
+								<ClaySelect.Option
+									key={item.value}
+									label={item.label}
+									value={item.value}
+								/>
+							))}
 					</ClaySelect>
 				</ClayForm.Group>
 			)}
