@@ -206,7 +206,10 @@ function appendXMLAssignments(
 
 			buffer.push(xmlRoles.close);
 		}
-		else if (assignmentType === 'scriptedAssignment') {
+		else if (
+			assignmentType === 'scriptedAssignment' &&
+			dataAssignments.script?.length
+		) {
 			const xmlScriptedAssignment = XMLUtil.createObj(
 				'scriptedAssignment'
 			);
