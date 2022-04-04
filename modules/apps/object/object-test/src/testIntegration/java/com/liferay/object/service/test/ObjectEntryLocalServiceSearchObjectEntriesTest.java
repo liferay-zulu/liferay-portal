@@ -15,17 +15,24 @@
 package com.liferay.object.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.document.library.kernel.model.DLFolderConstants;
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectField;
+import com.liferay.object.model.ObjectFieldSetting;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.object.util.ObjectFieldBuilder;
 import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -33,6 +40,7 @@ import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
@@ -67,6 +75,37 @@ public class ObjectEntryLocalServiceSearchObjectEntriesTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@Test
+	public void testAttachment() throws Exception {
+		ObjectFieldBuilder builder = new ObjectFieldBuilder();
+
+		_testAttachment(
+			builder.businessType(
+				ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT
+			).dbType(
+				ObjectFieldConstants.DB_TYPE_LONG
+			).indexed(
+				true
+			).labelMap(
+				LocalizedMapUtil.getLocalizedMap("Alpha")
+			).name(
+				"alpha"
+			).objectFieldSettings(
+				Arrays.asList(
+					_createObjectFieldSetting("acceptedFileExtensions", "txt"),
+					_createObjectFieldSetting("fileSource", "userComputer"),
+					_createObjectFieldSetting("maximumFileSize", "100"))
+			).build());
+		_testAttachment(
+			builder.indexedAsKeyword(
+				true
+			).build());
+		_testAttachment(
+			builder.indexed(
+				false
+			).build());
+	}
 
 	@Test
 	public void testBigDecimal() throws Exception {
@@ -501,6 +540,18 @@ public class ObjectEntryLocalServiceSearchObjectEntriesTest {
 		Assert.assertEquals(count, baseModelSearchResult.getLength());
 	}
 
+	private ObjectFieldSetting _createObjectFieldSetting(
+		String name, String value) {
+
+		ObjectFieldSetting objectFieldSetting =
+			_objectFieldSettingLocalService.createObjectFieldSetting(0L);
+
+		objectFieldSetting.setName(name);
+		objectFieldSetting.setValue(value);
+
+		return objectFieldSetting;
+	}
+
 	private long _getTitleObjectFieldId() throws Exception {
 		ObjectField objectField = _objectFieldLocalService.addCustomObjectField(
 			TestPropsValues.getUserId(), 0,
@@ -509,6 +560,41 @@ public class ObjectEntryLocalServiceSearchObjectEntriesTest {
 			Collections.emptyList());
 
 		return objectField.getObjectFieldId();
+	}
+
+	private void _testAttachment(ObjectField objectField) throws Exception {
+		if (_objectDefinition != null) {
+			_objectDefinitionLocalService.deleteObjectDefinition(
+				_objectDefinition);
+		}
+
+		_addObjectDefinition(objectField);
+
+		FileEntry fileEntry = _dlAppLocalService.addFileEntry(
+			null, TestPropsValues.getUserId(), TestPropsValues.getGroupId(),
+			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, "document.txt",
+			ContentTypes.TEXT_PLAIN, RandomTestUtil.randomString(),
+			StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
+			RandomTestUtil.randomBytes(), null, null,
+			ServiceContextTestUtil.getServiceContext());
+
+		_addObjectEntry(
+			HashMapBuilder.<String, Serializable>put(
+				"alpha", fileEntry.getFileEntryId()
+			).build());
+
+		if (objectField.isIndexed()) {
+			_assertKeywords(
+				"document.tx", objectField.isIndexedAsKeyword() ? 1 : 0);
+			_assertKeywords(
+				"DOCUMENT.TX", objectField.isIndexedAsKeyword() ? 1 : 0);
+			_assertKeywords("ocument.txt", 0);
+			_assertKeywords("document.txt", 1);
+			_assertKeywords("DOCUMENT.TXT", 1);
+		}
+		else {
+			_assertKeywords("document.txt", 0);
+		}
 	}
 
 	private void _testCharacterDataType(
@@ -561,6 +647,9 @@ public class ObjectEntryLocalServiceSearchObjectEntriesTest {
 		}
 	}
 
+	@Inject
+	private DLAppLocalService _dlAppLocalService;
+
 	@DeleteAfterTestRun
 	private ObjectDefinition _objectDefinition;
 
@@ -572,5 +661,8 @@ public class ObjectEntryLocalServiceSearchObjectEntriesTest {
 
 	@Inject
 	private ObjectFieldLocalService _objectFieldLocalService;
+
+	@Inject
+	private ObjectFieldSettingLocalService _objectFieldSettingLocalService;
 
 }
