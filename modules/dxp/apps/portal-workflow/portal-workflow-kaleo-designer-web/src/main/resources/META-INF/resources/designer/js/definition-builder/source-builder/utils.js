@@ -174,7 +174,10 @@ export function parseNotifications(node) {
 				assignmentType: ['taskAssignees'],
 			};
 		}
-		else if (item['user']) {
+		else if (
+			item['user'] &&
+			item['user'].some((item) => item['email-address'])
+		) {
 			const emailAddress = [];
 
 			item['user'].forEach((item) => {
@@ -207,6 +210,11 @@ export function parseNotifications(node) {
 				assignmentType: ['scriptedRecipient'],
 				script: [script],
 				scriptLanguage: [DEFAULT_LANGUAGE],
+			};
+		}
+		else {
+			notifications.recipients[index] = {
+				assignmentType: ['user'],
 			};
 		}
 	});

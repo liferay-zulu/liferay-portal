@@ -36,7 +36,10 @@ const populateNotificationsData = (initialElements, setElements) => {
 							setElements([...initialElements]);
 						});
 				}
-				else if (recipient?.assignmentType?.[0] === 'user') {
+				else if (
+					recipient?.assignmentType?.[0] === 'user' &&
+					recipient.emailAddress
+				) {
 					const sectionsData = [];
 
 					retrieveUsersBy('emailAddress', recipient.emailAddress)
