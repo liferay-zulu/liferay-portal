@@ -13,12 +13,11 @@
 import ClayAlert from '@clayui/alert';
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import {ClayInput} from '@clayui/form';
-import ClayLabel from '@clayui/label';
 import ClayLayout from '@clayui/layout';
 import ClayToolbar from '@clayui/toolbar';
 import {TranslationAdminSelector} from 'frontend-js-components-web';
 import PropTypes from 'prop-types';
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import {isEdge, isNode} from 'react-flow-renderer';
 
 import {DefinitionBuilderContext} from '../../../DefinitionBuilderContext';
@@ -36,6 +35,8 @@ import {isObjectEmpty} from '../../../util/utils';
 export default function UpperToolbar({displayNames, languageIds}) {
 	const {
 		active,
+		alertMessage,
+		alertType,
 		blockingErrors,
 		currentEditor,
 		definitionDescription,
@@ -44,22 +45,24 @@ export default function UpperToolbar({displayNames, languageIds}) {
 		definitionTitle,
 		elements,
 		selectedLanguageId,
+		setAlertMessage,
+		setAlertType,
 		setDefinitionId,
 		setDefinitionTitle,
 		setDeserialize,
 		setSelectedLanguageId,
+		setShowAlert,
+		setShowDefinitionInfo,
 		setShowInvalidContentMessage,
 		setSourceView,
 		setTranslations,
 		setVersion,
+		showAlert,
 		sourceView,
 		translations,
 		version,
 	} = useContext(DefinitionBuilderContext);
 	const inputRef = useRef(null);
-	const [alertMessage, setAlertMessage] = useState('');
-	const [alertType, setAlertType] = useState(null);
-	const [showAlert, setShowAlert] = useState(false);
 
 	const availableLocales = getAvailableLocalesObject(
 		displayNames,
@@ -122,7 +125,7 @@ export default function UpperToolbar({displayNames, languageIds}) {
 		}
 	};
 
-	const definitionNotPublished = version === '0' || !active;
+	const definitionNotPublished = version === 0 || !active;
 
 	const publishDefinition = () => {
 		let alertMessage;
@@ -164,7 +167,7 @@ export default function UpperToolbar({displayNames, languageIds}) {
 
 					response.json().then(({name, version}) => {
 						setDefinitionId(name);
-						setVersion(`${version}.0`);
+						setVersion(parseInt(version, 10));
 					});
 				}
 				else {
@@ -218,7 +221,7 @@ export default function UpperToolbar({displayNames, languageIds}) {
 
 					response.json().then(({name, version}) => {
 						setDefinitionId(name);
-						setVersion(`${version}.0`);
+						setVersion(parseInt(version, 10));
 					});
 				}
 			});
@@ -273,20 +276,17 @@ export default function UpperToolbar({displayNames, languageIds}) {
 							/>
 						</ClayToolbar.Item>
 
-						{version !== '0' && (
+						{version !== 0 && (
 							<ClayToolbar.Item>
-								<ClayLabel
-									className="version"
+								<ClayButtonWithIcon
 									displayType="secondary"
-								>
-									<div>
-										{`${Liferay.Language.get('version')}:`}
-
-										<span className="version-text">
-											{version}
-										</span>
-									</div>
-								</ClayLabel>
+									onClick={() =>
+										setShowDefinitionInfo(
+											(previous) => !previous
+										)
+									}
+									symbol="info-circle-open"
+								/>
 							</ClayToolbar.Item>
 						)}
 
