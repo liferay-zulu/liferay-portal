@@ -46,7 +46,9 @@ describe('The UpperToolbar component should', () => {
 
 		expect(inputTitle).toBeTruthy();
 
-		expect(tbarItems[2]).toHaveTextContent('version');
+		expect(tbarItems[2].children[0].children[0]).toHaveClass(
+			'lexicon-icon-info-circle-open'
+		);
 		expect(tbarItems[3]).toHaveTextContent('cancel');
 		expect(tbarItems[4]).toHaveTextContent('save');
 		expect(tbarItems[5]).toHaveTextContent('publish');
