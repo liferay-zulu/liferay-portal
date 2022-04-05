@@ -52,9 +52,11 @@ export default function DiagramBuilder() {
 		selectedLanguageId,
 		setActive,
 		setDefinitionDescription,
+		setDefinitionInfo,
 		setDefinitionName,
 		setDeserialize,
 		setElements,
+		setShowDefinitionInfo,
 		version,
 	} = useContext(DefinitionBuilderContext);
 	const reactFlowWrapperRef = useRef(null);
@@ -241,6 +243,8 @@ export default function DiagramBuilder() {
 			);
 		}
 
+		setShowDefinitionInfo(false);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedItem]);
 
@@ -306,22 +310,36 @@ export default function DiagramBuilder() {
 	}, [currentEditor, deserialize, version]);
 
 	useEffect(() => {
-		if (definitionId && version !== '0' && !deserialize) {
+		if (definitionId && version !== 0 && !deserialize) {
 			retrieveDefinitionRequest(definitionId)
 				.then((response) => response.json())
-				.then(({active, content, description}) => {
-					setActive(active);
-					setDefinitionDescription(description);
+				.then(
+					({
+						active,
+						content,
+						dateCreated,
+						dateModified,
+						description,
+						version,
+					}) => {
+						setActive(active);
+						setDefinitionDescription(description);
+						setDefinitionInfo({
+							dateCreated,
+							dateModified,
+							totalModifications: version,
+						});
 
-					deserializeUtil.updateXMLDefinition(content);
+						deserializeUtil.updateXMLDefinition(content);
 
-					const elements = deserializeUtil.getElements();
+						const elements = deserializeUtil.getElements();
 
-					setElements(elements);
+						setElements(elements);
 
-					populateAssignmentsData(elements, setElements);
-					populateNotificationsData(elements, setElements);
-				});
+						populateAssignmentsData(elements, setElements);
+						populateNotificationsData(elements, setElements);
+					}
+				);
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
