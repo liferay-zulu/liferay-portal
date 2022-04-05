@@ -294,7 +294,7 @@ public class ResourceHelper {
 
 	public ScriptedMetricAggregation creatTaskCountScriptedMetricAggregation(
 		List<Long> assigneeIds, List<String> slaStatuses,
-		List<String> taskNames) {
+		List<String> taskNames, boolean admin) {
 
 		ScriptedMetricAggregation scriptedMetricAggregation =
 			_aggregations.scriptedMetric("taskCount");
@@ -305,8 +305,22 @@ public class ResourceHelper {
 			_workflowMetricsTaskCountInitScript);
 		scriptedMetricAggregation.setMapScript(
 			_workflowMetricsTaskCountMapScript);
-		scriptedMetricAggregation.setParameters(
-			HashMapBuilder.<String, Object>put(
+
+		HashMapBuilder.HashMapWrapper<String, Object> mapWrapper;
+
+		if (admin) {
+			mapWrapper = HashMapBuilder.<String, Object>put(
+				"taskNames",
+				() -> Optional.ofNullable(
+					taskNames
+				).filter(
+					ListUtil::isNotEmpty
+				).orElse(
+					null
+				));
+		}
+		else {
+			mapWrapper = HashMapBuilder.<String, Object>put(
 				"assigneeIds",
 				() -> Optional.ofNullable(
 					assigneeIds
@@ -343,7 +357,10 @@ public class ResourceHelper {
 				).orElse(
 					null
 				)
-			).build());
+			);
+		}
+
+		scriptedMetricAggregation.setParameters(mapWrapper.build());
 		scriptedMetricAggregation.setReduceScript(
 			_workflowMetricsTaskCountReduceScript);
 

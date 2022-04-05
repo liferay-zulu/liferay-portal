@@ -14,9 +14,14 @@
 
 package com.liferay.portal.workflow.metrics.rest.internal.resource.v1_0;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -515,6 +520,14 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 				_queries.term("processId", processId));
 		}
 
+		if (_isAdmin()) {
+			return booleanQuery.addMustQueryClauses(
+				_queries.term("companyId", contextCompany.getCompanyId()),
+				_queries.term("completed", Boolean.FALSE),
+				_queries.term("deleted", Boolean.FALSE),
+				_queries.term("instanceCompleted", Boolean.FALSE));
+		}
+
 		return booleanQuery.addMustQueryClauses(
 			_createAssigneeIdsTermsBooleanQuery(assigneeIds),
 			_queries.term("companyId", contextCompany.getCompanyId()),
@@ -534,8 +547,8 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		termsAggregation.addChildrenAggregations(
 			_resourceHelper.creatTaskCountScriptedMetricAggregation(
 				ListUtil.fromArray(assigneeIds),
-				ListUtil.fromArray(slaStatuses),
-				ListUtil.fromArray(taskNames)));
+				ListUtil.fromArray(slaStatuses), ListUtil.fromArray(taskNames),
+				_isAdmin()));
 
 		termsAggregation.addOrders(Order.key(true));
 		termsAggregation.addPipelineAggregations(
@@ -548,8 +561,8 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		searchSearchRequest.addAggregation(
 			_resourceHelper.creatTaskCountScriptedMetricAggregation(
 				ListUtil.fromArray(assigneeIds),
-				ListUtil.fromArray(slaStatuses),
-				ListUtil.fromArray(taskNames)));
+				ListUtil.fromArray(slaStatuses), ListUtil.fromArray(taskNames),
+				_isAdmin()));
 		searchSearchRequest.setIndexNames(
 			_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
 				contextCompany.getCompanyId()),
@@ -640,8 +653,8 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 			indexFilterAggregation,
 			_resourceHelper.creatTaskCountScriptedMetricAggregation(
 				ListUtil.fromArray(assigneeIds),
-				ListUtil.fromArray(slaStatuses),
-				ListUtil.fromArray(taskNames)));
+				ListUtil.fromArray(slaStatuses), ListUtil.fromArray(taskNames),
+				_isAdmin()));
 
 		termsAggregation.addOrders(Order.key(true));
 		termsAggregation.addPipelineAggregations(
@@ -700,6 +713,24 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		);
 	}
 
+	private boolean _isAdmin() {
+		try {
+			Role administratorRole = _roleLocalService.getRole(
+				contextCompany.getCompanyId(), RoleConstants.ADMINISTRATOR);
+
+			if (_roleLocalService.hasUserRole(
+					contextUser.getUserId(), administratorRole.getRoleId())) {
+
+				return true;
+			}
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException);
+		}
+
+		return false;
+	}
+
 	private AddTaskRequest _toAddTaskRequest(Long processId, Task task) {
 		AddTaskRequest.Builder addTaskRequestBuilder =
 			new AddTaskRequest.Builder();
@@ -755,6 +786,9 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		).build();
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		TaskResourceImpl.class);
+
 	@Reference
 	private Aggregations _aggregations;
 
@@ -769,6 +803,9 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 
 	@Reference
 	private ResourceHelper _resourceHelper;
+
+	@Reference
+	private RoleLocalService _roleLocalService;
 
 	@Reference
 	private Scripts _scripts;
