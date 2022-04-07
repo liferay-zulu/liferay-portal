@@ -57,7 +57,7 @@ String kaleoNamespace = PortalUtil.getPortletNamespace(KaleoDesignerPortletKeys.
 
 	<c:if test="<%= KaleoDefinitionVersionPermission.contains(permissionChecker, kaleoDefinitionVersion, ActionKeys.UPDATE) %>">
 		<liferay-portlet:renderURL portletName="<%= KaleoDesignerPortletKeys.KALEO_DESIGNER %>" var="editURL">
-			<portlet:param name="mvcPath" value='<%= "/designer/edit_workflow_definition.jsp" %>' />
+			<portlet:param name="mvcPath" value="/designer/edit_workflow_definition.jsp" />
 			<portlet:param name="redirect" value="<%= currentURL %>" />
 			<portlet:param name="name" value="<%= kaleoDefinitionVersion.getName() %>" />
 			<portlet:param name="draftVersion" value="<%= kaleoDefinitionVersion.getVersion() %>" />
