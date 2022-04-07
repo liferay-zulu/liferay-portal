@@ -157,7 +157,8 @@ public abstract class BaseKaleoDesignerMVCActionCommand
 		LiferayPortletURL portletURL = PortletURLFactoryUtil.create(
 			actionRequest, themeDisplay.getPpid(), PortletRequest.RENDER_PHASE);
 
-		portletURL.setParameter("mvcPath", "/designer/edit_workflow_definition.jsp");
+		portletURL.setParameter(
+			"mvcPath", "/designer/edit_workflow_definition.jsp");
 
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
 
