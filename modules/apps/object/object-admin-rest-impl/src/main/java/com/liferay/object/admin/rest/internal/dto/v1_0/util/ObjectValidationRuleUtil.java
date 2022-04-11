@@ -27,8 +27,7 @@ import java.util.Map;
 public class ObjectValidationRuleUtil {
 
 	public static ObjectValidationRule toObjectValidationRule(
-		Map<String, Map<String, String>> actions,
-		Locale locale,
+		Map<String, Map<String, String>> actions, Locale locale,
 		com.liferay.object.model.ObjectValidationRule
 			serviceBuilderObjectValidationRule) {
 
