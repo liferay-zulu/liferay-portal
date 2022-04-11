@@ -51,6 +51,8 @@ portletDisplay.setURLBack(backURL);
 				</clay:row>
 			</clay:sheet-section>
 		</liferay-frontend:fieldset-group>
+
+		<%@ include file="exceptions.jspf" %>
 	</liferay-frontend:edit-form-body>
 
 	<c:if test="<%= !objectEntryDisplayContext.isReadOnly() %>">

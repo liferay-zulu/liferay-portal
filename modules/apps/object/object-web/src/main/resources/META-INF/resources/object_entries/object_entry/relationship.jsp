@@ -49,6 +49,8 @@ portletDisplay.setURLBack(backURL);
 		portletURL="<%= liferayPortletResponse.createRenderURL() %>"
 		style="fluid"
 	/>
+
+	<%@ include file="exceptions.jspf" %>
 </aui:form>
 
 <c:if test="<%= !objectEntryDisplayContext.isDefaultUser() %>">
