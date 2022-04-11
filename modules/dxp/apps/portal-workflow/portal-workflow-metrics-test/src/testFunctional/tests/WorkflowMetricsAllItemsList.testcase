@@ -186,6 +186,7 @@ definition {
 	}
 
 	@description = "Verify that the users are able to identify the current nodes of the instance in the workflow, when there is multiple statuses"
+	@ignore = "true"
 	@priority = "4"
 	test CanIdentifyMultipleCurrentNode {
 		property portal.acceptance = "true";
@@ -2597,6 +2598,7 @@ definition {
 	}
 
 	@description = "LPS-86652 - Verify that hovering the cursor on the process step, when it contains more than 1 option, the toolip will display a bullet list"
+	@ignore = "true"
 	@priority = "3"
 	test TooltipDisplaysStepsListWhenMultipleItems {
 		property portal.acceptance = "true";
@@ -2710,6 +2712,7 @@ definition {
 	}
 
 	@description = "Verify that when the user clicks the link in the detail modal, the Workflow in use is displayed"
+	@ignore = "true"
 	@priority = "5"
 	test TrackApprovalDisplayWorkflowInUse {
 		property portal.acceptance = "true";

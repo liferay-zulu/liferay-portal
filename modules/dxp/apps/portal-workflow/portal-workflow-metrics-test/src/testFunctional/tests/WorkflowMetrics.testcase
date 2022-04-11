@@ -540,6 +540,7 @@ definition {
 	}
 
 	@description = "LRQA-55451 Exceptions Check"
+	@ignore = "true"
 	@priority = "5"
 	test BulkReassignWorkflowInstancesExceptions {
 		property portal.acceptance = "true";
@@ -580,10 +581,11 @@ definition {
 	}
 
 	@description = "LRQA-57667 - Automate LPS-108138: As a Operation Manager, I want to transition a multi-task workflow instance while analyzing my process metrics"
+	@ignore = "true"
 	@priority = "5"
 	test BulkTransitionWorkflowTasks {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "WorkflowMetrics#BulkTransitionWorkflowInstances";
+		property test.name.skip.portal.instance = "WorkflowMetrics#BulkTransitionWorkflowTasks";
 
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
@@ -1144,6 +1146,7 @@ definition {
 	}
 
 	@description = "LRQA-53628 Automate LPS-98517 [Dashboard] Filter items list by assignee name"
+	@ignore = "true"
 	@priority = "5"
 	test FilterAllItemsListByAssigneeName {
 		property portal.acceptance = "true";
@@ -1561,6 +1564,7 @@ definition {
 	}
 
 	@description = "LRQA-53660 Automate LPS-105495 single-task work"
+	@ignore = "true"
 	@priority = "5"
 	test SingleTaskWorkflowTransition {
 		property portal.acceptance = "true";
@@ -2118,6 +2122,7 @@ definition {
 	}
 
 	@description = "LRQA-53646 - Automate LPS-88573: Search and order the reports list"
+	@ignore = "true"
 	@priority = "5"
 	test ValidateWorkflowProcessListOnMetrics {
 		property portal.acceptance = "true";
@@ -2347,6 +2352,7 @@ definition {
 	}
 
 	@description = "LRQA-53661 Automate LPS-89119: [SLA] Define the SLA timer calendar"
+	@ignore = "true"
 	@priority = "5"
 	test VerifySLACustomCalendar {
 		property portal.acceptance = "true";

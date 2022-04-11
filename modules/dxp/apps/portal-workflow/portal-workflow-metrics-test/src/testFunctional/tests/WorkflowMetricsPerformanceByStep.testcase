@@ -1245,6 +1245,7 @@ definition {
 	}
 
 	@description = "LPS-100677 - Verify that searching steps containing non-ascii chars is possible"
+	@ignore = "true"
 	@priority = "3"
 	test UserCanSearchNonAsciiChars {
 		property portal.acceptance = "true";
