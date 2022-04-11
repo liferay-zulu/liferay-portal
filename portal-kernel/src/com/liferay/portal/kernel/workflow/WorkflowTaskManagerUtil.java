@@ -86,12 +86,10 @@ public class WorkflowTaskManagerUtil {
 			companyId, workflowTaskId);
 	}
 
-	public static List<User> getAssignableUsers(
-			long companyId, long workflowTaskId)
+	public static List<User> getAssignableUsers(long workflowTaskId)
 		throws WorkflowException {
 
-		return _workflowTaskManager.getAssignableUsers(
-			companyId, workflowTaskId);
+		return _workflowTaskManager.getAssignableUsers(workflowTaskId);
 	}
 
 	public static List<String> getNextTransitionNames(
@@ -102,12 +100,10 @@ public class WorkflowTaskManagerUtil {
 			companyId, userId, workflowTaskId);
 	}
 
-	public static List<User> getNotifiableUsers(
-			long companyId, long workflowTaskId)
+	public static List<User> getNotifiableUsers(long workflowTaskId)
 		throws WorkflowException {
 
-		return _workflowTaskManager.getNotifiableUsers(
-			companyId, workflowTaskId);
+		return _workflowTaskManager.getNotifiableUsers(workflowTaskId);
 	}
 
 	public static WorkflowTask getWorkflowTask(
