@@ -173,7 +173,8 @@ public class ObjectValidationRuleResourceImpl
 					ActionKeys.UPDATE, "putObjectValidationRule",
 					ObjectDefinition.class.getName(),
 					serviceBuilderObjectValidationRule.getObjectDefinitionId())
-			).build(), contextAcceptLanguage.getPreferredLocale(),
+			).build(),
+			contextAcceptLanguage.getPreferredLocale(),
 			serviceBuilderObjectValidationRule);
 	}
 
