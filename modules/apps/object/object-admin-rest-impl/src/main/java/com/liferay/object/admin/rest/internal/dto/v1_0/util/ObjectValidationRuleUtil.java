@@ -16,7 +16,9 @@ package com.liferay.object.admin.rest.internal.dto.v1_0.util;
 
 import com.liferay.object.admin.rest.dto.v1_0.ObjectValidationRule;
 import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.portal.kernel.language.LanguageUtil;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -26,6 +28,7 @@ public class ObjectValidationRuleUtil {
 
 	public static ObjectValidationRule toObjectValidationRule(
 		Map<String, Map<String, String>> actions,
+		Locale locale,
 		com.liferay.object.model.ObjectValidationRule
 			serviceBuilderObjectValidationRule) {
 
@@ -41,6 +44,8 @@ public class ObjectValidationRuleUtil {
 				dateModified =
 					serviceBuilderObjectValidationRule.getModifiedDate();
 				engine = serviceBuilderObjectValidationRule.getEngine();
+				engineLabel = LanguageUtil.get(
+					locale, serviceBuilderObjectValidationRule.getEngine());
 				errorLabel = LocalizedMapUtil.getLanguageIdMap(
 					serviceBuilderObjectValidationRule.getErrorLabelMap());
 				id =
