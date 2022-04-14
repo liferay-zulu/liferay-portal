@@ -289,13 +289,6 @@ public class WorkflowTaskUserNotificationHandlerTest {
 				}
 
 				@Override
-				public String getURLEditWorkflowTask(
-					long workflowTaskId, ServiceContext serviceContext) {
-
-					return getNotificationLink(workflowTaskId, serviceContext);
-				}
-
-				@Override
 				public Object updateStatus(int status, Map workflowContext) {
 					return null;
 				}
