@@ -59,7 +59,7 @@ public class CalendarBookingIterator implements Iterator<CalendarBooking> {
 		_recurrenceIterator =
 			RecurrenceIteratorFactory.createRecurrenceIterator(
 				calendarBooking.getRecurrence(),
-				_toDateValue(calendarBooking.getStartTime()), _displayTimeZone);
+				_toDateValue(calendarBooking.getStartTime()), displayTimeZone);
 	}
 
 	@Override
@@ -158,17 +158,17 @@ public class CalendarBookingIterator implements Iterator<CalendarBooking> {
 
 		Date date = DateUtil.parseDate(
 			_DATE_FORMAT, simpleDateFormat.format(new Date(time)),
-			LocaleUtil.getMostRelevantLocale());
+			LocaleUtil.getDefault());
 
 		Calendar jCalendar = JCalendarUtil.getJCalendar(date.getTime());
 
 		return new DateTimeValueImpl(
 			jCalendar.get(Calendar.YEAR), jCalendar.get(Calendar.MONTH) + 1,
-			jCalendar.get(Calendar.DAY_OF_MONTH), jCalendar.get(Calendar.HOUR),
+			jCalendar.get(Calendar.DAY_OF_MONTH), jCalendar.get(Calendar.HOUR_OF_DAY),
 			jCalendar.get(Calendar.MINUTE), jCalendar.get(Calendar.SECOND));
 	}
 
-	private static final String _DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+	private static final String _DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CalendarBookingIterator.class);

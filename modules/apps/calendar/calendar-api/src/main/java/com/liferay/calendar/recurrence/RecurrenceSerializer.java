@@ -195,7 +195,7 @@ public class RecurrenceSerializer {
 			new DateTimeValueImpl(
 				jCalendar.get(Calendar.YEAR), jCalendar.get(Calendar.MONTH) + 1,
 				jCalendar.get(Calendar.DAY_OF_MONTH),
-				jCalendar.get(Calendar.HOUR), jCalendar.get(Calendar.MINUTE),
+				jCalendar.get(Calendar.HOUR_OF_DAY), jCalendar.get(Calendar.MINUTE),
 				jCalendar.get(Calendar.SECOND)),
 			jCalendar.getTimeZone());
 	}
