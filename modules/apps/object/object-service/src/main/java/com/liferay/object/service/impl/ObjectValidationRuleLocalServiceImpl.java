@@ -16,7 +16,6 @@ package com.liferay.object.service.impl;
 
 import com.liferay.object.constants.ObjectValidationRuleConstants;
 import com.liferay.object.exception.ObjectValidationRuleEngineException;
-import com.liferay.object.exception.ObjectValidationRuleExecuteScriptException;
 import com.liferay.object.exception.ObjectValidationRuleNameException;
 import com.liferay.object.exception.ObjectValidationRuleScriptException;
 import com.liferay.object.model.ObjectEntry;
@@ -25,7 +24,6 @@ import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.base.ObjectValidationRuleLocalServiceBaseImpl;
 import com.liferay.object.validation.rule.ObjectValidationRuleEngine;
 import com.liferay.object.validation.rule.ObjectValidationRuleEngineServicesTracker;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -220,19 +218,16 @@ public class ObjectValidationRuleLocalServiceImpl
 						hashMapWrapper.build(),
 						objectValidationRule.getScript());
 
-				if (GetterUtil.getBoolean(results.get("isScriptInvalid"))) {
-					throw new ObjectValidationRuleExecuteScriptException(
-						StringBundler.concat(
-							"The validation \"",
-							objectValidationRule.getName(
-								LocaleUtil.getMostRelevantLocale()),
-							"\" contains an invalid script"));
+				if (GetterUtil.getBoolean(results.get("invalidScript"))) {
+					throw new ObjectValidationRuleEngineException.
+						InvalidScript();
 				}
 
-				if (GetterUtil.getBoolean(results.get("hasInvalidFields"))) {
-					throw new ObjectValidationRuleScriptException(
-						objectValidationRule.getErrorLabel(
-							LocaleUtil.getMostRelevantLocale()));
+				if (GetterUtil.getBoolean(results.get("invalidFields"))) {
+					throw new ObjectValidationRuleEngineException.
+						RequiredBusinessRule(
+							objectValidationRule.getErrorLabel(
+								LocaleUtil.getMostRelevantLocale()));
 				}
 			}
 			else {
@@ -240,7 +235,7 @@ public class ObjectValidationRuleLocalServiceImpl
 						hashMapWrapper.build(),
 						objectValidationRule.getScript())) {
 
-					throw new ObjectValidationRuleScriptException(
+					throw new ObjectValidationRuleEngineException(
 						objectValidationRule.getErrorLabel(
 							LocaleUtil.getMostRelevantLocale()));
 				}
