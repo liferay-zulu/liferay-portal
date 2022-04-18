@@ -30,4 +30,4 @@ while (CalendarUtil.beforeByDay(startCalendar.getTime(), endCalendar.getTime()))
 	yearsBetween++;
 }
 
-hasInvalidFields = (yearsBetween < 18L);
+invalidFields = (yearsBetween < 18L);

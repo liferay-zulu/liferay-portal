@@ -52,15 +52,15 @@ public class GroovyObjectValidationRuleEngineImpl
 			currentThread.setContextClassLoader(classLoader);
 
 			results = _scripting.eval(
-				null, inputObjects, SetUtil.fromArray("hasInvalidFields"),
+				null, inputObjects, SetUtil.fromArray("invalidFields"),
 				ObjectValidationRuleConstants.ENGINE_TYPE_GROOVY, script);
 
-			results.put("isScriptInvalid", false);
+			results.put("invalidScript", false);
 		}
 		catch (Exception exception) {
 			_log.error(exception);
 
-			results.put("isScriptInvalid", true);
+			results.put("invalidScript", true);
 		}
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
