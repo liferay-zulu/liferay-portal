@@ -38,4 +38,24 @@ public class ObjectValidationRuleEngineException extends PortalException {
 		super(throwable);
 	}
 
+	public static class InvalidScript
+		extends ObjectValidationRuleEngineException {
+
+		public InvalidScript() {
+			super(
+				"There was an unexpected error in fields validation. Please " +
+					"contact support.");
+		}
+
+	}
+
+	public static class RequiredBusinessRule
+		extends ObjectValidationRuleEngineException {
+
+		public RequiredBusinessRule(String errorLabel) {
+			super(errorLabel);
+		}
+
+	}
+
 }
