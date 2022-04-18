@@ -47,4 +47,19 @@ type ObjectFieldSettingName =
 	| 'maxLength'
 	| 'showCounter'
 	| 'showFilesInDocumentsAndMedia'
-	| 'storageDLFolderPath';
+	| 'storageDLFolderPath'
+	| 'showCounter';
+
+interface ObjectValidation {
+	active: boolean;
+	description?: string;
+	engine: ObjectValidationType;
+	errorLabel: LocalizedValue<string>;
+	id: number;
+	name: any;
+	script: string;
+}
+
+interface ObjectValidationType {
+	label: string;
+}
