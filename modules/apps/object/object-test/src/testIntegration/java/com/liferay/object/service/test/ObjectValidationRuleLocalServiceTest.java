@@ -72,9 +72,6 @@ public class ObjectValidationRuleLocalServiceTest {
 
 	@Test
 	public void testAddObjectValidationRule() throws Exception {
-
-		// Engine "abcdefghijklmnopqrstuvwxyz" does not exist
-
 		try {
 			_testAddObjectValidationRule(
 				"abcdefghijklmnopqrstuvwxyz", "Test",
@@ -82,15 +79,13 @@ public class ObjectValidationRuleLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (ObjectValidationRuleEngineException
+		catch (ObjectValidationRuleEngineException.NoSuchEngine
 					objectValidationRuleEngineException) {
 
 			Assert.assertEquals(
-				"Engine \"abcdefghijklmnopqrstuvwxyz\" does not exist",
+				"No such engine \"abcdefghijklmnopqrstuvwxyz\"",
 				objectValidationRuleEngineException.getMessage());
 		}
-
-		// Engine is null
 
 		try {
 			_testAddObjectValidationRule(
@@ -98,11 +93,11 @@ public class ObjectValidationRuleLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (ObjectValidationRuleEngineException
+		catch (ObjectValidationRuleEngineException.MustNotBeNull
 					objectValidationRuleEngineException) {
 
 			Assert.assertEquals(
-				"Engine is null",
+				"Engine must not be null",
 				objectValidationRuleEngineException.getMessage());
 		}
 
@@ -131,11 +126,11 @@ public class ObjectValidationRuleLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (ObjectValidationRuleScriptException
+		catch (ObjectValidationRuleScriptException.MustNotBeNull
 					objectValidationRuleScriptException) {
 
 			Assert.assertEquals(
-				"Script is null",
+				"Script must not be null",
 				objectValidationRuleScriptException.getMessage());
 		}
 

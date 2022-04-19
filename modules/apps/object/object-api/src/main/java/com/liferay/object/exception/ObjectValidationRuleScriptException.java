@@ -21,21 +21,28 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public class ObjectValidationRuleScriptException extends PortalException {
 
-	public ObjectValidationRuleScriptException() {
-	}
-
 	public ObjectValidationRuleScriptException(String msg) {
 		super(msg);
 	}
 
-	public ObjectValidationRuleScriptException(
-		String msg, Throwable throwable) {
+	public static class InvalidScript
+		extends ObjectValidationRuleScriptException {
 
-		super(msg, throwable);
+		public InvalidScript() {
+			super(
+				"There was an unexpected error in fields validation. Please " +
+					"contact support.");
+		}
+
 	}
 
-	public ObjectValidationRuleScriptException(Throwable throwable) {
-		super(throwable);
+	public static class MustNotBeNull
+		extends ObjectValidationRuleScriptException {
+
+		public MustNotBeNull() {
+			super("Script must not be null");
+		}
+
 	}
 
 }

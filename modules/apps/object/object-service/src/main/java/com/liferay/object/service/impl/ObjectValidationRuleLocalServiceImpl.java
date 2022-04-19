@@ -219,7 +219,7 @@ public class ObjectValidationRuleLocalServiceImpl
 						objectValidationRule.getScript());
 
 				if (GetterUtil.getBoolean(results.get("invalidScript"))) {
-					throw new ObjectValidationRuleEngineException.
+					throw new ObjectValidationRuleScriptException.
 						InvalidScript();
 				}
 
@@ -235,9 +235,10 @@ public class ObjectValidationRuleLocalServiceImpl
 						hashMapWrapper.build(),
 						objectValidationRule.getScript())) {
 
-					throw new ObjectValidationRuleEngineException(
-						objectValidationRule.getErrorLabel(
-							LocaleUtil.getMostRelevantLocale()));
+					throw new ObjectValidationRuleEngineException.
+						RequiredBusinessRule(
+							objectValidationRule.getErrorLabel(
+								LocaleUtil.getMostRelevantLocale()));
 				}
 			}
 		}
@@ -245,7 +246,7 @@ public class ObjectValidationRuleLocalServiceImpl
 
 	private void _validateEngine(String engine) throws PortalException {
 		if (Validator.isNull(engine)) {
-			throw new ObjectValidationRuleEngineException("Engine is null");
+			throw new ObjectValidationRuleEngineException.MustNotBeNull();
 		}
 
 		ObjectValidationRuleEngine objectValidationRuleEngine =
@@ -253,8 +254,7 @@ public class ObjectValidationRuleLocalServiceImpl
 				getObjectValidationRuleEngine(engine);
 
 		if (objectValidationRuleEngine == null) {
-			throw new ObjectValidationRuleEngineException(
-				"Engine \"" + engine + "\" does not exist");
+			throw new ObjectValidationRuleEngineException.NoSuchEngine(engine);
 		}
 	}
 
@@ -271,7 +271,7 @@ public class ObjectValidationRuleLocalServiceImpl
 
 	private void _validateScript(String script) throws PortalException {
 		if (Validator.isNull(script)) {
-			throw new ObjectValidationRuleScriptException("Script is null");
+			throw new ObjectValidationRuleScriptException.MustNotBeNull();
 		}
 	}
 

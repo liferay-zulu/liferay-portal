@@ -21,30 +21,24 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public class ObjectValidationRuleEngineException extends PortalException {
 
-	public ObjectValidationRuleEngineException() {
-	}
-
 	public ObjectValidationRuleEngineException(String msg) {
 		super(msg);
 	}
 
-	public ObjectValidationRuleEngineException(
-		String msg, Throwable throwable) {
-
-		super(msg, throwable);
-	}
-
-	public ObjectValidationRuleEngineException(Throwable throwable) {
-		super(throwable);
-	}
-
-	public static class InvalidScript
+	public static class MustNotBeNull
 		extends ObjectValidationRuleEngineException {
 
-		public InvalidScript() {
-			super(
-				"There was an unexpected error in fields validation. Please " +
-					"contact support.");
+		public MustNotBeNull() {
+			super("Engine must not be null");
+		}
+
+	}
+
+	public static class NoSuchEngine
+		extends ObjectValidationRuleEngineException {
+
+		public NoSuchEngine(String engine) {
+			super("No such engine \"" + engine + "\"");
 		}
 
 	}
