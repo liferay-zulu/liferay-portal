@@ -39,6 +39,7 @@ export declare type TObjectColumn = {
 	sortOrder?: string;
 	type?: string;
 	value?: string;
+	valueList?: string[];
 };
 export declare type TObjectViewColumn = {
 	fieldLabel: string;
@@ -55,11 +56,13 @@ export declare type TObjectViewSortColumn = {
 	sortOrder?: string;
 };
 export declare type TObjectViewFilterColumn = {
+	fieldLabel: string;
 	filterBy: string;
 	label: TName;
 	objectFieldName: string;
 	type: string;
-	value: string;
+	value?: string;
+	valueList?: string[];
 };
 export declare type TObjectView = {
 	defaultObjectView: boolean;
