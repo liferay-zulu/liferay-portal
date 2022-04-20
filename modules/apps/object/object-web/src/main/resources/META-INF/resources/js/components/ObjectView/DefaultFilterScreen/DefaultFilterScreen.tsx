@@ -33,9 +33,12 @@ export function DefaultFilterScreen() {
 				),
 				title: Liferay.Language.get('no-filter-was-created-yet'),
 			}}
+			firstColumnHeader={Liferay.Language.get('filter-by')}
 			objectColumns={objectViewFilterColumns ?? []}
 			onVisibleEditModal={setVisibleModal}
 			onVisibleModal={setVisibleModal}
+			secondColumnHeader={Liferay.Language.get('type')}
+			thirdColumnHeader={Liferay.Language.get('value')}
 			title={Liferay.Language.get('default-filters')}
 		/>
 	);
