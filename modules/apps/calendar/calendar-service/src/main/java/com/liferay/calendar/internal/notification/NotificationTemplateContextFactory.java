@@ -99,8 +99,7 @@ public class NotificationTemplateContextFactory {
 
 		// Attributes
 
-		Format userDateTimeFormat = _getUserDateTimeFormat(
-			calendarBooking, user);
+		Format userDateTimeFormat = _getUserDateTimeFormat(user);
 
 		String userTimezoneDisplayName = _getUserTimezoneDisplayName(user);
 
@@ -280,14 +279,8 @@ public class NotificationTemplateContextFactory {
 		return company.getPortalURL(groupId);
 	}
 
-	private static Format _getUserDateTimeFormat(
-		CalendarBooking calendarBooking, User user) {
-
+	private static Format _getUserDateTimeFormat(User user) {
 		TimeZone userTimeZone = user.getTimeZone();
-
-		if ((calendarBooking != null) && calendarBooking.isAllDay()) {
-			userTimeZone = TimeZone.getTimeZone(StringPool.UTC);
-		}
 
 		return FastDateFormatFactoryUtil.getDateTime(
 			user.getLocale(), userTimeZone);
