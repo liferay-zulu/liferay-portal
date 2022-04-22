@@ -98,7 +98,7 @@ public class ObjectDefinitionsValidationsDisplayContext
 				).flatMap(
 					List::stream
 				).map(
-					field -> HashMapBuilder.<String, Object>put(
+					field -> HashMapBuilder.put(
 						"content", field.getName()
 					).put(
 						"label", field.getLabel(objectRequestHelper.getLocale())
@@ -139,10 +139,35 @@ public class ObjectDefinitionsValidationsDisplayContext
 					"items",
 					Arrays.asList(
 						_createObjectValidationElementItem(
+							"concat(parameters)", "concat"),
+						_createObjectValidationElementItem(
 							"contains(field_reference, parameter)", "contains"),
 						_createObjectValidationElementItem(
 							"NOT(contains(field_reference, parameter))",
 							"does-not-contain"),
+						_createObjectValidationElementItem(
+							"futureDates(field_reference, parameter)",
+							"future-dates"),
+						_createObjectValidationElementItem(
+							"isDecimal(parameter)", "is-decimal"),
+						_createObjectValidationElementItem(
+							"isEmpty(parameter)", "is-empty"),
+						_createObjectValidationElementItem(
+							"field_reference == parameter", "is-equal-to"),
+						_createObjectValidationElementItem(
+							"field_reference > parameter", "is-greater-than"),
+						_createObjectValidationElementItem(
+							"field_reference >= parameter",
+							"is-greater-than-or-equal-to"),
+						_createObjectValidationElementItem(
+							"isInteger(parameter)", "is-integer"),
+						_createObjectValidationElementItem(
+							"field_reference < parameter", "is-less-than"),
+						_createObjectValidationElementItem(
+							"field_reference <= parameter",
+							"is-less-than-or-equal-to"),
+						_createObjectValidationElementItem(
+							"field_reference != parameter", "is-not-equal-to"),
 						_createObjectValidationElementItem(
 							"isURL(field_reference)", "is-a-url"),
 						_createObjectValidationElementItem(
@@ -150,43 +175,14 @@ public class ObjectDefinitionsValidationsDisplayContext
 						_createObjectValidationElementItem(
 							"match(field_reference, parameter)", "matches"),
 						_createObjectValidationElementItem(
-							"field_reference == parameter", "is-equal-to"),
-						_createObjectValidationElementItem(
-							"field_reference != parameter", "is-not-equal-to"),
-						_createObjectValidationElementItem(
-							"isEmpty(parameter)", "is-empty"),
-						_createObjectValidationElementItem(
-							"concat(parameters)", "concat"),
-						_createObjectValidationElementItem(
-							"field_reference == parameter", "is-equal-to"),
-						_createObjectValidationElementItem(
-							"field_reference != parameter", "is-not-equal-to"),
-						_createObjectValidationElementItem(
-							"field_reference > parameter", "is-greater-than"),
-						_createObjectValidationElementItem(
-							"field_reference >= parameter",
-							"is-greater-than-or-equal-to"),
-						_createObjectValidationElementItem(
-							"field_reference < parameter", "is-less-than"),
-						_createObjectValidationElementItem(
-							"field_reference <= parameter",
-							"is-less-than-or-equal-to"),
-						_createObjectValidationElementItem(
-							"isDecimal(parameter)", "is-decimal"),
-						_createObjectValidationElementItem(
-							"isInteger(parameter)", "is-integer"),
-						_createObjectValidationElementItem(
-							"sum(parameter)", "sum"),
-						_createObjectValidationElementItem(
-							"futureDates(field_reference, parameter)",
-							"future-dates"),
-						_createObjectValidationElementItem(
 							"pastDates(field_reference, parameter)",
 							"past-dates"),
 						_createObjectValidationElementItem(
 							"futureDates(name, startsFrom, date, unit, " +
 								"quantity, endsOn, date, unit, quantity)",
-							"range"))
+							"range"),
+						_createObjectValidationElementItem(
+							"sum(parameter)", "sum"))
 				).put(
 					"label", "Functions"
 				).build());
@@ -269,10 +265,10 @@ public class ObjectDefinitionsValidationsDisplayContext
 		};
 	}
 
-	private HashMap<String, Object> _createObjectValidationElementItem(
+	private HashMap<String, String> _createObjectValidationElementItem(
 		String content, String key) {
 
-		return HashMapBuilder.<String, Object>put(
+		return HashMapBuilder.put(
 			"content", content
 		).put(
 			"label", LanguageUtil.get(objectRequestHelper.getLocale(), key)
