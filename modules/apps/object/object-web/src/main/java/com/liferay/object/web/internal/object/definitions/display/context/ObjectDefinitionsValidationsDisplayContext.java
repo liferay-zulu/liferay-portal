@@ -14,7 +14,6 @@
 
 package com.liferay.object.web.internal.object.definitions.display.context;
 
-import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunctionTracker;
 import com.liferay.frontend.data.set.model.FDSActionDropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.object.model.ObjectDefinition;
@@ -51,13 +50,11 @@ public class ObjectDefinitionsValidationsDisplayContext
 		HttpServletRequest httpServletRequest,
 		ModelResourcePermission<ObjectDefinition>
 			objectDefinitionModelResourcePermission,
-		DDMExpressionFunctionTracker ddmExpressionFunctionTracker,
 		ObjectValidationRuleEngineServicesTracker
 			objectValidationRuleEngineServicesTracker) {
 
 		super(httpServletRequest, objectDefinitionModelResourcePermission);
 
-		_ddmExpressionFunctionTracker = ddmExpressionFunctionTracker;
 		_objectValidationRuleEngineServicesTracker =
 			objectValidationRuleEngineServicesTracker;
 	}
@@ -101,9 +98,13 @@ public class ObjectDefinitionsValidationsDisplayContext
 				).flatMap(
 					List::stream
 				).map(
-					field -> _createObjectValidationElementItem(
-						field.getName(),
-						field.getLabel(objectRequestHelper.getLocale()))
+					field -> HashMapBuilder.<String, Object>put(
+						"content", field.getName()
+					).put(
+						"label", field.getLabel(objectRequestHelper.getLocale())
+					).put(
+						"tooltip", "placeholder"
+					).build()
 				).collect(
 					Collectors.toList()
 				)
@@ -117,36 +118,20 @@ public class ObjectDefinitionsValidationsDisplayContext
 				HashMapBuilder.<String, Object>put(
 					"items",
 					Arrays.asList(
+						_createObjectValidationElementItem("AND", "and"),
+						_createObjectValidationElementItem("OR", "or"),
 						_createObjectValidationElementItem(
-							"AND",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "and")),
+							"field_reference + field_reference2", "plus"),
 						_createObjectValidationElementItem(
-							"OR",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "or")),
+							"field_reference - field_reference2", "minus"),
 						_createObjectValidationElementItem(
-							"field_reference + field_reference2",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "plus")),
+							"field_reference / field_reference2", "divided-by"),
 						_createObjectValidationElementItem(
-							"field_reference - field_reference2",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "minus")),
-						_createObjectValidationElementItem(
-							"field_reference / field_reference2",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "divided-by")),
-						_createObjectValidationElementItem(
-							"field_reference * field_reference2",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "times")),
+							"field_reference * field_reference2", "times"),
 						_createObjectValidationElementItem(
 							"field_reference = field_reference - " +
 								"field_reference2",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"equals-or-atribute")))
+							"equals-or-atribute"))
 				).put(
 					"label", "Operators"
 				).build(),
@@ -154,101 +139,54 @@ public class ObjectDefinitionsValidationsDisplayContext
 					"items",
 					Arrays.asList(
 						_createObjectValidationElementItem(
-							"contains(field_reference, \"parameter\")",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "contains")),
+							"contains(field_reference, parameter)", "contains"),
 						_createObjectValidationElementItem(
-							"NOT(contains(field_reference, \"parameter\"))",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"does-not-contain")),
+							"NOT(contains(field_reference, parameter))",
+							"does-not-contain"),
 						_createObjectValidationElementItem(
-							"isURL(field_reference)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "is-a-url")),
+							"isURL(field_reference)", "is-a-url"),
 						_createObjectValidationElementItem(
-							"isEmailAddress(field_reference)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"is-an-email")),
+							"isEmailAddress(field_reference)", "is-an-email"),
 						_createObjectValidationElementItem(
-							"match(field_reference, \"parameter\")",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "matches")),
+							"match(field_reference, parameter)", "matches"),
 						_createObjectValidationElementItem(
-							"field_reference == parameter",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"is-equal-to")),
+							"field_reference == parameter", "is-equal-to"),
 						_createObjectValidationElementItem(
-							"field_reference != parameter",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"is-not-equal-to")),
+							"field_reference != parameter", "is-not-equal-to"),
 						_createObjectValidationElementItem(
-							"isEmpty(parameter)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "is-empty")),
+							"isEmpty(parameter)", "is-empty"),
 						_createObjectValidationElementItem(
-							"concat(parameters)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "concat")),
+							"concat(parameters)", "concat"),
 						_createObjectValidationElementItem(
-							"field_reference == parameter",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"is-equal-to")),
+							"field_reference == parameter", "is-equal-to"),
 						_createObjectValidationElementItem(
-							"field_reference != parameter",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"is-not-equal-to")),
+							"field_reference != parameter", "is-not-equal-to"),
 						_createObjectValidationElementItem(
-							"field_reference > parameter",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"is-greater-than")),
+							"field_reference > parameter", "is-greater-than"),
 						_createObjectValidationElementItem(
 							"field_reference >= parameter",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"is-greater-than-or-equal-to")),
+							"is-greater-than-or-equal-to"),
 						_createObjectValidationElementItem(
-							"field_reference < parameter",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"is-less-than")),
+							"field_reference < parameter", "is-less-than"),
 						_createObjectValidationElementItem(
 							"field_reference <= parameter",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"is-less-than-or-equal-to")),
+							"is-less-than-or-equal-to"),
 						_createObjectValidationElementItem(
-							"isDecimal(parameter)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "is-decimal")),
+							"isDecimal(parameter)", "is-decimal"),
 						_createObjectValidationElementItem(
-							"isInteger(parameter)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "is-integer")),
+							"isInteger(parameter)", "is-integer"),
 						_createObjectValidationElementItem(
-							"sum(parameter)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "sum")),
+							"sum(parameter)", "sum"),
 						_createObjectValidationElementItem(
 							"futureDates(field_reference, parameter)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(),
-								"future-dates")),
+							"future-dates"),
 						_createObjectValidationElementItem(
 							"pastDates(field_reference, parameter)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "past-dates")),
+							"past-dates"),
 						_createObjectValidationElementItem(
 							"futureDates(name, startsFrom, date, unit, " +
 								"quantity, endsOn, date, unit, quantity)",
-							LanguageUtil.get(
-								objectRequestHelper.getLocale(), "range")))
+							"range"))
 				).put(
 					"label", "Functions"
 				).build());
@@ -332,18 +270,17 @@ public class ObjectDefinitionsValidationsDisplayContext
 	}
 
 	private HashMap<String, Object> _createObjectValidationElementItem(
-		String content, String label) {
+		String content, String key) {
 
 		return HashMapBuilder.<String, Object>put(
 			"content", content
 		).put(
-			"label", label
+			"label", LanguageUtil.get(objectRequestHelper.getLocale(), key)
 		).put(
 			"tooltip", "placeholder"
 		).build();
 	}
 
-	private final DDMExpressionFunctionTracker _ddmExpressionFunctionTracker;
 	private final ObjectValidationRuleEngineServicesTracker
 		_objectValidationRuleEngineServicesTracker;
 

@@ -73,7 +73,6 @@ public class EditObjectValidationRuleMVCRenderCommand
 				new ObjectDefinitionsValidationsDisplayContext(
 					_portal.getHttpServletRequest(renderRequest),
 					_objectDefinitionModelResourcePermission,
-					_ddmExpressionFunctionTracker,
 					_objectValidationRuleEngineServicesTracker));
 		}
 		catch (PortalException portalException) {
