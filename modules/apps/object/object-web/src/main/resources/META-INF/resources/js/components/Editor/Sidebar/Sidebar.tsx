@@ -40,7 +40,7 @@ export default function Sidebar({
 		label: metadata.label[defaultLanguageId],
 		tooltip: 'placeholder',
 	}));
-
+	
 	const memoizedValue = useMemo(
 		() => objectValidationRuleElements[0].items.concat(metadatas),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
