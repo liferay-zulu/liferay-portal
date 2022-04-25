@@ -14,15 +14,18 @@
 
 package com.liferay.portal.workflow.kaleo.internal.search.spi.model.query.contributor;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.WildcardQuery;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.search.generic.WildcardQueryImpl;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -131,19 +134,29 @@ public class KaleoInstanceModelPreFilterContributor
 			return;
 		}
 
-		BooleanQuery booleanQuery = new BooleanQueryImpl();
-
-		try {
-			booleanQuery.addTerm(
+		if (assetTitle.contains(StringPool.STAR)) {
+			WildcardQuery wildcardQuery = new WildcardQueryImpl(
 				LocalizationUtil.getLocalizedName(
 					"assetTitle", searchContext.getLanguageId()),
 				assetTitle);
-		}
-		catch (ParseException parseException) {
-			throw new RuntimeException(parseException);
-		}
 
-		booleanFilter.add(new QueryFilter(booleanQuery));
+			booleanFilter.add(new QueryFilter(wildcardQuery));
+		}
+		else {
+			BooleanQuery booleanQuery = new BooleanQueryImpl();
+
+			try {
+				booleanQuery.addTerm(
+					LocalizationUtil.getLocalizedName(
+						"assetTitle", searchContext.getLanguageId()),
+					assetTitle);
+			}
+			catch (ParseException parseException) {
+				throw new RuntimeException(parseException);
+			}
+
+			booleanFilter.add(new QueryFilter(booleanQuery));
+		}
 	}
 
 	protected void appendClassNameIdsTerm(
