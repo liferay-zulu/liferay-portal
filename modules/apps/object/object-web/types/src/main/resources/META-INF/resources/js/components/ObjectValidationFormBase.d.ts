@@ -12,11 +12,13 @@
  * details.
  */
 
+import {ObjectValidation, ObjectValidationType} from '..';
 import React, {ChangeEventHandler, ReactNode} from 'react';
 import {FormError} from '../hooks/useForm';
 export default function ObjectValidationFormBase({
 	children,
 	disabled,
+	handleChange,
 	objectValidationTypes,
 	setValues,
 	values,
