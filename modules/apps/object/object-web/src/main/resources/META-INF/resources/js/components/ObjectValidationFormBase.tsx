@@ -12,7 +12,8 @@
  * details.
  */
 
-import {ClayToggle} from '@clayui/form';
+import {ObjectValidation, ObjectValidationType} from '..';
+import ClayForm, {ClayInput, ClayToggle} from '@clayui/form';
 import React, {ChangeEventHandler, ReactNode} from 'react';
 
 import useForm, {FormError, invalidateRequired} from '../hooks/useForm';
@@ -25,6 +26,7 @@ const defaultLanguageId = Liferay.ThemeDisplay.getDefaultLanguageId() as Liferay
 export default function ObjectValidationFormBase({
 	children,
 	disabled,
+	handleChange,
 	objectValidationTypes,
 	setValues,
 	values,
@@ -37,6 +39,20 @@ export default function ObjectValidationFormBase({
 				options={objectValidationTypes}
 				value="Groovy"
 			/>
+
+			<ClayForm.Group>
+				<label htmlFor="description">
+					{Liferay.Language.get('description')}
+				</label>
+
+				<ClayInput
+					component="textarea"
+					disabled={disabled}
+					id="description"
+					onChange={handleChange}
+					type="text"
+				/>
+			</ClayForm.Group>
 
 			{children}
 			<ClayToggle
@@ -81,12 +97,10 @@ export function useObjectValidationForm({
 
 	return {errors, handleChange, handleSubmit, setValues, values};
 }
-
 interface IUseObjectValidationForm {
 	initialValues: Partial<ObjectValidation>;
 	onSubmit: (validation: ObjectValidation) => void;
 }
-
 interface IProps {
 	children?: ReactNode;
 	disabled: boolean;
