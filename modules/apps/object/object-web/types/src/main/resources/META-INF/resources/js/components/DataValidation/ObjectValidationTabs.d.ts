@@ -14,6 +14,8 @@
 
 import {ChangeEventHandler} from 'react';
 import {ObjectValidationErrors} from '../ObjectValidationFormBase';
+import '../Editor/Editor.scss';
+import {ObjectValidation, ObjectValidationRuleElement} from '../..';
 declare function BasicInfo({
 	componentLabel,
 	defaultLocale,
@@ -29,6 +31,7 @@ declare function Conditions({
 	disabled,
 	errors,
 	locales,
+	objectValidationRuleElements,
 	setValues,
 	values,
 }: IConditions): JSX.Element;
@@ -54,6 +57,7 @@ interface IConditions {
 	errors: ObjectValidationErrors;
 	handleChange: ChangeEventHandler<HTMLInputElement>;
 	locales: Array<any>;
+	objectValidationRuleElements: ObjectValidationRuleElement[];
 	setValues: (values: Partial<ObjectValidation>) => void;
 	values: Partial<ObjectValidation>;
 }
