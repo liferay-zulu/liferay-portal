@@ -31,6 +31,8 @@ ObjectView objectView = (ObjectView)request.getAttribute(ObjectWebKeys.OBJECT_VI
 				"isViewOnly", !objectDefinitionsViewsDisplayContext.hasUpdateObjectDefinitionPermission()
 			).put(
 				"objectViewId", objectView.getObjectViewId()
+			).put(
+				"workflowStatusJSONArray", objectDefinitionsViewsDisplayContext.getWorkflowStatusJSONArray()
 			).build()
 		%>'
 	/>
