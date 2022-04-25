@@ -17,6 +17,7 @@ import ClayTabs from '@clayui/tabs';
 import {fetch} from 'frontend-js-web';
 import React, {useState} from 'react';
 
+import {ObjectValidation, ObjectValidationRuleElement} from '../';
 import {BasicInfo, Conditions} from './DataValidation/ObjectValidationTabs';
 import {useObjectValidationForm} from './ObjectValidationFormBase';
 import SidePanelContent from './SidePanelContent';
@@ -56,6 +57,7 @@ function closeSidePanel() {
 
 export default function EditObjectValidation({
 	objectValidationRule: initialValues,
+	objectValidationRuleElements,
 	readOnly,
 }: IProps) {
 	const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -125,6 +127,9 @@ export default function EditObjectValidation({
 									errors={errors}
 									handleChange={handleChange}
 									locales={locales}
+									objectValidationRuleElements={
+										objectValidationRuleElements
+									}
 									setValues={setValues}
 									values={values}
 								/>
@@ -154,5 +159,6 @@ export default function EditObjectValidation({
 
 interface IProps {
 	objectValidationRule: ObjectValidation;
+	objectValidationRuleElements: ObjectValidationRuleElement[];
 	readOnly: boolean;
 }
