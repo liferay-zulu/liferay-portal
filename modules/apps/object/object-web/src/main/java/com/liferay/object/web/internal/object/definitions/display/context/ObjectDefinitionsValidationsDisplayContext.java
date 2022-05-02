@@ -218,6 +218,7 @@ public class ObjectDefinitionsValidationsDisplayContext
 
 	private enum DDMExpressionFunction {
 
+		COMPARE_DATES("compareDates(field_name, parameter)", "compare-dates"),
 		CONCAT("concat(parameters)", "concat"),
 		CONTAINS("contains(field_name, parameter)", "contains"),
 		DOES_NOT_CONTAIN(
