@@ -20,9 +20,13 @@ package com.liferay.portal.kernel.workflow;
  */
 public class WorkflowConstants {
 
+	public static final int ACTION_ASSIGN_TASK = 3;
+
 	public static final int ACTION_PUBLISH = 1;
 
 	public static final int ACTION_SAVE_DRAFT = 2;
+
+	public static final int ACTION_VIEW_TASK_NOTIFICATION = 4;
 
 	public static final String CONTEXT_COMMAND = "command";
 
