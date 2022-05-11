@@ -101,6 +101,29 @@ public class WorkflowTaskManagerUtil {
 		return _workflowTaskManager.getNextTransitionNames(
 			companyId, userId, workflowTaskId);
 	}
+	
+	public static List<User> getNotifiableUsers(
+			long workflowTaskId)
+		throws WorkflowException {
+
+		return _workflowTaskManager.getNotifiableUsers(
+			workflowTaskId);
+	}
+	
+	public static boolean isAllowedToViewTaskUser(
+			long userId, long workflowTaskId) 
+		throws WorkflowException {
+
+		List<User> notifiableUsers = getNotifiableUsers(workflowTaskId);
+
+		for (User user : notifiableUsers) {
+			if (user.getUserId() == userId) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	public static WorkflowTask getWorkflowTask(
 			long companyId, long workflowTaskId)
