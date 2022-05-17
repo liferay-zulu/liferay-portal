@@ -52,6 +52,7 @@ import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -126,7 +127,9 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					objectDefinition.getObjectDefinitionId(),
 					objectEntry.getProperties(),
 					dtoConverterContext.getLocale()),
-				new ServiceContext()));
+				_createServiceContext(
+					objectEntry.getProperties(),
+					dtoConverterContext.getUserId())));
 	}
 
 	@Override
@@ -540,7 +543,9 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					serviceBuilderObjectEntry.getObjectDefinitionId(),
 					objectEntry.getProperties(),
 					dtoConverterContext.getLocale()),
-				new ServiceContext()));
+				_createServiceContext(
+					objectEntry.getProperties(),
+					dtoConverterContext.getUserId())));
 	}
 
 	private void _checkObjectEntryObjectDefinitionId(
@@ -553,6 +558,29 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 			throw new NoSuchObjectEntryException();
 		}
+	}
+
+	private ServiceContext _createServiceContext(
+		Map<String, Object> properties, long userId) {
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		if (properties.get("categoryIds") != null) {
+			serviceContext.setAssetCategoryIds(
+				ListUtil.toLongArray(
+					(List<String>)properties.get("categoryIds"),
+					Long::parseLong));
+		}
+
+		if (properties.get("tagNames") != null) {
+			serviceContext.setAssetTagNames(
+				ArrayUtil.toStringArray(
+					(List<String>)properties.get("tagNames")));
+		}
+
+		serviceContext.setUserId(userId);
+
+		return serviceContext;
 	}
 
 	private long _getGroupId(
