@@ -72,6 +72,11 @@ public class ExportImportObjectDefinitionTest {
 
 	@Test
 	public void testExportImportObjectDefinition() throws Exception {
+		PropsUtil.addProperties(
+			UnicodePropertiesBuilder.setProperty(
+				"feature.flag.LPS-149014", "true"
+			).build());
+
 		ObjectDefinition objectDefinition = _importObjectDefinition();
 
 		MockLiferayResourceResponse mockLiferayResourceResponse =
@@ -98,6 +103,11 @@ public class ExportImportObjectDefinitionTest {
 
 		_objectDefinitionResource.deleteObjectDefinition(
 			objectDefinition.getId());
+
+		PropsUtil.addProperties(
+			UnicodePropertiesBuilder.setProperty(
+				"feature.flag.LPS-149014", "false"
+			).build());
 	}
 
 	private MockLiferayPortletActionRequest
