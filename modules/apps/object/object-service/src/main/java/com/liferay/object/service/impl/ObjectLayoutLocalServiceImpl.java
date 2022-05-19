@@ -42,6 +42,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
@@ -567,6 +569,10 @@ public class ObjectLayoutLocalServiceImpl
 				throw new DefaultObjectLayoutException(
 					"There can only be one default object layout");
 			}
+		}
+
+		if (!GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-149014"))) {
+			return;
 		}
 
 		int countObjectLayoutBoxCategorizationType = 0;
