@@ -16,8 +16,8 @@ package com.liferay.object.internal.action.executor;
 
 import com.liferay.object.action.executor.ObjectActionExecutor;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
+import com.liferay.object.runtime.scripting.executor.GroovyScriptingExecutor;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.scripting.Scripting;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.util.HashMap;
@@ -45,7 +45,9 @@ public class GroovyObjectActionExecutorImpl implements ObjectActionExecutor {
 			inputObjects.put(key, payloadJSONObject.get(key));
 		}
 
-		_execute(inputObjects, parametersUnicodeProperties.get("script"));
+		_groovyScriptingExecutor.execute(
+			inputObjects, new HashSet<>(),
+			parametersUnicodeProperties.get("script"));
 	}
 
 	@Override
@@ -53,29 +55,7 @@ public class GroovyObjectActionExecutorImpl implements ObjectActionExecutor {
 		return ObjectActionExecutorConstants.KEY_GROOVY;
 	}
 
-	private void _execute(Map<String, Object> inputObjects, String script)
-		throws Exception {
-
-		Thread currentThread = Thread.currentThread();
-
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-		Class<?> clazz = getClass();
-
-		ClassLoader classLoader = clazz.getClassLoader();
-
-		try {
-			currentThread.setContextClassLoader(classLoader);
-
-			_scripting.eval(
-				null, inputObjects, new HashSet<>(), "groovy", script);
-		}
-		finally {
-			currentThread.setContextClassLoader(contextClassLoader);
-		}
-	}
-
 	@Reference
-	private Scripting _scripting;
+	private GroovyScriptingExecutor _groovyScriptingExecutor;
 
 }
