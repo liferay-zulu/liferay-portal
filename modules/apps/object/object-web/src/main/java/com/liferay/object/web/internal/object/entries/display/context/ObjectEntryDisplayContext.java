@@ -38,7 +38,9 @@ import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.criteria.InfoItemItemSelectorReturnType;
 import com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion;
+import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
+import com.liferay.object.constants.ObjectLayoutBoxConstants;
 import com.liferay.object.exception.NoSuchObjectLayoutException;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
 import com.liferay.object.field.business.type.ObjectFieldBusinessTypeServicesTracker;
@@ -256,6 +258,38 @@ public class ObjectEntryDisplayContext {
 
 			return null;
 		}
+	}
+
+	public ObjectLayoutBox getObjectLayoutBoxCategorization()
+		throws PortalException {
+
+		ObjectDefinition objectDefinition = getObjectDefinition();
+
+		if (!StringUtil.equals(
+				objectDefinition.getStorageType(),
+				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT)) {
+
+			return null;
+		}
+
+		ObjectLayoutTab objectLayoutTab = getObjectLayoutTab();
+
+		if (objectLayoutTab == null) {
+			return null;
+		}
+
+		for (ObjectLayoutBox objectLayoutBox :
+				objectLayoutTab.getObjectLayoutBoxes()) {
+
+			if (StringUtil.equals(
+					objectLayoutBox.getType(),
+					ObjectLayoutBoxConstants.TYPE_CATEGORIZATION)) {
+
+				return objectLayoutBox;
+			}
+		}
+
+		return null;
 	}
 
 	public ObjectLayoutTab getObjectLayoutTab() throws PortalException {
