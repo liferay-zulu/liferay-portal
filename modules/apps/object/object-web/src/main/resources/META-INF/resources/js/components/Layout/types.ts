@@ -34,7 +34,7 @@ export type TObjectLayoutBox = {
 	name: TName;
 	objectLayoutRows: TObjectLayoutRow[];
 	priority: number;
-	type: string;
+	type: 'categorization' | 'regular';
 };
 
 export type TObjectLayoutRow = {

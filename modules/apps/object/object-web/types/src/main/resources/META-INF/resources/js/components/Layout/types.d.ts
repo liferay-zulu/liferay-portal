@@ -27,11 +27,11 @@ export declare type TObjectLayoutTab = {
 	priority: number;
 };
 export declare type TObjectLayoutBox = {
-	boxType: string;
 	collapsable: boolean;
 	name: TName;
 	objectLayoutRows: TObjectLayoutRow[];
 	priority: number;
+	type: 'categorization' | 'regular';
 };
 export declare type TObjectLayoutRow = {
 	objectLayoutColumns: TObjectLayoutColumn[];
