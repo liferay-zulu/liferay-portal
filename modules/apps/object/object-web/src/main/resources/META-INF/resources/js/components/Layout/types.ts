@@ -30,11 +30,11 @@ export type TObjectLayoutTab = {
 };
 
 export type TObjectLayoutBox = {
-	boxType: string;
 	collapsable: boolean;
 	name: TName;
 	objectLayoutRows: TObjectLayoutRow[];
 	priority: number;
+	type: string;
 };
 
 export type TObjectLayoutRow = {
