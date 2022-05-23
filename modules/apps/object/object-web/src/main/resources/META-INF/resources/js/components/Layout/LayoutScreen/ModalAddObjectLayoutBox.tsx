@@ -44,16 +44,29 @@ const ModalAddObjectLayoutBox: React.FC<IModalAddObjectLayoutBoxProps> = ({
 	};
 
 	const onSubmit = (values: any) => {
-		dispatch({
-			payload: {
-				name: {
-					[defaultLanguageId]: values.name,
+		if (Liferay.FeatureFlags['LPS-149014']) {
+			dispatch({
+				payload: {
+					name: {
+						[defaultLanguageId]: values.name,
+					},
+					tabIndex,
+					type: 'regular',
 				},
-				tabIndex,
-				type: 'regular',
-			},
-			type: TYPES.ADD_OBJECT_LAYOUT_BOX,
-		});
+				type: TYPES.ADD_OBJECT_LAYOUT_BOX,
+			});
+		}
+		else {
+			dispatch({
+				payload: {
+					name: {
+						[defaultLanguageId]: values.name,
+					},
+					tabIndex,
+				},
+				type: TYPES.ADD_OBJECT_LAYOUT_BOX,
+			});
+		}
 
 		onClose();
 	};
