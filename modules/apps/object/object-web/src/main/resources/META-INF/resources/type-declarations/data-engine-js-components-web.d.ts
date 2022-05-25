@@ -23,5 +23,3 @@ declare module 'data-engine-js-components-web' {
 		warningMessage?: string;
 	}): JSX.Element;
 }
-
-type Flags = 'LPS-149014';

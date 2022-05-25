@@ -16,7 +16,6 @@ import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
 import {useModal} from '@clayui/modal';
-import {useFeatureFlag} from 'data-engine-js-components-web';
 import React, {useContext, useState} from 'react';
 
 import {defaultLanguageId} from '../../../utils/locale';
@@ -34,7 +33,6 @@ const ObjectLayoutTabs: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
 	const {observer, onClose} = useModal({
 		onClose: () => setVisibleModal(false),
 	});
-	const flags = useFeatureFlag();
 
 	return (
 		<>
@@ -92,8 +90,6 @@ const ObjectLayoutTabs: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
 															[defaultLanguageId]: Liferay.Language.get(
 																'categorization'
 															),
-															type:
-																'categorization',
 														},
 														tabIndex,
 														type: 'categorization',
@@ -137,7 +133,7 @@ const ObjectLayoutTabs: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
 													collapsable={collapsable}
 													displayAddButton={
 														type === 'regular' ||
-														(!flags['LPS-149014'] &&
+														(!Liferay.FeatureFlags['LPS-149014'] &&
 															type === undefined)
 													}
 													key={`box_${boxIndex}`}
