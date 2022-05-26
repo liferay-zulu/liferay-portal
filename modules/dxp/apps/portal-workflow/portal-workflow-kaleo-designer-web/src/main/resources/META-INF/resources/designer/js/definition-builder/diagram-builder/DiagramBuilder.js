@@ -22,6 +22,7 @@ import ReactFlow, {
 	addEdge,
 	isEdge,
 } from 'react-flow-renderer';
+import uuidv4 from 'uuid/v4';
 
 import {DefinitionBuilderContext} from '../DefinitionBuilderContext';
 import {defaultLanguageId} from '../constants';
@@ -37,9 +38,6 @@ import FloatingConnectionLine from './components/transitions/FloatingConnectionL
 import getCollidingElements from './util/collisionDetection';
 import populateAssignmentsData from './util/populateAssignmentsData';
 import populateNotificationsData from './util/populateNotificationsData';
-
-let id = 2;
-const getId = () => `item_${id++}`;
 
 const deserializeUtil = new DeserializeUtil();
 
@@ -96,7 +94,7 @@ export default function DiagramBuilder() {
 					),
 				},
 			},
-			id: getId(),
+			id: uuidv4(),
 			type: 'transition',
 		};
 
@@ -164,7 +162,7 @@ export default function DiagramBuilder() {
 					data: {
 						newNode: true,
 					},
-					id: getId(),
+					id: uuidv4(),
 					position,
 					type,
 				};
