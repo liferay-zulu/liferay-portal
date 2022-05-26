@@ -6,7 +6,7 @@
 	},
 	"jest": {
 		"setupFiles": [
-			"<rootDir>/test/mock/mockProperties.js"
+			"<rootDir>/test/mock/mockResizeObserver.js"
 		],
 		"setupFilesAfterEnv": [
 			"<rootDir>/test/setup.js"
@@ -23,5 +23,5 @@
 		"format": "liferay-npm-scripts fix",
 		"test": "liferay-npm-scripts test"
 	},
-	"version": "5.0.58"
+	"version": "5.0.59"
 }

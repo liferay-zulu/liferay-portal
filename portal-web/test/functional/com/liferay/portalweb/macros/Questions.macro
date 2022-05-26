@@ -396,6 +396,15 @@ definition {
 				locator1 = "Questions#QUESTIONS_DETAILS_TITLE",
 				value1 = "${questionTitle}");
 		}
+		else if (isSet(deleteInActivity)) {
+			Click(
+				key_text = "Delete",
+				locator1 = "Questions#MODAL_ITEM_BUTTON");
+
+			AssertElementPresent(
+				key_emptyInfo = "The topic is not found.",
+				locator1 = "Questions#EMPTY_STATE_MESSAGE");
+		}
 		else {
 			Click(
 				key_text = "Delete",
@@ -623,8 +632,9 @@ definition {
 
 	macro replyToComment {
 		AssertClick(
-			locator1 = "Button#REPLY",
-			value1 = "Reply");
+			key_text = "Add Comment",
+			locator1 = "Button#ANY",
+			value1 = "Add Comment");
 
 		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
@@ -635,8 +645,9 @@ definition {
 		SelectFrame(value1 = "relative=top");
 
 		AssertClick(
-			locator1 = "Button#REPLY_LAST",
-			value1 = "Reply");
+			key_text = "Add Comment",
+			locator1 = "Button#ANY_LAST",
+			value1 = "Add Comment");
 
 		if (isSet(repliedLabel)) {
 			AssertElementPresent(
@@ -1066,9 +1077,7 @@ definition {
 
 		AssertVisible(locator1 = "Button#EDIT");
 
-		AssertVisible(locator1 = "Button#REPLY");
-
-		for (var text : list "Delete,Mark as answer") {
+		for (var text : list "Add Comment,Delete,Mark as Answer") {
 			AssertVisible(
 				key_text = "${text}",
 				locator1 = "Button#ANY");

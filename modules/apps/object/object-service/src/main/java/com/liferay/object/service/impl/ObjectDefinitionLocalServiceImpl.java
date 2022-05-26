@@ -35,6 +35,7 @@ import com.liferay.object.internal.deployer.ObjectDefinitionDeployerImpl;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
+import com.liferay.object.model.ObjectEntryTable;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.model.impl.ObjectDefinitionImpl;
@@ -52,6 +53,7 @@ import com.liferay.object.service.persistence.ObjectEntryPersistence;
 import com.liferay.object.service.persistence.ObjectFieldPersistence;
 import com.liferay.object.service.persistence.ObjectRelationshipPersistence;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
+import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.string.StringBundler;
@@ -86,11 +88,13 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalRunMode;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Validator;
@@ -211,6 +215,7 @@ public class ObjectDefinitionLocalServiceImpl
 					userId, objectDefinition.getObjectDefinitionId(),
 					newObjectField.getBusinessType(),
 					newObjectField.getDBColumnName(),
+					objectDefinition.getDBTableName(),
 					newObjectField.getDBType(), false, false, "",
 					newObjectField.getLabelMap(), newObjectField.getName(),
 					newObjectField.isRequired());
@@ -746,14 +751,26 @@ public class ObjectDefinitionLocalServiceImpl
 			ObjectDefinition.class.getName(),
 			objectDefinition.getObjectDefinitionId(), false, true, true);
 
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-153768"))) {
+			_objectFieldLocalService.addSystemObjectField(
+				userId, objectDefinition.getObjectDefinitionId(), "Text",
+				ObjectEntryTable.INSTANCE.status.getName(),
+				ObjectEntryTable.INSTANCE.getTableName(), "Integer", false,
+				false, null,
+				LocalizedMapUtil.getLocalizedMap(
+					LanguageUtil.get(LocaleUtil.getDefault(), "status")),
+				"status", false);
+		}
+
 		if (objectFields != null) {
 			for (ObjectField objectField : objectFields) {
 				if (system) {
 					_objectFieldLocalService.addSystemObjectField(
 						userId, objectDefinition.getObjectDefinitionId(),
 						objectField.getBusinessType(),
-						objectField.getDBColumnName(), objectField.getDBType(),
-						objectField.isIndexed(),
+						objectField.getDBColumnName(),
+						objectDefinition.getDBTableName(),
+						objectField.getDBType(), objectField.isIndexed(),
 						objectField.isIndexedAsKeyword(),
 						objectField.getIndexedLanguageId(),
 						objectField.getLabelMap(), objectField.getName(),

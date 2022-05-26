@@ -70,7 +70,8 @@ public class AMBackwardsCompatibilityHtmlContentTransformer
 		for (Element imgElement : document.select("img:not(picture > img)")) {
 			String imgElementString = imgElement.toString();
 
-			String replacement = super.transform(imgElementString);
+			String replacement = _transform(
+				imgElementString, imgElement.attr("src"));
 
 			imgElement.replaceWith(_parseNode(replacement));
 		}
@@ -82,14 +83,6 @@ public class AMBackwardsCompatibilityHtmlContentTransformer
 
 	@Override
 	protected FileEntry getFileEntry(Matcher matcher) throws PortalException {
-		String imgTag = matcher.group(0);
-
-		if (imgTag.contains(
-				AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID)) {
-
-			return null;
-		}
-
 		if (matcher.group(4) != null) {
 			long groupId = Long.valueOf(matcher.group(1));
 
@@ -153,12 +146,51 @@ public class AMBackwardsCompatibilityHtmlContentTransformer
 		return bodyNode.childNode(0);
 	}
 
+	private String _transform(String imgElementString, String src)
+		throws PortalException {
+
+		String replacement = imgElementString;
+
+		StringBuffer sb = null;
+
+		Pattern pattern = getPattern();
+
+		Matcher matcher = pattern.matcher(src);
+
+		while (matcher.find()) {
+			if (sb == null) {
+				sb = new StringBuffer(imgElementString.length());
+			}
+
+			FileEntry fileEntry = null;
+
+			if (!imgElementString.contains(
+					AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID)) {
+
+				fileEntry = getFileEntry(matcher);
+			}
+
+			replacement = getReplacement(imgElementString, fileEntry);
+
+			matcher.appendReplacement(
+				sb, Matcher.quoteReplacement(replacement));
+		}
+
+		if (sb != null) {
+			matcher.appendTail(sb);
+
+			replacement = sb.toString();
+		}
+
+		return replacement;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		AMBackwardsCompatibilityHtmlContentTransformer.class);
 
 	private static final Pattern _pattern = Pattern.compile(
-		"<img\\s+(?:[^>]*\\s)*src=['\"](?:/?[^\\s]*)/documents/(\\d+)/(\\d+)" +
-			"/([^/?]+)(?:/([-0-9a-fA-F]+))?(?:\\?t=\\d+)?['\"][^>]*/>");
+		"(?:/?[^\\s]*)/documents/(\\d+)/(\\d+)/([^/?]+)(?:/([-0-9a-fA-F]+))?" +
+			"(?:\\?t=\\d+)?");
 
 	@Reference
 	private AMImageHTMLTagFactory _amImageHTMLTagFactory;

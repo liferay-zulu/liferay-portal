@@ -28,6 +28,22 @@ const HEADERS = new Headers({
 	'x-csrf-token': window.Liferay.authToken,
 });
 
+function handleOverrideExistingRecordsCheckbox(namespace) {
+	const overrideExistingRecordsCheckbox = document.querySelector(
+		`#${namespace}allowUpdate`
+	);
+
+	const ignoreBlankFieldCheckbox = document.querySelector(
+		`#${namespace}onUpdateDoPatch`
+	);
+
+	overrideExistingRecordsCheckbox.addEventListener('change', ({target}) => {
+		ignoreBlankFieldCheckbox.disabled = !target.checked;
+
+		ignoreBlankFieldCheckbox.checked = false;
+	});
+}
+
 function trimPackage(name) {
 	if (!name || name.lastIndexOf('.') < 0) {
 		return name;
@@ -67,6 +83,9 @@ export default function ({
 				containsHeadersCheckboxWrapper.classList.add('d-none');
 			}
 		});
+	}
+	else {
+		handleOverrideExistingRecordsCheckbox(namespace);
 	}
 
 	async function handleTemplateSelectedEvent({template}) {

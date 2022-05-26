@@ -32,7 +32,6 @@ const TRAFFIC_CHANNELS = {
 
 export default function Detail({
 	currentPage,
-	featureFlag,
 	handleDetailPeriodChange,
 	loadingData,
 	onCurrentPageChange,
@@ -131,7 +130,7 @@ export default function Detail({
 					{(currentPage.view === TRAFFIC_CHANNELS.ORGANIC ||
 						currentPage.view === TRAFFIC_CHANNELS.PAID) &&
 						currentPageMocked.data.countrySearch.length > 0 &&
-						(featureFlag ? (
+						(Liferay.FeatureFlags['LPS-149256'] ? (
 							<CountriesDetail
 								currentPage={currentPageMocked}
 								handleDetailPeriodChange={

@@ -53,8 +53,11 @@ import com.liferay.object.service.persistence.ObjectFieldPersistence;
 import com.liferay.object.service.persistence.ObjectFieldSettingPersistence;
 import com.liferay.object.service.persistence.ObjectRelationshipPersistence;
 import com.liferay.petra.sql.dsl.Column;
+import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.sql.dsl.expression.Expression;
+import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.sql.dsl.query.FromStep;
 import com.liferay.petra.sql.dsl.query.GroupByStep;
@@ -207,6 +210,8 @@ public class ObjectEntryLocalServiceImpl
 		objectEntry.setUserId(user.getUserId());
 		objectEntry.setUserName(user.getFullName());
 
+		objectEntry.setExternalReferenceCode(
+			String.valueOf(objectEntry.getObjectEntryId()));
 		objectEntry.setObjectDefinitionId(objectDefinitionId);
 		objectEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 		objectEntry.setStatusByUserId(user.getUserId());
@@ -366,6 +371,74 @@ public class ObjectEntryLocalServiceImpl
 				PrincipalThreadLocal.getUserId(), groupId,
 				objectRelationship.getObjectRelationshipId(), primaryKey);
 		}
+	}
+
+	@Override
+	public Map<Object, Long> getAggregationCounts(
+			long objectDefinitionId, String aggregationTerm,
+			Predicate predicate, int start, int end)
+		throws PortalException {
+
+		Map<Object, Long> aggregationCounts = new HashMap<>();
+
+		Table table = _objectFieldLocalService.getTable(
+			objectDefinitionId, aggregationTerm);
+
+		ObjectField objectField = _objectFieldLocalService.getObjectField(
+			objectDefinitionId, aggregationTerm);
+
+		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
+			_getDynamicObjectDefinitionTable(objectDefinitionId);
+		DynamicObjectDefinitionTable extensionDynamicObjectDefinitionTable =
+			_getExtensionDynamicObjectDefinitionTable(objectDefinitionId);
+
+		DSLQuery dslQuery = DSLQueryFactoryUtil.select(
+			table.getColumn(objectField.getDBColumnName()),
+			DSLFunctionFactoryUtil.countDistinct(
+				dynamicObjectDefinitionTable.getPrimaryKeyColumn()
+			).as(
+				"aggregationCount"
+			)
+		).from(
+			dynamicObjectDefinitionTable
+		).innerJoinON(
+			ObjectEntryTable.INSTANCE,
+			ObjectEntryTable.INSTANCE.objectEntryId.eq(
+				dynamicObjectDefinitionTable.getPrimaryKeyColumn())
+		).innerJoinON(
+			extensionDynamicObjectDefinitionTable,
+			extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn(
+			).eq(
+				dynamicObjectDefinitionTable.getPrimaryKeyColumn()
+			)
+		).where(
+			ObjectEntryTable.INSTANCE.objectDefinitionId.eq(
+				objectDefinitionId
+			).and(
+				predicate
+			).and(
+				() -> {
+					if (PermissionThreadLocal.getPermissionChecker() == null) {
+						return null;
+					}
+
+					return _inlineSQLHelper.getPermissionWherePredicate(
+						dynamicObjectDefinitionTable.getName(),
+						dynamicObjectDefinitionTable.getPrimaryKeyColumn());
+				}
+			)
+		).groupBy(
+			table.getColumn(objectField.getDBColumnName())
+		).limit(
+			start, end
+		);
+
+		for (Object[] values : (List<Object[]>)dslQuery(dslQuery)) {
+			aggregationCounts.put(
+				GetterUtil.getObject(values[0]), GetterUtil.getLong(values[1]));
+		}
+
+		return aggregationCounts;
 	}
 
 	@Override
@@ -591,7 +664,8 @@ public class ObjectEntryLocalServiceImpl
 
 	@Override
 	public List<Map<String, Serializable>> getValuesList(
-			long objectDefinitionId, int[] statuses, int start, int end)
+			long objectDefinitionId, Predicate predicate, String search,
+			int start, int end)
 		throws PortalException {
 
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
@@ -622,14 +696,7 @@ public class ObjectEntryLocalServiceImpl
 				ObjectEntryTable.INSTANCE.objectDefinitionId.eq(
 					objectDefinitionId
 				).and(
-					() -> {
-						if (ArrayUtil.isEmpty(statuses)) {
-							return null;
-						}
-
-						return ObjectEntryTable.INSTANCE.status.in(
-							ArrayUtil.toArray(statuses));
-					}
+					_fillPredicate(objectDefinitionId, predicate, search)
 				).and(
 					() -> {
 						if (PermissionThreadLocal.getPermissionChecker() ==
@@ -656,6 +723,51 @@ public class ObjectEntryLocalServiceImpl
 		}
 
 		return valuesList;
+	}
+
+	@Override
+	public int getValuesListCount(
+			long objectDefinitionId, Predicate predicate, String search)
+		throws PortalException {
+
+		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
+			_getDynamicObjectDefinitionTable(objectDefinitionId);
+		DynamicObjectDefinitionTable extensionDynamicObjectDefinitionTable =
+			_getExtensionDynamicObjectDefinitionTable(objectDefinitionId);
+
+		DSLQuery dslQuery = DSLQueryFactoryUtil.countDistinct(
+			ObjectEntryTable.INSTANCE.objectEntryId
+		).from(
+			dynamicObjectDefinitionTable
+		).innerJoinON(
+			ObjectEntryTable.INSTANCE,
+			ObjectEntryTable.INSTANCE.objectEntryId.eq(
+				dynamicObjectDefinitionTable.getPrimaryKeyColumn())
+		).innerJoinON(
+			extensionDynamicObjectDefinitionTable,
+			extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn(
+			).eq(
+				dynamicObjectDefinitionTable.getPrimaryKeyColumn()
+			)
+		).where(
+			ObjectEntryTable.INSTANCE.objectDefinitionId.eq(
+				objectDefinitionId
+			).and(
+				_fillPredicate(objectDefinitionId, predicate, search)
+			).and(
+				() -> {
+					if (PermissionThreadLocal.getPermissionChecker() == null) {
+						return null;
+					}
+
+					return _inlineSQLHelper.getPermissionWherePredicate(
+						dynamicObjectDefinitionTable.getName(),
+						dynamicObjectDefinitionTable.getPrimaryKeyColumn());
+				}
+			)
+		);
+
+		return objectEntryPersistence.dslQueryCount(dslQuery);
 	}
 
 	@Override
@@ -1020,6 +1132,38 @@ public class ObjectEntryLocalServiceImpl
 				"delete from ", dbTableName, " where ",
 				objectDefinition.getPKObjectFieldDBColumnName(), " = ",
 				objectEntry.getObjectEntryId()));
+	}
+
+	private Predicate _fillPredicate(
+			long objectDefinitionId, Predicate predicate, String search)
+		throws PortalException {
+
+		if (Validator.isNull(search)) {
+			return predicate;
+		}
+
+		List<ObjectField> objectFields =
+			_objectFieldPersistence.findByODI_DBT_I(
+				objectDefinitionId, "String", true);
+
+		for (ObjectField objectField : objectFields) {
+			Table<?> table = _objectFieldLocalService.getTable(
+				objectDefinitionId, objectField.getName());
+
+			Column<?, ?> column = table.getColumn(
+				objectField.getDBColumnName());
+
+			Predicate likePredicate = column.like("%" + search + "%");
+
+			if (predicate == null) {
+				predicate = likePredicate;
+			}
+			else {
+				predicate = predicate.and(likePredicate);
+			}
+		}
+
+		return predicate;
 	}
 
 	private DLFolder _getDLFolder(

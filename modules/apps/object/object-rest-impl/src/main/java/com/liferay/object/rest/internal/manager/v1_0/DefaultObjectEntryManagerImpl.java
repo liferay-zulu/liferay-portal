@@ -24,21 +24,23 @@ import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.internal.dto.v1_0.converter.ObjectEntryDTOConverter;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
+import com.liferay.object.rest.internal.petra.sql.dsl.expression.PredicateUtil;
 import com.liferay.object.rest.internal.resource.v1_0.ObjectEntryResourceImpl;
-import com.liferay.object.rest.internal.search.aggregation.AggregationUtil;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
 import com.liferay.object.scope.ObjectScopeProvider;
 import com.liferay.object.scope.ObjectScopeProviderRegistry;
+import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipService;
+import com.liferay.petra.sql.dsl.expression.Predicate;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
-import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -46,17 +48,22 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.ExpressionConvert;
+import com.liferay.portal.odata.filter.Filter;
 import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.search.aggregation.Aggregations;
+import com.liferay.portal.search.aggregation.bucket.FilterAggregation;
+import com.liferay.portal.search.aggregation.bucket.NestedAggregation;
 import com.liferay.portal.search.legacy.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
+import com.liferay.portal.vulcan.aggregation.Facet;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -64,18 +71,19 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.GroupUtil;
 import com.liferay.portal.vulcan.util.SearchUtil;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.io.Serializable;
 
 import java.text.ParseException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MultivaluedMap;
@@ -201,15 +209,11 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 	public Page<ObjectEntry> getObjectEntries(
 			long companyId, ObjectDefinition objectDefinition, String scopeKey,
 			Aggregation aggregation, DTOConverterContext dtoConverterContext,
-			Filter filter, Pagination pagination, String search, Sort[] sorts)
+			com.liferay.portal.kernel.search.filter.Filter filter,
+			Pagination pagination, String search, Sort[] sorts)
 		throws Exception {
 
 		long groupId = _getGroupId(objectDefinition, scopeKey);
-
-		Optional<UriInfo> uriInfoOptional =
-			dtoConverterContext.getUriInfoOptional();
-
-		UriInfo uriInfo = uriInfoOptional.orElse(null);
 
 		return SearchUtil.search(
 			HashMapBuilder.put(
@@ -219,7 +223,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					"postObjectEntry", null, objectDefinition.getUserId(),
 					_getObjectEntriesPermissionName(
 						objectDefinition.getObjectDefinitionId()),
-					groupId, uriInfo)
+					groupId, dtoConverterContext.getUriInfo())
 			).put(
 				"get",
 				ActionUtil.addAction(
@@ -227,7 +231,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					"getObjectEntriesPage", null, objectDefinition.getUserId(),
 					_getObjectEntriesPermissionName(
 						objectDefinition.getObjectDefinitionId()),
-					groupId, uriInfo)
+					groupId, dtoConverterContext.getUriInfo())
 			).build(),
 			booleanQuery -> {
 				BooleanFilter booleanFilter =
@@ -251,6 +255,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					"objectDefinitionId",
 					objectDefinition.getObjectDefinitionId());
 
+				UriInfo uriInfo = dtoConverterContext.getUriInfo();
+
 				if (uriInfo != null) {
 					MultivaluedMap<String, String> queryParameters =
 						uriInfo.getQueryParameters();
@@ -266,7 +272,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 				SearchRequestBuilder searchRequestBuilder =
 					_searchRequestBuilderFactory.builder(searchContext);
 
-				AggregationUtil.processVulcanAggregation(
+				_processVulcanAggregation(
 					_aggregations, _queries, searchRequestBuilder, aggregation);
 			},
 			sorts,
@@ -279,9 +285,97 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 	public Page<ObjectEntry> getObjectEntries(
 			long companyId, ObjectDefinition objectDefinition, String scopeKey,
 			Aggregation aggregation, DTOConverterContext dtoConverterContext,
+			Pagination pagination, Predicate predicate, String search,
+			Sort[] sorts)
+		throws Exception {
+
+		long groupId = _getGroupId(objectDefinition, scopeKey);
+
+		List<Facet> facets = new ArrayList<>();
+
+		if ((aggregation != null) &&
+			(aggregation.getAggregationTerms() != null)) {
+
+			Map<String, String> aggregationTerms =
+				aggregation.getAggregationTerms();
+
+			for (Map.Entry<String, String> entry1 :
+					aggregationTerms.entrySet()) {
+
+				List<Facet.FacetValue> facetValues = new ArrayList<>();
+
+				Map<Object, Long> aggregationCounts =
+					_objectEntryLocalService.getAggregationCounts(
+						objectDefinition.getObjectDefinitionId(),
+						entry1.getKey(), predicate,
+						pagination.getStartPosition(),
+						pagination.getEndPosition());
+
+				for (Map.Entry<Object, Long> entry2 :
+						aggregationCounts.entrySet()) {
+
+					Long value = entry2.getValue();
+
+					facetValues.add(
+						new Facet.FacetValue(
+							value.intValue(), String.valueOf(entry2.getKey())));
+				}
+
+				facets.add(new Facet(entry1.getKey(), facetValues));
+			}
+		}
+
+		return Page.of(
+			HashMapBuilder.put(
+				"create",
+				ActionUtil.addAction(
+					"ADD_OBJECT_ENTRY", ObjectEntryResourceImpl.class, 0L,
+					"postObjectEntry", null, objectDefinition.getUserId(),
+					_getObjectEntriesPermissionName(
+						objectDefinition.getObjectDefinitionId()),
+					groupId, dtoConverterContext.getUriInfo())
+			).put(
+				"get",
+				ActionUtil.addAction(
+					ActionKeys.VIEW, ObjectEntryResourceImpl.class, 0L,
+					"getObjectEntriesPage", null, objectDefinition.getUserId(),
+					_getObjectEntriesPermissionName(
+						objectDefinition.getObjectDefinitionId()),
+					groupId, dtoConverterContext.getUriInfo())
+			).build(),
+			facets,
+			TransformUtil.transform(
+				_objectEntryLocalService.getValuesList(
+					objectDefinition.getObjectDefinitionId(), predicate, search,
+					pagination.getStartPosition(), pagination.getEndPosition()),
+				values -> getObjectEntry(
+					dtoConverterContext, objectDefinition,
+					GetterUtil.getLong(
+						values.get(objectDefinition.getPKObjectFieldName())))),
+			pagination,
+			_objectEntryLocalService.getValuesListCount(
+				objectDefinition.getObjectDefinitionId(), predicate, search));
+	}
+
+	@Override
+	public Page<ObjectEntry> getObjectEntries(
+			long companyId, ObjectDefinition objectDefinition, String scopeKey,
+			Aggregation aggregation, DTOConverterContext dtoConverterContext,
 			String filterString, Pagination pagination, String search,
 			Sort[] sorts)
 		throws Exception {
+
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-153768"))) {
+			return getObjectEntries(
+				companyId, objectDefinition, scopeKey, aggregation,
+				dtoConverterContext, pagination,
+				PredicateUtil.toPredicate(
+					_filterParserProvider, filterString,
+					dtoConverterContext.getLocale(),
+					objectDefinition.getObjectDefinitionId(),
+					_objectFieldLocalService),
+				search, sorts);
+		}
 
 		return getObjectEntries(
 			companyId, objectDefinition, scopeKey, aggregation,
@@ -391,6 +485,43 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 		return ObjectDefinition.class.getName() + "#" + objectDefinitionId;
 	}
 
+	private void _processVulcanAggregation(
+		Aggregations aggregations, Queries queries,
+		SearchRequestBuilder searchRequestBuilder,
+		Aggregation vulcanAggregation) {
+
+		if (vulcanAggregation == null) {
+			return;
+		}
+
+		Map<String, String> aggregationTerms =
+			vulcanAggregation.getAggregationTerms();
+
+		for (Map.Entry<String, String> entry : aggregationTerms.entrySet()) {
+			String value = entry.getValue();
+
+			if (!value.startsWith("nestedFieldArray")) {
+				continue;
+			}
+
+			NestedAggregation nestedAggregation = aggregations.nested(
+				entry.getKey(), "nestedFieldArray");
+
+			String[] valueParts = value.split(StringPool.POUND);
+
+			FilterAggregation filterAggregation = aggregations.filter(
+				"filterAggregation",
+				queries.term("nestedFieldArray.fieldName", valueParts[1]));
+
+			filterAggregation.addChildAggregation(
+				aggregations.terms(entry.getKey(), valueParts[0]));
+
+			nestedAggregation.addChildAggregation(filterAggregation);
+
+			searchRequestBuilder.addAggregation(nestedAggregation);
+		}
+	}
+
 	private Date _toDate(Locale locale, String valueString) {
 		if (Validator.isNull(valueString)) {
 			return null;
@@ -412,7 +543,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 		}
 	}
 
-	private Filter _toFilter(
+	private com.liferay.portal.kernel.search.filter.Filter _toFilter(
 		String filterString, Locale locale, Long objectDefinitionId) {
 
 		try {
@@ -422,9 +553,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 			FilterParser filterParser = _filterParserProvider.provide(
 				entityModel);
 
-			com.liferay.portal.odata.filter.Filter oDataFilter =
-				new com.liferay.portal.odata.filter.Filter(
-					filterParser.parse(filterString));
+			Filter oDataFilter = new Filter(filterParser.parse(filterString));
 
 			return _expressionConvert.convert(
 				oDataFilter.getExpression(), locale, entityModel);
@@ -442,11 +571,6 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 			com.liferay.object.model.ObjectEntry objectEntry)
 		throws Exception {
 
-		Optional<UriInfo> uriInfoOptional =
-			dtoConverterContext.getUriInfoOptional();
-
-		UriInfo uriInfo = uriInfoOptional.orElse(null);
-
 		DefaultDTOConverterContext defaultDTOConverterContext =
 			new DefaultDTOConverterContext(
 				dtoConverterContext.isAcceptAllLanguages(),
@@ -458,7 +582,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						null, objectEntry.getUserId(),
 						_getObjectEntryPermissionName(
 							objectEntry.getObjectDefinitionId()),
-						objectEntry.getGroupId(), uriInfo)
+						objectEntry.getGroupId(),
+						dtoConverterContext.getUriInfo())
 				).put(
 					"get",
 					ActionUtil.addAction(
@@ -467,7 +592,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						objectEntry.getUserId(),
 						_getObjectEntryPermissionName(
 							objectEntry.getObjectDefinitionId()),
-						objectEntry.getGroupId(), uriInfo)
+						objectEntry.getGroupId(),
+						dtoConverterContext.getUriInfo())
 				).put(
 					"permissions",
 					ActionUtil.addAction(
@@ -476,7 +602,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						null, objectEntry.getUserId(),
 						_getObjectEntryPermissionName(
 							objectEntry.getObjectDefinitionId()),
-						objectEntry.getGroupId(), uriInfo)
+						objectEntry.getGroupId(),
+						dtoConverterContext.getUriInfo())
 				).put(
 					"update",
 					ActionUtil.addAction(
@@ -485,12 +612,14 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						objectEntry.getUserId(),
 						_getObjectEntryPermissionName(
 							objectEntry.getObjectDefinitionId()),
-						objectEntry.getGroupId(), uriInfo)
+						objectEntry.getGroupId(),
+						dtoConverterContext.getUriInfo())
 				).build(),
 				dtoConverterContext.getDTOConverterRegistry(),
 				dtoConverterContext.getHttpServletRequest(),
 				objectEntry.getObjectEntryId(), dtoConverterContext.getLocale(),
-				uriInfo, dtoConverterContext.getUser());
+				dtoConverterContext.getUriInfo(),
+				dtoConverterContext.getUser());
 
 		defaultDTOConverterContext.setAttribute(
 			"objectDefinition", objectDefinition);
@@ -546,7 +675,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 	@Reference(
 		target = "(result.class.name=com.liferay.portal.kernel.search.filter.Filter)"
 	)
-	private ExpressionConvert<Filter> _expressionConvert;
+	private ExpressionConvert<com.liferay.portal.kernel.search.filter.Filter>
+		_expressionConvert;
 
 	@Reference
 	private FilterParserProvider _filterParserProvider;
@@ -556,6 +686,9 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 	@Reference
 	private ObjectEntryDTOConverter _objectEntryDTOConverter;
+
+	@Reference
+	private ObjectEntryLocalService _objectEntryLocalService;
 
 	@Reference
 	private ObjectEntryService _objectEntryService;

@@ -540,7 +540,7 @@ public class CommerceOrderItemLocalServiceImpl
 
 		if (!Validator.isBlank(cpMeasurementUnitKey)) {
 			CPMeasurementUnit cpMeasurementUnit =
-				_cpMeasurementUnitLocalService.getCPMeasurementUnit(
+				_cpMeasurementUnitLocalService.getCPMeasurementUnitByKey(
 					user.getCompanyId(), cpMeasurementUnitKey);
 
 			commerceOrderItem.setCPMeasurementUnitId(
@@ -1691,19 +1691,19 @@ public class CommerceOrderItemLocalServiceImpl
 		commerceOrderItem.setHeight(cpInstance.getHeight());
 
 		if (commerceOrderItem.getHeight() <= 0) {
-			commerceOrderItem.setWidth(cpDefinition.getHeight());
+			commerceOrderItem.setHeight(cpDefinition.getHeight());
 		}
 
 		commerceOrderItem.setDepth(cpInstance.getDepth());
 
 		if (commerceOrderItem.getDepth() <= 0) {
-			commerceOrderItem.setWidth(cpDefinition.getDepth());
+			commerceOrderItem.setDepth(cpDefinition.getDepth());
 		}
 
 		commerceOrderItem.setWeight(cpInstance.getWeight());
 
 		if (commerceOrderItem.getWeight() <= 0) {
-			commerceOrderItem.setWidth(cpDefinition.getWeight());
+			commerceOrderItem.setWeight(cpDefinition.getWeight());
 		}
 	}
 

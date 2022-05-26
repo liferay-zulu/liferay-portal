@@ -72,6 +72,7 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -88,6 +89,7 @@ import com.liferay.taglib.security.PermissionsURLTag;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javax.portlet.PortletRequest;
@@ -1003,6 +1005,51 @@ public class UIItemsBuilder {
 		).build();
 	}
 
+	public DropdownItem createCompareToDropdownItem() throws PortalException {
+		PortletURL viewFileEntryURL = _getRenderURL(
+			"/document_library/view_file_entry", _getRedirect());
+
+		return DropdownItemBuilder.putData(
+			"action", "compareTo"
+		).putData(
+			"selectFileVersionURL",
+			() -> {
+				PortletURL selectFileVersionURL = _getRenderURL(
+					"/document_library/select_file_version",
+					viewFileEntryURL.toString());
+
+				try {
+					selectFileVersionURL.setWindowState(
+						LiferayWindowState.POP_UP);
+				}
+				catch (WindowStateException windowStateException) {
+					throw new PortalException(windowStateException);
+				}
+
+				selectFileVersionURL.setParameter(
+					"version", _fileVersion.getVersion());
+
+				return selectFileVersionURL.toString();
+			}
+		).putData(
+			"compareVersionURL",
+			PortletURLBuilder.create(
+				_getRenderURL("/document_library/compare_versions", null)
+			).setBackURL(
+				_getCurrentURL()
+			).buildString()
+		).putData(
+			"namespace", _getNamespace()
+		).putData(
+			"jsNamespace", _getNamespace() + _fileVersion.getFileVersionId()
+		).putData(
+			"dialogTitle",
+			LanguageUtil.get(_httpServletRequest, "compare-versions")
+		).setLabel(
+			LanguageUtil.get(_httpServletRequest, "compare-to")
+		).build();
+	}
+
 	public DropdownItem createDeleteDropdownItem() throws PortalException {
 		String cmd = null;
 
@@ -1031,6 +1078,29 @@ public class UIItemsBuilder {
 			"action", "delete"
 		).putData(
 			"deleteURL", portletURL.toString()
+		).setIcon(
+			"trash"
+		).setLabel(
+			LanguageUtil.get(_httpServletRequest, "delete")
+		).build();
+	}
+
+	public DropdownItem createDeleteVersionDropdownItem() {
+		return DropdownItemBuilder.putData(
+			"action", "deleteVersion"
+		).putData(
+			"deleteURL",
+			PortletURLBuilder.create(
+				_getActionURL(
+					"/document_library/edit_file_entry", Constants.DELETE,
+					_getRenderURL(
+						"/document_library/view_file_entry", _getRedirect()
+					).toString())
+			).setParameter(
+				"fileEntryId", _fileEntry.getFileEntryId()
+			).setParameter(
+				"version", _fileVersion.getVersion()
+			).buildString()
 		).setIcon(
 			"trash"
 		).setLabel(
@@ -1192,6 +1262,24 @@ public class UIItemsBuilder {
 		).build();
 	}
 
+	public DropdownItem createRevertVersionDropdownItem() {
+		return DropdownItemBuilder.setHref(
+			PortletURLBuilder.create(
+				_getActionURL(
+					"/document_library/edit_file_entry", Constants.REVERT,
+					_getRenderURL(
+						"/document_library/view_file_entry", _getRedirect()
+					).toString())
+			).setParameter(
+				"fileEntryId", _fileEntry.getFileEntryId()
+			).setParameter(
+				"version", _fileVersion.getVersion()
+			).buildString()
+		).setLabel(
+			LanguageUtil.get(_httpServletRequest, "revert")
+		).build();
+	}
+
 	public DropdownItem createViewOriginalFileDropdownItem() {
 		if (_fileShortcut == null) {
 			return null;
@@ -1205,6 +1293,21 @@ public class UIItemsBuilder {
 			).buildString()
 		).setLabel(
 			LanguageUtil.get(_httpServletRequest, "view-original-file")
+		).build();
+	}
+
+	public DropdownItem createViewVersionDropdownItem() {
+		return DropdownItemBuilder.setHref(
+			PortletURLBuilder.create(
+				_getRenderURL(
+					"/document_library/view_file_entry", _getRedirect())
+			).setParameter(
+				"version", _fileVersion.getVersion()
+			).buildString()
+		).setIcon(
+			"view"
+		).setLabel(
+			LanguageUtil.get(_httpServletRequest, "view[action]")
 		).build();
 	}
 
@@ -1261,7 +1364,8 @@ public class UIItemsBuilder {
 	public boolean isCancelCheckoutActionAvailable() throws PortalException {
 		if ((_fileShortcut != null) ||
 			!_fileEntryDisplayContextHelper.
-				isCancelCheckoutDocumentActionAvailable()) {
+				isCancelCheckoutDocumentActionAvailable() ||
+			!_isFileVersionContentTypeAllowed()) {
 
 			return false;
 		}
@@ -1271,7 +1375,8 @@ public class UIItemsBuilder {
 
 	public boolean isCheckinActionAvailable() throws PortalException {
 		if ((_fileShortcut != null) ||
-			!_fileEntryDisplayContextHelper.isCheckinActionAvailable()) {
+			!_fileEntryDisplayContextHelper.isCheckinActionAvailable() ||
+			!_isFileVersionContentTypeAllowed()) {
 
 			return false;
 		}
@@ -1282,7 +1387,8 @@ public class UIItemsBuilder {
 	public boolean isCheckoutActionAvailable() throws PortalException {
 		if ((_fileShortcut != null) ||
 			!_fileEntryDisplayContextHelper.
-				isCheckoutDocumentActionAvailable()) {
+				isCheckoutDocumentActionAvailable() ||
+			!_isFileVersionContentTypeAllowed()) {
 
 			return false;
 		}
@@ -1308,6 +1414,11 @@ public class UIItemsBuilder {
 		return true;
 	}
 
+	public boolean isCompareToActionAvailable() {
+		return DocumentConversionUtil.isComparableVersion(
+			_fileVersion.getExtension());
+	}
+
 	public boolean isDeleteActionAvailable() throws PortalException {
 		if (_isDeleteActionAvailable() ||
 			_isMoveToTheRecycleBinActionAvailable()) {
@@ -1318,7 +1429,30 @@ public class UIItemsBuilder {
 		return false;
 	}
 
+	public boolean isDeleteVersionActionAvailable() throws PortalException {
+		if ((_fileEntry == null) ||
+			(_fileVersion.getStatus() != WorkflowConstants.STATUS_APPROVED) ||
+			!_fileEntryDisplayContextHelper.hasDeletePermission() ||
+			!(_fileEntry.getModel() instanceof DLFileEntry)) {
+
+			return false;
+		}
+
+		int fileVersionsCount = _fileEntry.getFileVersionsCount(
+			WorkflowConstants.STATUS_APPROVED);
+
+		if (fileVersionsCount > 1) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isDownloadActionAvailable() throws PortalException {
+		if (!_isFileVersionContentTypeAllowed()) {
+			return false;
+		}
+
 		return _fileEntryDisplayContextHelper.isDownloadActionAvailable();
 	}
 
@@ -1400,8 +1534,34 @@ public class UIItemsBuilder {
 		return true;
 	}
 
+	public boolean isRevertToVersionActionAvailable() throws PortalException {
+		if ((_fileVersion.getStatus() != WorkflowConstants.STATUS_APPROVED) ||
+			!_fileEntryDisplayContextHelper.hasUpdatePermission()) {
+
+			return false;
+		}
+
+		FileVersion latestFileVersion = _fileEntry.getLatestFileVersion();
+
+		if (Objects.equals(
+				latestFileVersion.getVersion(), _fileVersion.getVersion())) {
+
+			return false;
+		}
+
+		return true;
+	}
+
 	public boolean isViewOriginalFileActionAvailable() {
 		if (_fileShortcut != null) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isViewVersionActionAvailable() {
+		if (_fileShortcut == null) {
 			return true;
 		}
 
@@ -1745,6 +1905,18 @@ public class UIItemsBuilder {
 		}
 
 		return false;
+	}
+
+	private boolean _isFileVersionContentTypeAllowed() {
+		if (Objects.equals(
+				_fileVersion.getMimeType(),
+				ContentTypes.
+					APPLICATION_VND_LIFERAY_VIDEO_EXTERNAL_SHORTCUT_HTML)) {
+
+			return false;
+		}
+
+		return true;
 	}
 
 	private boolean _isFileVersionExportable(boolean latestVersion) {

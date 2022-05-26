@@ -1,8 +1,6 @@
 @component-name = "portal-document-management"
 definition {
 
-	property osgi.module.configuration.file.names = "com.liferay.document.library.item.selector.web.internal.configuration.FFFolderItemSelectorGroupSelectorConfiguration.config";
-	property osgi.module.configurations = "enabled=B&quot;true&quot;";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Depot";
@@ -659,6 +657,42 @@ definition {
 		DMDocument.viewPGViaMG(
 			mgDocumentTitle = "Document_2.jpg",
 			staging = "true");
+	}
+
+	@description = "This test covers LPS-154424."
+	@ignore = "Test Stub"
+	@priority = "4"
+	test CanViewExternalVideoAfterFriendlyURLIsUpdated {
+
+		// TODO LPS-154424
+
+	}
+
+	@description = "This test covers LPS-154400."
+	@ignore = "Test Stub"
+	@priority = "4"
+	test CanViewExternalVideoAfterPublish {
+
+		// TODO LPS-154400
+
+	}
+
+	@description = "This test covers LPS-154397."
+	@ignore = "Test Stub"
+	@priority = "4"
+	test CanViewImageAfterFriendlyURLIsUpdated {
+
+		// TODO LPS-154397
+
+	}
+
+	@description = "This test covers LPS-154423."
+	@ignore = "Test Stub"
+	@priority = "4"
+	test CanViewImageAfterPublish {
+
+		// TODO LPS-154423
+
 	}
 
 }

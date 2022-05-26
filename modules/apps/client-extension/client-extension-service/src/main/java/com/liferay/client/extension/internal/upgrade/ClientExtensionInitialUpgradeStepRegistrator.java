@@ -14,11 +14,13 @@
 
 package com.liferay.client.extension.internal.upgrade;
 
-import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -36,42 +38,30 @@ public class ClientExtensionInitialUpgradeStepRegistrator
 
 				@Override
 				protected void doUpgrade() throws Exception {
-					DBInspector dbInspector = new DBInspector(connection);
+					Release remoteAppRelease =
+						_releaseLocalService.fetchRelease(
+							"com.liferay.remote.app.service");
 
-					if (!dbInspector.hasTable("RemoteAppEntry")) {
+					if (remoteAppRelease == null) {
 						return;
 					}
 
-					for (Class<?> clazz : _classes) {
-						UpgradeProcess upgradeProcess =
-							(UpgradeProcess)clazz.newInstance();
+					Release clientExtensionRelease =
+						_releaseLocalService.fetchRelease(
+							"com.liferay.client.extension.service");
 
-						upgradeProcess.upgrade();
-					}
+					clientExtensionRelease.setSchemaVersion(
+						remoteAppRelease.getSchemaVersion());
+
+					_releaseLocalService.updateRelease(clientExtensionRelease);
+
+					_releaseLocalService.deleteRelease(remoteAppRelease);
 				}
 
 			});
 	}
 
-	private final Class<?>[] _classes = {
-		com.liferay.client.extension.internal.upgrade.v1_0_1.
-			RemoteAppEntryUpgradeProcess.class,
-		com.liferay.client.extension.internal.upgrade.v2_0_0.
-			RemoteAppEntryUpgradeProcess.class,
-		com.liferay.client.extension.internal.upgrade.v2_1_0.
-			ResourcePermissionsUpgradeProcess.class,
-		com.liferay.client.extension.internal.upgrade.v2_2_0.
-			RemoteAppEntryUpgradeProcess.class,
-		com.liferay.client.extension.internal.upgrade.v2_3_0.
-			RemoteAppEntryUpgradeProcess.class,
-		com.liferay.client.extension.internal.upgrade.v2_4_0.
-			RemoteAppEntryUpgradeProcess.class,
-		com.liferay.client.extension.internal.upgrade.v2_5_0.
-			RemoteAppEntryUpgradeProcess.class,
-		com.liferay.client.extension.internal.upgrade.v3_0_0.
-			ClassNamesUpgradeProcess.class,
-		com.liferay.client.extension.internal.upgrade.v3_0_0.
-			ClientExtensionEntryUpgradeProcess.class
-	};
+	@Reference
+	private ReleaseLocalService _releaseLocalService;
 
 }

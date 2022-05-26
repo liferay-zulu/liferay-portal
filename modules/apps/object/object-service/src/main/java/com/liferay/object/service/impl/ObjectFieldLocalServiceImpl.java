@@ -28,6 +28,7 @@ import com.liferay.object.field.business.type.ObjectFieldBusinessTypeServicesTra
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
+import com.liferay.object.model.ObjectEntryTable;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectFieldSetting;
 import com.liferay.object.model.ObjectRelationship;
@@ -43,6 +44,7 @@ import com.liferay.object.service.persistence.ObjectRelationshipPersistence;
 import com.liferay.object.service.persistence.ObjectViewColumnPersistence;
 import com.liferay.object.service.persistence.ObjectViewPersistence;
 import com.liferay.object.service.persistence.ObjectViewSortColumnPersistence;
+import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -128,15 +130,12 @@ public class ObjectFieldLocalServiceImpl
 	@Override
 	public ObjectField addSystemObjectField(
 			long userId, long objectDefinitionId, String businessType,
-			String dbColumnName, String dbType, boolean indexed,
-			boolean indexedAsKeyword, String indexedLanguageId,
+			String dbColumnName, String dbTableName, String dbType,
+			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
 			Map<Locale, String> labelMap, String name, boolean required)
 		throws PortalException {
 
 		name = StringUtil.trim(name);
-
-		ObjectDefinition objectDefinition =
-			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
 		if (Validator.isNull(dbColumnName)) {
 			dbColumnName = name;
@@ -144,9 +143,8 @@ public class ObjectFieldLocalServiceImpl
 
 		return _addObjectField(
 			userId, 0, objectDefinitionId, businessType, dbColumnName,
-			objectDefinition.getDBTableName(), dbType, indexed,
-			indexedAsKeyword, indexedLanguageId, labelMap, name, required,
-			true);
+			dbTableName, dbType, indexed, indexedAsKeyword, indexedLanguageId,
+			labelMap, name, required, true);
 	}
 
 	@Indexable(type = IndexableType.DELETE)
@@ -298,6 +296,43 @@ public class ObjectFieldLocalServiceImpl
 
 		return objectFieldPersistence.countByListTypeDefinitionId(
 			listTypeDefinitionId);
+	}
+
+	@Override
+	public Table getTable(long objectDefinitionId, String name)
+		throws PortalException {
+
+		// TODO Cache this across the cluster with proper invalidation when the
+		// object definition or its object fields are updated
+
+		ObjectField objectField = getObjectField(objectDefinitionId, name);
+
+		if (Objects.equals(
+				objectField.getDBTableName(),
+				ObjectEntryTable.INSTANCE.getTableName())) {
+
+			return ObjectEntryTable.INSTANCE;
+		}
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionPersistence.fetchByPrimaryKey(objectDefinitionId);
+
+		if (Objects.equals(
+				objectField.getDBTableName(),
+				objectDefinition.getDBTableName())) {
+
+			return new DynamicObjectDefinitionTable(
+				objectDefinition,
+				objectFieldLocalService.getObjectFields(
+					objectDefinitionId, objectDefinition.getDBTableName()),
+				objectDefinition.getDBTableName());
+		}
+
+		return new DynamicObjectDefinitionTable(
+			objectDefinition,
+			objectFieldLocalService.getObjectFields(
+				objectDefinitionId, objectDefinition.getDBTableName()),
+			objectDefinition.getExtensionDBTableName());
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -461,9 +496,7 @@ public class ObjectFieldLocalServiceImpl
 		}
 	}
 
-	private void _deleteFileEntries(
-		long objectDefinitionId, String objectFieldName) {
-
+	private void _deleteFileEntries(long objectDefinitionId, String name) {
 		List<ObjectEntry> objectEntries =
 			_objectEntryPersistence.findByObjectDefinitionId(
 				objectDefinitionId);
@@ -473,7 +506,7 @@ public class ObjectFieldLocalServiceImpl
 
 			try {
 				_dlFileEntryLocalService.deleteFileEntry(
-					GetterUtil.getLong(values.get(objectFieldName)));
+					GetterUtil.getLong(values.get(name)));
 			}
 			catch (PortalException portalException) {
 				if (_log.isDebugEnabled()) {
@@ -720,8 +753,8 @@ public class ObjectFieldLocalServiceImpl
 	private final Set<String> _reservedNames = SetUtil.fromArray(
 		"actions", "companyid", "createdate", "creator", "datecreated",
 		"datemodified", "externalreferencecode", "groupid", "id",
-		"lastpublishdate", "modifieddate", "status", "statusbyuserid",
-		"statusbyusername", "statusdate", "userid", "username");
+		"lastpublishdate", "modifieddate", "statusbyuserid", "statusbyusername",
+		"statusdate", "userid", "username");
 
 	@Reference
 	private UserLocalService _userLocalService;

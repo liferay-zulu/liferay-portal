@@ -48,6 +48,7 @@ CodeownersWhitespaceCheck | [Styling](styling_checks.markdown#styling-checks) | 
 CompatClassImportsCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that classes are imported from `compat` modules, when possible. |
 ConcatCheck | [Performance](performance_checks.markdown#performance-checks) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks for correct use of `StringBundler.concat`. |
 ConfigDefinitionKeysCheck | [Styling](styling_checks.markdown#styling-checks) | .cfg or .config | Sorts definition keys in `.config` files. |
+ConfigWhitespaceCheck | [Styling](styling_checks.markdown#styling-checks) | .cfg or .config | Finds missing and unnecessary whitespace. |
 ConstantNameCheck | [Naming Conventions](naming_conventions_checks.markdown#naming-conventions-checks) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that variable names of constants follow correct naming rules. |
 ConstructorGlobalVariableDeclarationCheck | [Performance](performance_checks.markdown#performance-checks) | .java | Checks that initial values of global variables are not set in the constructor. |
 [ConstructorMissingEmptyLineCheck](check/constructor_missing_empty_line_check.markdown#constructormissingemptylinecheck) | [Styling](styling_checks.markdown#styling-checks) | .java | Checks for line breaks when assigning variables in constructor. |
@@ -70,6 +71,7 @@ ExceptionMapperAnnotationCheck | [Bug Prevention](bug_prevention_checks.markdown
 [ExceptionMessageCheck](check/message_check.markdown#messagecheck) | [Styling](styling_checks.markdown#styling-checks) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Validates messages that are passed to exceptions. |
 ExceptionPrintStackTraceCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .java | Avoid using printStackTrace. |
 ExceptionVariableNameCheck | [Naming Conventions](naming_conventions_checks.markdown#naming-conventions-checks) | .java | Validates variable names that have type `*Exception`. |
+[FDSTableSchemaBuilderCheck](check/fds_table_schema_builder_check.markdown#fdstableschemabuildercheck) | [Styling](styling_checks.markdown#styling-checks) | .java | Finds cases where `add` should be used. |
 FTLEmptyLinesCheck | [Styling](styling_checks.markdown#styling-checks) | .ftl | Finds missing and unnecessary empty lines. |
 [FTLIfStatementCheck](check/if_statement_check.markdown#ifstatementcheck) | [Styling](styling_checks.markdown#styling-checks) | .ftl | Finds incorrect use of parentheses in statement. |
 FTLImportsCheck | [Styling](styling_checks.markdown#styling-checks) | .ftl | Sorts and groups imports in `.ftl` files. |
@@ -268,6 +270,7 @@ JavaXMLSecurityCheck | [Security](security_checks.markdown#security-checks) | .j
 JavadocCheck | [Javadoc](javadoc_checks.markdown#javadoc-checks) | .java | Performs several checks on javadoc. |
 [JavadocStyleCheck](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocStyle) | [Javadoc](javadoc_checks.markdown#javadoc-checks) | .java | Validates Javadoc comments to help ensure they are well formed. |
 LDIFEntryOrderCheck | [Styling](styling_checks.markdown#styling-checks) | | Checks the order of entries and attributes in `.ldif` file. |
+LDIFWhitespaceCheck | [Styling](styling_checks.markdown#styling-checks) | | Finds missing and unnecessary whitespace. |
 LFRBuildContentCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .lfrbuild-* | Finds `.lfrbuild*` files that are not empty. |
 LFRBuildReadmeCheck | [Documentation](documentation_checks.markdown#documentation-checks) | .lfrbuild-* | Checks that `.lfrbuild*` files are documented in a marker file. |
 LPS42924Check | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .java | Finds cases where `PortalUtil.getClassName*` (instead of calling `classNameLocalService` directly). |
@@ -338,6 +341,7 @@ PropertiesCommentsCheck | [Styling](styling_checks.markdown#styling-checks) | .e
 PropertiesDefinitionKeysCheck | [Styling](styling_checks.markdown#styling-checks) | .eslintignore, .prettierignore or .properties | Sorts definition keys in `liferay-plugin-package.properties` file. |
 PropertiesDependenciesFileCheck | [Styling](styling_checks.markdown#styling-checks) | .eslintignore, .prettierignore or .properties | Sorts the properties in `dependencies.properties` file. |
 PropertiesEmptyLinesCheck | [Styling](styling_checks.markdown#styling-checks) | .eslintignore, .prettierignore or .properties | Finds missing and unnecessary empty lines. |
+PropertiesEnvironmentVariablesCheck | [Documentation](documentation_checks.markdown#documentation-checks) | .eslintignore, .prettierignore or .properties | Verifies that the environment property in the documentation matches the property name. |
 PropertiesImportedFilesContentCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .eslintignore, .prettierignore or .properties | Performs several checks on `imported-files.properties` file. |
 [PropertiesLanguageKeysCheck](check/properties_language_keys_check.markdown#propertieslanguagekeyscheck) | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .eslintignore, .prettierignore or .properties | Checks that there is no HTML markup in language keys. |
 PropertiesLanguageKeysOrderCheck | [Styling](styling_checks.markdown#styling-checks) | .eslintignore, .prettierignore or .properties | Sort language keys in `Language.properties` file. |
@@ -345,7 +349,6 @@ PropertiesLiferayPluginPackageFileCheck | [Bug Prevention](bug_prevention_checks
 PropertiesLiferayPluginPackageLiferayVersionsCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .eslintignore, .prettierignore or .properties | Validates the version in `liferay-plugin-package.properties` file. |
 PropertiesLongLinesCheck | [Styling](styling_checks.markdown#styling-checks) | .eslintignore, .prettierignore or .properties | Finds lines that are longer than the specified maximum line length. |
 PropertiesMultiLineValuesOrderCheck | [Styling](styling_checks.markdown#styling-checks) | .eslintignore, .prettierignore or .properties | Verifies that property with multiple values is not on a single line. |
-PropertiesPortalEnvironmentVariablesCheck | [Documentation](documentation_checks.markdown#documentation-checks) | .eslintignore, .prettierignore or .properties | Verifies that the environment property in the documentation matches the property name. |
 PropertiesPortalFileCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .eslintignore, .prettierignore or .properties | Performs several checks on `portal.properties` or `portal-*.properties` file. |
 PropertiesPortletFileCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .eslintignore, .prettierignore or .properties | Performs several checks on `portlet.properties` file. |
 PropertiesReleaseBuildCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .eslintignore, .prettierignore or .properties | Verifies that the information in `release.properties` matches the information in `ReleaseInfo.java`. |
@@ -419,7 +422,7 @@ VariableDeclarationAsUsedCheck | [Performance](performance_checks.markdown#perfo
 VariableNameCheck | [Naming Conventions](naming_conventions_checks.markdown#naming-conventions-checks) | .java | Checks that variable names follow naming conventions. |
 [WhitespaceAfterCheck](https://checkstyle.sourceforge.io/config_whitespace.html#WhitespaceAfter) | [Styling](styling_checks.markdown#styling-checks) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that a token is followed by whitespace, with the exception that it does not check for whitespace after the semicolon of an empty for iterator. |
 [WhitespaceAroundCheck](https://checkstyle.sourceforge.io/config_whitespace.html#WhitespaceAround) | [Styling](styling_checks.markdown#styling-checks) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that a token is surrounded by whitespace. |
-WhitespaceCheck | [Styling](styling_checks.markdown#styling-checks) | .cfg, .config, .cql, .css, .dtd, .expect, .gradle, .groovy, .scss, .sh, .soy, .sql, .tld, .ts, .tsx, Dockerfile or packageinfo | Finds missing and unnecessary whitespace. |
+WhitespaceCheck | [Styling](styling_checks.markdown#styling-checks) | .cql, .css, .dtd, .expect, .gradle, .groovy, .scss, .sh, .soy, .sql, .tld, .ts, .tsx, Dockerfile or packageinfo | Finds missing and unnecessary whitespace. |
 XMLBuildFileCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .action, .function, .jrxml, .macro, .pom, .project, .properties, .svg, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Performs several checks on `build.xml`. |
 XMLCDATACheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .action, .function, .jrxml, .macro, .pom, .project, .properties, .svg, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Performs several checks on `CDATA` inside `xml`. |
 XMLCheckstyleFileCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prevention-checks) | .action, .function, .jrxml, .macro, .pom, .project, .properties, .svg, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Performs several checks on `checkstyle.xml` file. |

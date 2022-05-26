@@ -20,6 +20,7 @@ CSSPropertiesOrderCheck | .css or .scss | Sorts properties in `.css` files. |
 [ChainingCheck](check/chaining_check.markdown#chainingcheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that chaining is only applied on certain types and methods. |
 CodeownersWhitespaceCheck | CODEOWNERS | Finds missing and unnecessary whitespace in `CODEOWNERS` files. |
 ConfigDefinitionKeysCheck | .cfg or .config | Sorts definition keys in `.config` files. |
+ConfigWhitespaceCheck | .cfg or .config | Finds missing and unnecessary whitespace. |
 [ConstructorMissingEmptyLineCheck](check/constructor_missing_empty_line_check.markdown#constructormissingemptylinecheck) | .java | Checks for line breaks when assigning variables in constructor. |
 ContractionsCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds contractions in Strings (such as `can't` or `you're`). |
 [CopyrightCheck](check/copyright_check.markdown#copyrightcheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Validates `copyright` header. |
@@ -31,6 +32,7 @@ EnumConstantDividerCheck | .java | Find unnecessary empty lines between enum con
 EnumConstantOrderCheck | .java | Checks the order of enum constants. |
 EqualClauseIfStatementsCheck | .java | Finds consecutive if-statements with identical clauses. |
 [ExceptionMessageCheck](check/message_check.markdown#messagecheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Validates messages that are passed to exceptions. |
+[FDSTableSchemaBuilderCheck](check/fds_table_schema_builder_check.markdown#fdstableschemabuildercheck) | .java | Finds cases where `add` should be used. |
 FTLEmptyLinesCheck | .ftl | Finds missing and unnecessary empty lines. |
 [FTLIfStatementCheck](check/if_statement_check.markdown#ifstatementcheck) | .ftl | Finds incorrect use of parentheses in statement. |
 FTLImportsCheck | .ftl | Sorts and groups imports in `.ftl` files. |
@@ -90,6 +92,7 @@ JavaTermDividersCheck | .java | Finds missing or unnecessary empty lines between
 JavaTermOrderCheck | .java | Checks the order of javaterms. |
 JavaTermStylingCheck | .java | Applies rules to enforce consistency in code style. |
 LDIFEntryOrderCheck | | Checks the order of entries and attributes in `.ldif` file. |
+LDIFWhitespaceCheck | | Finds missing and unnecessary whitespace. |
 [LambdaCheck](check/lambda_check.markdown#lambdacheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that `lambda` statements are as simple as possible. |
 [ListUtilCheck](check/list_util_check.markdown#listutilcheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks for utilization of class `ListUtil`. |
 LiteralStringEqualsCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds cases where `Objects.equals` should be used. |
@@ -149,7 +152,7 @@ UnnecessaryMethodCallCheck | .java | Finds unnecessary method calls. |
 [UnnecessaryParenthesesCheck](https://checkstyle.sourceforge.io/config_coding.html#UnnecessaryParentheses) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks if unnecessary parentheses are used in a statement or expression. |
 [WhitespaceAfterCheck](https://checkstyle.sourceforge.io/config_whitespace.html#WhitespaceAfter) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that a token is followed by whitespace, with the exception that it does not check for whitespace after the semicolon of an empty for iterator. |
 [WhitespaceAroundCheck](https://checkstyle.sourceforge.io/config_whitespace.html#WhitespaceAround) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that a token is surrounded by whitespace. |
-WhitespaceCheck | .cfg, .config, .cql, .css, .dtd, .expect, .gradle, .groovy, .scss, .sh, .soy, .sql, .tld, .ts, .tsx, Dockerfile or packageinfo | Finds missing and unnecessary whitespace. |
+WhitespaceCheck | .cql, .css, .dtd, .expect, .gradle, .groovy, .scss, .sh, .soy, .sql, .tld, .ts, .tsx, Dockerfile or packageinfo | Finds missing and unnecessary whitespace. |
 XMLCustomSQLOrderCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .svg, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Checks the order of attributes in `custom-sql` file. |
 XMLCustomSQLStylingCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .svg, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Applies rules to enforce consistency in code style for `.xml` files in directory `custom-sql`. |
 XMLDDLStructuresFileCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .svg, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Checks the order of attributes in `-structures.xml` file. |

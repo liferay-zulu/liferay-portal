@@ -1803,10 +1803,14 @@ public abstract class BaseBuild implements Build {
 
 		Build parentBuild = getParentBuild();
 
+		if (parentBuild == null) {
+			return;
+		}
+
 		String parentBuildStatus = parentBuild.getStatus();
 
 		if (!parentBuildStatus.equals("running") ||
-			!JenkinsResultsParserUtil.isCINode()) {
+			!JenkinsResultsParserUtil.isCINode() || fromCompletedBuild) {
 
 			return;
 		}
@@ -2448,6 +2452,12 @@ public abstract class BaseBuild implements Build {
 			return;
 		}
 
+		int x = consoleText.indexOf("stop-current-job:");
+
+		if (x != -1) {
+			consoleText = consoleText.substring(0, x);
+		}
+
 		if (consoleText.contains(getReinvokedMessage())) {
 			reset();
 
@@ -2605,7 +2615,7 @@ public abstract class BaseBuild implements Build {
 			}
 
 			if (status.equals("running")) {
-				if (badBuildNumbers.size() > 0) {
+				if (!badBuildNumbers.isEmpty()) {
 					sb.append(" ");
 
 					List<String> badBuildURLs = getBadBuildURLs();
@@ -2925,17 +2935,25 @@ public abstract class BaseBuild implements Build {
 	}
 
 	protected Set<String> getJobParameterNames() {
-		JSONObject jsonObject;
+		JSONObject jsonObject = null;
 
-		try {
-			jsonObject = JenkinsResultsParserUtil.toJSONObject(
-				JenkinsResultsParserUtil.getLocalURL(
-					JenkinsResultsParserUtil.combine(
-						getJobURL(), "/api/json?tree=actions[",
-						"parameterDefinitions[name,type,value]]")));
+		String urlSuffix = "api/json";
+
+		if (archiveFileExists(urlSuffix)) {
+			jsonObject = new JSONObject(getArchiveFileContent(urlSuffix));
 		}
-		catch (IOException ioException) {
-			throw new RuntimeException("Unable to get build JSON", ioException);
+		else {
+			try {
+				jsonObject = JenkinsResultsParserUtil.toJSONObject(
+					JenkinsResultsParserUtil.getLocalURL(
+						JenkinsResultsParserUtil.combine(
+							getJobURL(), "/api/json?tree=actions[",
+							"parameterDefinitions[name,type,value]]")));
+			}
+			catch (IOException ioException) {
+				throw new RuntimeException(
+					"Unable to get build JSON", ioException);
+			}
 		}
 
 		JSONArray actionsJSONArray = jsonObject.getJSONArray("actions");
