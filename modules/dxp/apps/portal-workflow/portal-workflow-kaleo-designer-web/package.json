@@ -2,7 +2,8 @@
 	"dependencies": {
 		"dagre": "0.8.2",
 		"moment": "2.24.0",
-		"react-flow-renderer": "9.7.0"
+		"react-flow-renderer": "9.7.0",
+		"uuid": "^3.3.2"
 	},
 	"jest": {
 		"setupFiles": [
