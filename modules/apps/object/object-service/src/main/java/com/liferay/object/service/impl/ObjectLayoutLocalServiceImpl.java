@@ -43,13 +43,13 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -515,25 +515,13 @@ public class ObjectLayoutLocalServiceImpl
 			List<ObjectLayoutBox> objectLayoutBoxes =
 				objectLayoutTab.getObjectLayoutBoxes();
 
-			if (objectLayoutBoxes == null) {
-				objectLayoutBoxes = Collections.<ObjectLayoutBox>emptyList();
-			}
-
 			for (ObjectLayoutBox objectLayoutBox : objectLayoutBoxes) {
 				List<ObjectLayoutRow> objectLayoutRows =
 					objectLayoutBox.getObjectLayoutRows();
 
-				if (objectLayoutRows == null) {
-					continue;
-				}
-
 				for (ObjectLayoutRow objectLayoutRow : objectLayoutRows) {
 					List<ObjectLayoutColumn> objectLayoutColumns =
 						objectLayoutRow.getObjectLayoutColumns();
-
-					if (objectLayoutColumns == null) {
-						continue;
-					}
 
 					for (ObjectLayoutColumn objectLayoutColumn :
 							objectLayoutColumns) {
@@ -581,10 +569,6 @@ public class ObjectLayoutLocalServiceImpl
 			List<ObjectLayoutBox> objectLayoutBoxes =
 				objectLayoutTab.getObjectLayoutBoxes();
 
-			if (objectLayoutBoxes == null) {
-				objectLayoutBoxes = Collections.<ObjectLayoutBox>emptyList();
-			}
-
 			for (ObjectLayoutBox objectLayoutBox : objectLayoutBoxes) {
 				if (Validator.isNull(objectLayoutBox.getType())) {
 					throw new ObjectLayoutBoxCategorizationTypeException(
@@ -603,11 +587,8 @@ public class ObjectLayoutLocalServiceImpl
 								"per layout");
 					}
 
-					List<ObjectLayoutRow> objectLayoutRows =
-						objectLayoutBox.getObjectLayoutRows();
-
-					if ((objectLayoutRows != null) &&
-						!objectLayoutRows.isEmpty()) {
+					if (ListUtil.isNotEmpty(
+							objectLayoutBox.getObjectLayoutRows())) {
 
 						throw new ObjectLayoutBoxCategorizationTypeException(
 							"Categorization layout box must not have layout " +
