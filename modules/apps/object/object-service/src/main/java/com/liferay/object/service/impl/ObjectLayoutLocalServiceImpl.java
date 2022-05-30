@@ -108,8 +108,8 @@ public class ObjectLayoutLocalServiceImpl
 
 		objectLayout.setObjectLayoutTabs(
 			_addObjectLayoutTabs(
-				objectDefinitionId, objectLayout.getObjectLayoutId(),
-				objectLayoutTabs, user));
+				user, objectDefinitionId, objectLayout.getObjectLayoutId(),
+				objectLayoutTabs));
 
 		return objectLayout;
 	}
@@ -227,15 +227,15 @@ public class ObjectLayoutLocalServiceImpl
 
 		objectLayout.setObjectLayoutTabs(
 			_addObjectLayoutTabs(
-				objectLayout.getObjectDefinitionId(),
-				objectLayout.getObjectLayoutId(), objectLayoutTabs, user));
+				user, objectLayout.getObjectDefinitionId(),
+				objectLayout.getObjectLayoutId(), objectLayoutTabs));
 
 		return objectLayout;
 	}
 
 	private ObjectLayoutBox _addObjectLayoutBox(
-			long objectDefinitionId, ObjectLayoutBox objectLayoutBox,
-			long objectLayoutTabId, User user)
+			User user, long objectDefinitionId, long objectLayoutTabId,
+			ObjectLayoutBox objectLayoutBox)
 		throws PortalException {
 
 		ObjectLayoutBox newObjectLayoutBox = _objectLayoutBoxPersistence.create(
@@ -265,14 +265,14 @@ public class ObjectLayoutLocalServiceImpl
 	}
 
 	private List<ObjectLayoutBox> _addObjectLayoutBoxes(
-			long objectDefinitionId, List<ObjectLayoutBox> objectLayoutBoxes,
-			long objectLayoutTabId, User user)
+			User user, long objectDefinitionId, long objectLayoutTabId,
+			List<ObjectLayoutBox> objectLayoutBoxes)
 		throws PortalException {
 
 		return TransformUtil.transform(
 			objectLayoutBoxes,
 			objectLayoutBox -> _addObjectLayoutBox(
-				objectDefinitionId, objectLayoutBox, objectLayoutTabId, user));
+				user, objectDefinitionId, objectLayoutTabId, objectLayoutBox));
 	}
 
 	private ObjectLayoutColumn _addObjectLayoutColumn(
@@ -368,9 +368,9 @@ public class ObjectLayoutLocalServiceImpl
 	}
 
 	private ObjectLayoutTab _addObjectLayoutTab(
-			Map<Locale, String> nameMap, long objectDefinitionId,
-			List<ObjectLayoutBox> objectLayoutBoxes, long objectLayoutId,
-			long objectRelationshipId, int priority, User user)
+			User user, long objectDefinitionId, long objectLayoutId,
+			long objectRelationshipId, Map<Locale, String> nameMap,
+			int priority, List<ObjectLayoutBox> objectLayoutBoxes)
 		throws PortalException {
 
 		ObjectLayoutTab objectLayoutTab = _objectLayoutTabPersistence.create(
@@ -388,24 +388,24 @@ public class ObjectLayoutLocalServiceImpl
 
 		objectLayoutTab.setObjectLayoutBoxes(
 			_addObjectLayoutBoxes(
-				objectDefinitionId, objectLayoutBoxes,
-				objectLayoutTab.getObjectLayoutTabId(), user));
+				user, objectDefinitionId,
+				objectLayoutTab.getObjectLayoutTabId(), objectLayoutBoxes));
 
 		return objectLayoutTab;
 	}
 
 	private List<ObjectLayoutTab> _addObjectLayoutTabs(
-			long objectDefinitionId, long objectLayoutId,
-			List<ObjectLayoutTab> objectLayoutTabs, User user)
+			User user, long objectDefinitionId, long objectLayoutId,
+			List<ObjectLayoutTab> objectLayoutTabs)
 		throws PortalException {
 
 		return TransformUtil.transform(
 			objectLayoutTabs,
 			objectLayoutTab -> _addObjectLayoutTab(
-				objectLayoutTab.getNameMap(), objectDefinitionId,
-				objectLayoutTab.getObjectLayoutBoxes(), objectLayoutId,
+				user, objectDefinitionId, objectLayoutId,
 				objectLayoutTab.getObjectRelationshipId(),
-				objectLayoutTab.getPriority(), user));
+				objectLayoutTab.getNameMap(), objectLayoutTab.getPriority(),
+				objectLayoutTab.getObjectLayoutBoxes()));
 	}
 
 	private void _deleteObjectLayoutBoxes(
