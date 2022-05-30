@@ -243,7 +243,7 @@ export default function ObjectFieldFormBase({
 
 			{children}
 
-			<div className="lfr-objects__object-field-form-base-toggle-container">
+			<ClayForm.Group className="lfr-objects__object-field-form-base-form-group-toggles">
 				<ClayToggle
 					disabled={disabled || values.state}
 					label={Liferay.Language.get('mandatory')}
@@ -271,7 +271,7 @@ export default function ObjectFieldFormBase({
 							toggled={values.state}
 						/>
 					)}
-			</div>
+			</ClayForm.Group>
 
 			{values.state && (
 				<Select
@@ -285,6 +285,7 @@ export default function ObjectFieldFormBase({
 					}
 					options={pickListItems.map(({name}) => name)}
 					required
+					value={values.defaultValue}
 				/>
 			)}
 		</>

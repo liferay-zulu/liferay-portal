@@ -10,9 +10,13 @@
 		color: $secondary-l1;
 	}
 
-	&-toggle-container {
-		display: grid;
-		gap: 1.56rem;
-		margin-bottom: 1.5rem;
+	&-form-group-toggles {
+		display: contents;
+
+		.modal & {
+			display: grid;
+			gap: 1.56rem;
+			margin-bottom: 1.5rem;
+		}
 	}
 }
