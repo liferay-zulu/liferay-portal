@@ -34,6 +34,7 @@ import com.liferay.object.service.persistence.ObjectLayoutBoxPersistence;
 import com.liferay.object.service.persistence.ObjectLayoutColumnPersistence;
 import com.liferay.object.service.persistence.ObjectLayoutRowPersistence;
 import com.liferay.object.service.persistence.ObjectLayoutTabPersistence;
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -50,6 +51,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -269,7 +271,7 @@ public class ObjectLayoutLocalServiceImpl
 			List<ObjectLayoutBox> objectLayoutBoxes)
 		throws PortalException {
 
-		return TransformUtil.transform(
+		return _transform(
 			objectLayoutBoxes,
 			objectLayoutBox -> _addObjectLayoutBox(
 				user, objectDefinitionId, objectLayoutTabId, objectLayoutBox));
@@ -359,7 +361,7 @@ public class ObjectLayoutLocalServiceImpl
 			List<ObjectLayoutRow> objectLayoutRows)
 		throws PortalException {
 
-		return TransformUtil.transform(
+		return _transform(
 			objectLayoutRows,
 			objectLayoutRow -> _addObjectLayoutRow(
 				user, objectDefinitionId, objectLayoutBoxId,
@@ -399,7 +401,7 @@ public class ObjectLayoutLocalServiceImpl
 			List<ObjectLayoutTab> objectLayoutTabs)
 		throws PortalException {
 
-		return TransformUtil.transform(
+		return _transform(
 			objectLayoutTabs,
 			objectLayoutTab -> _addObjectLayoutTab(
 				user, objectDefinitionId, objectLayoutId,
@@ -500,6 +502,25 @@ public class ObjectLayoutLocalServiceImpl
 		}
 
 		return objectLayoutTabs;
+	}
+
+	private <T, R> List<R> _transform(
+			Collection<T> collection,
+			UnsafeFunction<T, R, Exception> unsafeFunction)
+		throws PortalException {
+
+		try {
+			return TransformUtil.transform(collection, unsafeFunction);
+		}
+		catch (RuntimeException runtimeException) {
+			Throwable throwable = runtimeException.getCause();
+
+			if (throwable instanceof ObjectLayoutColumnSizeException) {
+				throw (ObjectLayoutColumnSizeException)throwable;
+			}
+
+			throw runtimeException;
+		}
 	}
 
 	private void _validate(
