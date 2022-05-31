@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.constants.ObjectLayoutBoxConstants;
 import com.liferay.object.exception.DefaultObjectLayoutException;
 import com.liferay.object.exception.ObjectLayoutBoxCategorizationTypeException;
+import com.liferay.object.exception.ObjectLayoutColumnSizeException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectLayout;
@@ -297,8 +298,10 @@ public class ObjectLayoutLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (Exception exception) {
-			String message = exception.getMessage();
+		catch (ObjectLayoutColumnSizeException
+					objectLayoutColumnSizeException) {
+
+			String message = objectLayoutColumnSizeException.getMessage();
 
 			Assert.assertTrue(
 				message.contains(
