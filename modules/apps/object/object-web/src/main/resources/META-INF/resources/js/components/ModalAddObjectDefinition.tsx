@@ -21,17 +21,13 @@ import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
 import useForm from '../hooks/useForm';
+import {HEADERS} from '../utils/constants';
 import {ERRORS} from '../utils/errors';
 import {defaultLanguageId} from '../utils/locale';
 import {
 	firstLetterUppercase,
 	removeAllSpecialCharacters,
 } from '../utils/string';
-
-const headers = new Headers({
-	'Accept': 'application/json',
-	'Content-Type': 'application/json',
-});
 
 const normalizeName: TNormalizeName = (str) => {
 	const split = str.split(' ');
@@ -80,7 +76,7 @@ const ModalAddObjectDefinition: React.FC<IProps> = ({
 		}
 		const response = await fetch(apiURL, {
 			body: JSON.stringify(objectDefinition),
-			headers,
+			headers: HEADERS,
 			method: 'POST',
 		});
 

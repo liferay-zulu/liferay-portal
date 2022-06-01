@@ -21,6 +21,7 @@ import {
 import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
+import {HEADERS} from '../utils/constants';
 import {
 	availableLocales,
 	defaultLanguageId,
@@ -52,10 +53,7 @@ export default function EditObjectValidation({
 			`/o/object-admin/v1.0/object-validation-rules/${objectValidation.id}`,
 			{
 				body: JSON.stringify(objectValidation),
-				headers: new Headers({
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-				}),
+				headers: HEADERS,
 				method: 'PUT',
 			}
 		);

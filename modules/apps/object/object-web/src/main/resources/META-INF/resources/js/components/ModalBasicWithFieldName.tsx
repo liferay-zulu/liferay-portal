@@ -21,6 +21,7 @@ import {fetch} from 'frontend-js-web';
 import React, {useState} from 'react';
 
 import useForm from '../hooks/useForm';
+import {HEADERS} from '../utils/constants';
 import {defaultLanguageId} from '../utils/locale';
 
 interface IProps extends React.HTMLAttributes<HTMLElement> {
@@ -54,10 +55,7 @@ export function ModalBasicWithFieldName({
 					[defaultLanguageId]: name,
 				},
 			}),
-			headers: new Headers({
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			}),
+			headers: HEADERS,
 			method: 'POST',
 		});
 

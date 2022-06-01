@@ -31,6 +31,7 @@ import React, {
 	useState,
 } from 'react';
 
+import {HEADERS} from '../../../utils/constants';
 import {defaultLanguageId, locale} from '../../../utils/locale';
 import ViewContext, {TYPES} from '../context';
 import {
@@ -41,9 +42,8 @@ import {
 } from '../types';
 
 const headers = new Headers({
-	'Accept': 'application/json',
+	...HEADERS,
 	'Accept-Language': locale!.symbol,
-	'Content-Type': 'application/json',
 });
 
 const PICKLIST_OPERATORS: TLabelValueObject[] = [

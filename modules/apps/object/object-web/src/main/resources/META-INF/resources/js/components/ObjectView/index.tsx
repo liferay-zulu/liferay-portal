@@ -22,6 +22,7 @@ import {fetch} from 'frontend-js-web';
 import React, {useContext, useEffect, useState} from 'react';
 
 import {invalidateRequired} from '../../hooks/useForm';
+import {HEADERS as defaultHeaders} from '../../utils/constants';
 import {defaultLanguageId, locale} from '../../utils/locale';
 import BasicInfoScreen from './BasicInfoScreen/BasicInfoScreen';
 import {DefaultSortScreen} from './DefaultSortScreen/DefaultSortScreen';
@@ -50,9 +51,8 @@ const TABS = [
 ];
 
 const HEADERS = new Headers({
-	'Accept': 'application/json',
+	...defaultHeaders,
 	'Accept-Language': locale!.symbol,
-	'Content-Type': 'application/json',
 });
 
 const CustomView: React.FC<React.HTMLAttributes<HTMLElement>> = () => {

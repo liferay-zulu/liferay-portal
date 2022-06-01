@@ -20,12 +20,8 @@ import {FormCustomSelect, Input} from '@liferay/object-js-components-web';
 import {fetch} from 'frontend-js-web';
 import React, {FormEvent, useEffect, useState} from 'react';
 
+import {HEADERS} from '../utils/constants';
 import {defaultLanguageId} from '../utils/locale';
-
-const headers = new Headers({
-	'Accept': 'application/json',
-	'Content-Type': 'application/json',
-});
 
 const requiredLabel = Liferay.Language.get('required');
 
@@ -77,7 +73,7 @@ function ModalAddObjectValidation({
 					},
 					script: 'script_placeholder',
 				}),
-				headers,
+				headers: HEADERS,
 				method: 'POST',
 			});
 

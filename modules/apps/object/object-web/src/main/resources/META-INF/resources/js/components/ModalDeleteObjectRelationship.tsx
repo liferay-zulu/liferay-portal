@@ -17,6 +17,7 @@ import {Observer} from '@clayui/modal/lib/types';
 import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
+import {HEADERS} from '../utils/constants';
 import DangerModal from './DangerModal';
 import WarningModal from './WarningModal';
 
@@ -98,10 +99,7 @@ export default function ModalWithProvider({isApproved}: {isApproved: boolean}) {
 		const response = await fetch(
 			`/o/object-admin/v1.0/object-relationships/${id}`,
 			{
-				headers: new Headers({
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-				}),
+				headers: HEADERS,
 				method: 'DELETE',
 			}
 		);

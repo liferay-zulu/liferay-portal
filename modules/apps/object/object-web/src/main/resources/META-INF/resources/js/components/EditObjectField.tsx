@@ -27,6 +27,7 @@ import {fetch} from 'frontend-js-web';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {createTextMaskInputElement} from 'text-mask-core';
 
+import {HEADERS} from '../utils/constants';
 import {createAutoCorrectedNumberPipe} from '../utils/createAutoCorrectedNumberPipe';
 import {ERRORS} from '../utils/errors';
 import {
@@ -69,10 +70,7 @@ export default function EditObjectField({
 			`/o/object-admin/v1.0/object-fields/${id}`,
 			{
 				body: JSON.stringify(objectField),
-				headers: new Headers({
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-				}),
+				headers: HEADERS,
 				method: 'PUT',
 			}
 		);
