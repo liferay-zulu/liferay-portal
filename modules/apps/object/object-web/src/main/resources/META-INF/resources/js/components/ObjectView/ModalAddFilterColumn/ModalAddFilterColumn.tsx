@@ -31,6 +31,7 @@ import React, {
 	useState,
 } from 'react';
 
+import {HEADERS} from '../../../utils/constants';
 import {defaultLanguageId, locale} from '../../../utils/locale';
 import ViewContext, {TYPES} from '../context';
 import {
@@ -40,11 +41,7 @@ import {
 	TWorkflowStatus,
 } from '../types';
 
-const headers = new Headers({
-	'Accept': 'application/json',
-	'Accept-Language': locale!.symbol,
-	'Content-Type': 'application/json',
-});
+HEADERS.append('Accept-Language', locale!.symbol);
 
 const PICKLIST_OPERATORS: TLabelValueObject[] = [
 	{
@@ -198,7 +195,7 @@ export function ModalAddFilterColumn({
 					const response = await fetch(
 						`/o/headless-admin-list-type/v1.0/list-type-definitions/${objectField.listTypeDefinitionId}/list-type-entries`,
 						{
-							headers,
+							headers: HEADERS,
 							method: 'GET',
 						}
 					);

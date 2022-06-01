@@ -20,15 +20,11 @@ import {Input} from '@liferay/object-js-components-web';
 import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
+import {HEADERS} from '../utils/constants';
 import {ERRORS} from '../utils/errors';
 import {defaultLanguageId} from '../utils/locale';
 import {toCamelCase} from '../utils/string';
 import ObjectFieldFormBase, {useObjectFieldForm} from './ObjectFieldFormBase';
-
-const headers = new Headers({
-	'Accept': 'application/json',
-	'Content-Type': 'application/json',
-});
 
 function ModalAddObjectField({
 	apiURL,
@@ -55,7 +51,7 @@ function ModalAddObjectField({
 					field.name ||
 					toCamelCase(field.label[defaultLanguageId] as string),
 			}),
-			headers,
+			headers: HEADERS,
 			method: 'POST',
 		});
 

@@ -25,14 +25,10 @@ import {
 import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
+import {HEADERS} from '../utils/constants';
 import {defaultLanguageId} from '../utils/locale';
 import {objectRelationshipTypes} from '../utils/objectRelationshipTypes';
 import {toCamelCase} from '../utils/string';
-
-const headers = new Headers({
-	'Accept': 'application/json',
-	'Content-Type': 'application/json',
-});
 
 const ModalAddObjectRelationship: React.FC<IProps> = ({
 	apiURL,
@@ -94,7 +90,7 @@ const ModalAddObjectRelationship: React.FC<IProps> = ({
 				objectDefinitionId2,
 				type: type.value,
 			}),
-			headers,
+			headers: HEADERS,
 			method: 'POST',
 		});
 
@@ -148,7 +144,7 @@ const ModalAddObjectRelationship: React.FC<IProps> = ({
 			const result = await fetch(
 				'/o/object-admin/v1.0/object-definitions?page=-1',
 				{
-					headers,
+					headers: HEADERS,
 					method: 'GET',
 				}
 			);

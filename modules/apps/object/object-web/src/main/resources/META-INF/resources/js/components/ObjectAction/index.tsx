@@ -26,6 +26,7 @@ import {
 import {fetch} from 'frontend-js-web';
 import React, {useState} from 'react';
 
+import {HEADERS} from '../../utils/constants';
 import ActionBuilder from './tabs/ActionBuilder';
 import BasicInfo from './tabs/BasicInfo';
 
@@ -48,10 +49,7 @@ export default function Action({
 	const onSubmit = async (objectAction: ObjectAction) => {
 		const response = await fetch(url, {
 			body: JSON.stringify(objectAction),
-			headers: new Headers({
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			}),
+			headers: HEADERS,
 			method,
 		});
 

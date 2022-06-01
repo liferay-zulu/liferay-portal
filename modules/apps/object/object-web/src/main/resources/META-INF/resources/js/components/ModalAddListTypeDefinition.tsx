@@ -20,6 +20,7 @@ import {Input, useForm} from '@liferay/object-js-components-web';
 import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
+import {HEADERS} from '../utils/constants';
 import {defaultLanguageId} from '../utils/locale';
 import {TName} from './Layout/types';
 
@@ -38,10 +39,7 @@ const ModalAddListTypeDefinition: React.FC<IProps> = ({
 			body: JSON.stringify({
 				name_i18n,
 			}),
-			headers: new Headers({
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			}),
+			headers: HEADERS,
 			method: 'POST',
 		});
 

@@ -24,6 +24,7 @@ import {
 import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
+import {HEADERS} from '../utils/constants';
 import {
 	availableLocales,
 	defaultLanguageId,
@@ -54,10 +55,7 @@ const ModalAddListTypeEntry: React.FC<IProps> = ({
 				key: key || toCamelCase(name_i18n[selectedLocale.label]),
 				name_i18n,
 			}),
-			headers: new Headers({
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			}),
+			headers: HEADERS,
 			method: 'POST',
 		});
 

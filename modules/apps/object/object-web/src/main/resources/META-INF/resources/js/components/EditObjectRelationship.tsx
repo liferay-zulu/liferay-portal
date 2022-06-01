@@ -27,6 +27,7 @@ import {
 import {fetch} from 'frontend-js-web';
 import React, {useState} from 'react';
 
+import {HEADERS} from '../utils/constants';
 import {
 	availableLocales,
 	defaultLanguageId,
@@ -34,11 +35,6 @@ import {
 } from '../utils/locale';
 import {objectRelationshipTypes} from '../utils/objectRelationshipTypes';
 import {firstLetterUppercase} from '../utils/string';
-
-const HEADERS = new Headers({
-	'Accept': 'application/json',
-	'Content-Type': 'application/json',
-});
 
 export default function EditObjectRelationship({
 	deletionTypes,

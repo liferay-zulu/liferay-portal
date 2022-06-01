@@ -22,6 +22,7 @@ import {
 import {fetch} from 'frontend-js-web';
 import React, {useContext, useEffect, useState} from 'react';
 
+import {HEADERS} from '../../utils/constants';
 import {defaultLanguageId} from '../../utils/locale';
 import {TabsVisitor} from '../../utils/visitor';
 import InfoScreen from './InfoScreen/InfoScreen';
@@ -44,11 +45,6 @@ const TABS = [
 		label: Liferay.Language.get('layout'),
 	},
 ];
-
-const HEADERS = new Headers({
-	'Accept': 'application/json',
-	'Content-Type': 'application/json',
-});
 
 type TNormalizeObjectFields = ({
 	objectFields,
