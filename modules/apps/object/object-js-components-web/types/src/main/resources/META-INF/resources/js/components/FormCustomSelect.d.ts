@@ -22,13 +22,16 @@ export declare function FormCustomSelect<T extends CustomItem = CustomItem>({
 	feedbackMessage,
 	id,
 	label,
+	multipleChoice,
 	onChange,
 	options,
 	placeholder,
 	required,
+	setOptions,
 	value,
 }: IProps<T>): JSX.Element;
 export interface CustomItem {
+	checked?: boolean;
 	description?: string;
 	label: string;
 	value?: string;
@@ -40,10 +43,12 @@ interface IProps<T extends CustomItem = CustomItem> {
 	feedbackMessage?: string;
 	id?: string;
 	label?: string;
+	multipleChoice?: boolean;
 	onChange?: (selected: T) => void;
 	options: T[];
 	placeholder?: string;
 	required?: boolean;
+	setOptions?: (options: T[]) => void;
 	value?: string | number | string[];
 }
 export {};

@@ -16,6 +16,7 @@ import ClayAutocomplete from '@clayui/autocomplete';
 import ClayDropDown from '@clayui/drop-down';
 import React, {useRef, useState} from 'react';
 
+import {CheckboxItem} from './CheckBoxItem';
 import {FieldBase} from './FieldBase';
 
 import './FormCustomSelect.scss';
@@ -27,10 +28,12 @@ export function FormCustomSelect<T extends CustomItem = CustomItem>({
 	feedbackMessage,
 	id,
 	label,
+	multipleChoice,
 	onChange,
 	options,
 	placeholder = Liferay.Language.get('choose-an-option'),
 	required,
+	setOptions,
 	value,
 }: IProps<T>) {
 	const [active, setActive] = useState<boolean>(false);
@@ -53,7 +56,19 @@ export function FormCustomSelect<T extends CustomItem = CustomItem>({
 					onClick={() => setActive((active) => !active)}
 					placeholder={placeholder}
 					ref={inputRef}
-					value={value}
+					value={
+						multipleChoice
+							? options
+									.reduce<string[]>((acc, value) => {
+										if (value.checked) {
+											acc.push(value.label);
+										}
+
+										return acc;
+									}, [])
+									.join(', ')
+							: value
+					}
 				/>
 
 				<ClayAutocomplete.DropDown
@@ -63,23 +78,43 @@ export function FormCustomSelect<T extends CustomItem = CustomItem>({
 					onSetActive={setActive}
 				>
 					<ClayDropDown.ItemList>
-						{options?.map((option, index) => (
-							<ClayDropDown.Item
-								key={index}
-								onClick={() => {
-									setActive(false);
-									onChange?.(option);
-								}}
-							>
-								<div>{option.label}</div>
+						{multipleChoice && setOptions
+							? options.map(({checked, label, value}) => (
+									<CheckboxItem
+										checked={checked}
+										key={value}
+										label={label}
+										onChange={({target: {checked}}) => {
+											setOptions(
+												options.map((option) =>
+													option.label === label
+														? {
+																...option,
+																checked,
+														  }
+														: option
+												)
+											);
+										}}
+									/>
+							  ))
+							: options?.map((option, index) => (
+									<ClayDropDown.Item
+										key={index}
+										onClick={() => {
+											setActive(false);
+											onChange?.(option);
+										}}
+									>
+										<div>{option.label}</div>
 
-								{option.description && (
-									<span className="text-small">
-										{option.description}
-									</span>
-								)}
-							</ClayDropDown.Item>
-						))}
+										{option.description && (
+											<span className="text-small">
+												{option.description}
+											</span>
+										)}
+									</ClayDropDown.Item>
+							  ))}
 					</ClayDropDown.ItemList>
 				</ClayAutocomplete.DropDown>
 			</ClayAutocomplete>
@@ -88,6 +123,7 @@ export function FormCustomSelect<T extends CustomItem = CustomItem>({
 }
 
 export interface CustomItem {
+	checked?: boolean;
 	description?: string;
 	label: string;
 	value?: string;
@@ -99,9 +135,11 @@ interface IProps<T extends CustomItem = CustomItem> {
 	feedbackMessage?: string;
 	id?: string;
 	label?: string;
+	multipleChoice?: boolean;
 	onChange?: (selected: T) => void;
 	options: T[];
 	placeholder?: string;
 	required?: boolean;
+	setOptions?: (options: T[]) => void;
 	value?: string | number | string[];
 }

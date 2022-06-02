@@ -13,13 +13,10 @@
  */
 
 import ClayButton from '@clayui/button';
-import ClayDropDown from '@clayui/drop-down';
 import ClayModal from '@clayui/modal';
 import {
 	AutoComplete,
-	CheckboxItem,
 	FormCustomSelect,
-	Input,
 } from '@liferay/object-js-components-web';
 import {fetch} from 'frontend-js-web';
 import React, {
@@ -85,8 +82,6 @@ export function ModalAddFilterColumn({
 	>();
 
 	const [query, setQuery] = useState<string>('');
-
-	const [active, setActive] = useState(false);
 
 	const filteredAvailableFields = useMemo(() => {
 		return availableFields.filter(({label}) => {
@@ -359,50 +354,13 @@ export function ModalAddFilterColumn({
 					value={selectedFilterType?.label}
 				/>
 
-				<ClayDropDown
-					active={active}
-					onActiveChange={setActive}
-					trigger={
-						<Input
-							disabled={!selectedFilterType?.value}
-							label={Liferay.Language.get('value')}
-							placeholder={Liferay.Language.get(
-								'choose-an-option'
-							)}
-							value={items
-								.reduce<string[]>((acc, value) => {
-									if (value.checked) {
-										acc.push(value.label);
-									}
-
-									return acc;
-								}, [])
-								.join(', ')}
-						/>
-					}
-				>
-					<ClayDropDown.ItemList>
-						{items.map(({checked, label, value}) => (
-							<CheckboxItem
-								checked={checked}
-								key={value}
-								label={label}
-								onChange={({target: {checked}}) => {
-									setItems(
-										items.map((item) =>
-											item.label === label
-												? {
-														...item,
-														checked,
-												  }
-												: item
-										)
-									);
-								}}
-							/>
-						))}
-					</ClayDropDown.ItemList>
-				</ClayDropDown>
+				<FormCustomSelect
+					disabled={!selectedFilterType?.value}
+					label={Liferay.Language.get('value')}
+					multipleChoice
+					options={items}
+					setOptions={setItems}
+				/>
 			</ClayModal.Body>
 
 			<ClayModal.Footer
