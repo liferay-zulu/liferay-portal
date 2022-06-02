@@ -26,6 +26,8 @@ import {
 import {fetch} from 'frontend-js-web';
 import React, {ChangeEventHandler, ReactNode, useMemo, useState} from 'react';
 
+import {HEADERS} from '../utils/constants';
+import {fetchPickListItems} from '../utils/fetchPickListItems';
 import {normalizeFieldSettings} from '../utils/fieldSettings';
 import {defaultLanguageId} from '../utils/locale';
 import {toCamelCase} from '../utils/string';
@@ -53,38 +55,17 @@ const attachmentSources = [
 	},
 ];
 
-const headers = new Headers({
-	'Accept': 'application/json',
-	'Content-Type': 'application/json',
-});
-
 async function fetchPickList() {
 	const result = await fetch(
 		'/o/headless-admin-list-type/v1.0/list-type-definitions?pageSize=-1',
 		{
-			headers,
+			headers: HEADERS,
 			method: 'GET',
 		}
 	);
 
 	const {items = []} = (await result.json()) as {
 		items: IPickList[] | undefined;
-	};
-
-	return items.map(({id, name}) => ({id, name}));
-}
-
-async function fetchPickListItems(listTypeDefinitionId: number) {
-	const result = await fetch(
-		`/o/headless-admin-list-type/v1.0/list-type-definitions/${listTypeDefinitionId}/list-type-entries`,
-		{
-			headers,
-			method: 'GET',
-		}
-	);
-
-	const {items = []} = (await result.json()) as {
-		items: IPickListItems[] | undefined;
 	};
 
 	return items.map(({id, name}) => ({id, name}));
@@ -111,7 +92,7 @@ export default function ObjectFieldFormBase({
 	}, [objectFieldTypes]);
 
 	const [pickList, setPickList] = useState<IPickList[]>([]);
-	const [pickListItems, setPickListItems] = useState<IPickListItems[]>([]);
+	const [pickListItems, setPickListItems] = useState<PickListItems[]>([]);
 
 	const handleTypeChange = async (option: ObjectFieldType) => {
 		if (option.businessType === 'Picklist') {
@@ -568,14 +549,8 @@ interface IUseObjectFieldForm {
 	initialValues: Partial<ObjectField>;
 	onSubmit: (field: ObjectField) => void;
 }
-interface IItemIdName {
-	id: string;
-	name: string;
-}
 
-interface IPickList extends IItemIdName {}
-
-interface IPickListItems extends IItemIdName {}
+interface IPickList extends ItemIdName {}
 
 interface IProps {
 	children?: ReactNode;

@@ -12,6 +12,11 @@
  * details.
  */
 
+interface ItemIdName {
+	id: string;
+	name: string;
+}
+
 interface ObjectAction {
 	active: boolean;
 	conditionExpression?: string;
@@ -94,6 +99,8 @@ interface ObjectRelationship {
 	reverse?: boolean;
 	type: string;
 }
+
+interface PickListItems extends ItemIdName {}
 
 type ObjectValidationType = {
 	label: string;
