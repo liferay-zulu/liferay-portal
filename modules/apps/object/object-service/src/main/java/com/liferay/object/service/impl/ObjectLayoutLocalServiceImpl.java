@@ -14,6 +14,7 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectLayoutBoxConstants;
 import com.liferay.object.exception.DefaultObjectLayoutException;
 import com.liferay.object.exception.NoSuchObjectDefinitionException;
@@ -596,6 +597,19 @@ public class ObjectLayoutLocalServiceImpl
 					}
 				}
 			}
+		}
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionPersistence.fetchByPrimaryKey(objectDefinitionId);
+
+		if ((countObjectLayoutBoxCategorizationType == 1) &&
+			!StringUtil.equals(
+				objectDefinition.getStorageType(),
+				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT)) {
+
+			throw new ObjectLayoutBoxCategorizationTypeException(
+				"Categorization layout box only can be used in definitions " +
+					"with default storage type");
 		}
 	}
 
