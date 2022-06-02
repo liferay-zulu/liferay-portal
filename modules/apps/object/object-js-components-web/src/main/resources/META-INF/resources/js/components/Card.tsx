@@ -27,6 +27,7 @@ export function Card({
 	...otherProps
 }: IProps) {
 	const inline = viewMode === 'inline';
+	const noChildren = viewMode === 'no-children';
 	const noPadding = viewMode === 'no-padding';
 
 	return (
@@ -34,37 +35,46 @@ export function Card({
 			{...otherProps}
 			className={classNames(className, 'lfr-objects__card', {
 				'lfr-objects__card--inline': inline,
+				'lfr-objects__card--no-margin': noChildren,
 			})}
 		>
-			{inline ? (
-				title
-			) : (
-				<div className="lfr-objects__card-header">
-					<h3 className="lfr-objects__card-title">{title}</h3>
-
-					{tooltip && (
-						<span
-							className="ml-2"
-							data-tooltip-align="top"
-							title={tooltip.content}
-						>
-							<ClayIcon
-								className="lfr-objects__card-header-tooltip-icon"
-								symbol={tooltip.symbol}
-							/>
-						</span>
-					)}
+			{noChildren ? (
+				<div className="lfr-objects__card-title--with-padding">
+					{title}
 				</div>
-			)}
+			) : (
+				<>
+					{inline ? (
+						title
+					) : (
+						<div className="lfr-objects__card-header">
+							<h3 className="lfr-objects__card-title">{title}</h3>
 
-			<div
-				className={classNames('lfr-objects__card-body', {
-					'lfr-objects__card-body--inline': inline,
-					'lfr-objects__card-body--no-padding': noPadding,
-				})}
-			>
-				{children}
-			</div>
+							{tooltip && (
+								<span
+									className="ml-2"
+									data-tooltip-align="top"
+									title={tooltip.content}
+								>
+									<ClayIcon
+										className="lfr-objects__card-header-tooltip-icon"
+										symbol={tooltip.symbol}
+									/>
+								</span>
+							)}
+						</div>
+					)}
+
+					<div
+						className={classNames('lfr-objects__card-body', {
+							'lfr-objects__card-body--inline': inline,
+							'lfr-objects__card-body--no-padding': noPadding,
+						})}
+					>
+						{children}
+					</div>
+				</>
+			)}
 		</div>
 	);
 }
@@ -72,7 +82,7 @@ export function Card({
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	title: string;
 	tooltip?: ITooltip | null;
-	viewMode?: 'inline' | 'no-padding';
+	viewMode?: 'inline' | 'no-children' | 'no-padding';
 }
 
 interface ITooltip {

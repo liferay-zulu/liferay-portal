@@ -16,6 +16,10 @@
 		padding: 1.5rem;
 	}
 
+	&--no-margin {
+		margin: 0;
+	}
+
 	&-body {
 		display: flex;
 		flex-direction: column;
@@ -45,6 +49,10 @@
 
 	&-title {
 		margin: 0;
+
+		&--with-padding {
+			padding: 8px 46px 8px 16px;
+		}
 	}
 
 	.form-group {
