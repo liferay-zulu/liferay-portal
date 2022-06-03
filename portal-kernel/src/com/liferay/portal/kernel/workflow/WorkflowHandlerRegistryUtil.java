@@ -61,7 +61,7 @@ public class WorkflowHandlerRegistryUtil {
 		return _getWorkflowHandlers(_workflowHandlerServiceTrackerMap);
 	}
 
-	public static <T> void startWorkflowInstance(
+	public static <T> T startWorkflowInstance(
 			long companyId, long groupId, long userId, String className,
 			long classPK, T model, ServiceContext serviceContext)
 		throws PortalException {
@@ -74,7 +74,7 @@ public class WorkflowHandlerRegistryUtil {
 			workflowContext = Collections.emptyMap();
 		}
 
-		startWorkflowInstance(
+		return startWorkflowInstance(
 			companyId, groupId, userId, className, classPK, model,
 			serviceContext, workflowContext);
 	}
