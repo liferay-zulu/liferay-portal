@@ -221,14 +221,15 @@ public class ObjectEntryLocalServiceImpl
 			objectEntry.getUserId(), objectDefinition.getClassName(),
 			objectEntry.getPrimaryKey(), false, false, false);
 
+		objectEntry = _startWorkflowInstance(
+			userId, objectEntry, serviceContext);
+
 		updateAsset(
 			serviceContext.getUserId(), objectEntry,
 			serviceContext.getAssetCategoryIds(),
 			serviceContext.getAssetTagNames(),
 			serviceContext.getAssetLinkEntryIds(),
 			serviceContext.getAssetPriority());
-
-		_startWorkflowInstance(userId, objectEntry, serviceContext);
 
 		_reindex(objectEntry);
 
@@ -962,14 +963,15 @@ public class ObjectEntryLocalServiceImpl
 
 		objectEntry = objectEntryPersistence.update(objectEntry);
 
+		objectEntry = _startWorkflowInstance(
+			userId, objectEntry, serviceContext);
+
 		updateAsset(
 			serviceContext.getUserId(), objectEntry,
 			serviceContext.getAssetCategoryIds(),
 			serviceContext.getAssetTagNames(),
 			serviceContext.getAssetLinkEntryIds(),
 			serviceContext.getAssetPriority());
-
-		_startWorkflowInstance(userId, objectEntry, serviceContext);
 
 		_deleteFileEntries(
 			values, objectEntry.getObjectDefinitionId(), transientValues);
@@ -1998,7 +2000,7 @@ public class ObjectEntryLocalServiceImpl
 		}
 	}
 
-	private void _startWorkflowInstance(
+	private ObjectEntry _startWorkflowInstance(
 			long userId, ObjectEntry objectEntry, ServiceContext serviceContext)
 		throws PortalException {
 
@@ -2006,7 +2008,7 @@ public class ObjectEntryLocalServiceImpl
 			_objectDefinitionPersistence.findByPrimaryKey(
 				objectEntry.getObjectDefinitionId());
 
-		WorkflowHandlerRegistryUtil.startWorkflowInstance(
+		return WorkflowHandlerRegistryUtil.startWorkflowInstance(
 			objectEntry.getCompanyId(), objectEntry.getNonzeroGroupId(), userId,
 			objectDefinition.getClassName(), objectEntry.getObjectEntryId(),
 			objectEntry, serviceContext);
