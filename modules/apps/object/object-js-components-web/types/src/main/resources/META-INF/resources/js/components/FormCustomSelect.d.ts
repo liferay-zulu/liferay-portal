@@ -27,6 +27,7 @@ export declare function FormCustomSelect<T extends CustomItem = CustomItem>({
 	options,
 	placeholder,
 	required,
+	selectAllOption,
 	setOptions,
 	value,
 }: IProps<T>): JSX.Element;
@@ -48,6 +49,7 @@ interface IProps<T extends CustomItem = CustomItem> {
 	options: T[];
 	placeholder?: string;
 	required?: boolean;
+	selectAllOption?: boolean;
 	setOptions?: (options: T[]) => void;
 	value?: string | number | string[];
 }
