@@ -162,7 +162,8 @@ public class DefaultObjectEntryManagerImpl
 			ObjectEntry objectEntry, String scopeKey)
 		throws Exception {
 
-		ServiceContext serviceContext = new ServiceContext();
+		ServiceContext serviceContext = _createServiceContext(
+			objectEntry.getProperties(), dtoConverterContext.getUserId());
 
 		serviceContext.setCompanyId(companyId);
 
