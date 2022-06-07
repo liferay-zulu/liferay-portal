@@ -19,6 +19,7 @@ import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.object.constants.ObjectActionKeys;
 import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.model.ObjectField;
 import com.liferay.object.scope.ObjectScopeProvider;
 import com.liferay.object.scope.ObjectScopeProviderRegistry;
 import com.liferay.object.web.internal.constants.ObjectWebKeys;
@@ -27,8 +28,10 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,8 +110,33 @@ public class ObjectDefinitionsDetailsDisplayContext
 			ObjectWebKeys.OBJECT_DEFINITION);
 	}
 
+	public List<ObjectField> getObjectFields() {
+
+		HttpServletRequest httpServletRequest =
+			objectRequestHelper.getRequest();
+
+		return (List<ObjectField>) httpServletRequest.getAttribute(
+			ObjectWebKeys.OBJECT_FIELDS);
+	}
+
 	public List<ObjectScopeProvider> getObjectScopeProviders() {
 		return _objectScopeProviderRegistry.getObjectScopeProviders();
+	}
+
+	public List<ObjectField> getObjectFieldsAccountRelationship(){
+		ObjectDefinition objectDefinition = getObjectDefinition();
+
+		// TODO Build a filter here to retrieve just the object fields that belongs to an account relationship
+
+	}
+
+	public List<ObjectField> getObjectFieldsExceptRelationship(){
+
+		// TODO Find a better name for this method :S
+
+		return ListUtil.filter(getObjectFields(),
+			objectField -> Validator.isNull(
+				objectField.getRelationshipType()));
 	}
 
 	public String getScope() {

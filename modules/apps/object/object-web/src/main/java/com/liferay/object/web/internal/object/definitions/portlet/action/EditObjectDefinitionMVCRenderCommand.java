@@ -60,11 +60,7 @@ public class EditObjectDefinitionMVCRenderCommand implements MVCRenderCommand {
 					objectDefinitionId));
 			renderRequest.setAttribute(
 				ObjectWebKeys.OBJECT_FIELDS,
-				ListUtil.filter(
-					_objectFieldLocalService.getObjectFields(
-						objectDefinitionId),
-					objectField -> Validator.isNull(
-						objectField.getRelationshipType())));
+				_objectFieldLocalService.getObjectFields(objectDefinitionId));
 		}
 		catch (PortalException portalException) {
 			SessionErrors.add(renderRequest, portalException.getClass());

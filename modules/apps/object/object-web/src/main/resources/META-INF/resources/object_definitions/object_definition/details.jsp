@@ -23,12 +23,15 @@ ObjectDefinitionsDetailsDisplayContext objectDefinitionsDetailsDisplayContext = 
 
 ObjectDefinition objectDefinition = objectDefinitionsDetailsDisplayContext.getObjectDefinition();
 
+
+// TODO Consume here from the new method "getObjectFieldsExceptRelationship"
 List<ObjectField> objectFields = (List<ObjectField>)request.getAttribute(ObjectWebKeys.OBJECT_FIELDS);
 
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(backURL);
 
 renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.getLabel(locale, true), false));
+
 %>
 
 <portlet:actionURL name="/object_definitions/edit_object_definition" var="editObjectDefinitionURL" />
