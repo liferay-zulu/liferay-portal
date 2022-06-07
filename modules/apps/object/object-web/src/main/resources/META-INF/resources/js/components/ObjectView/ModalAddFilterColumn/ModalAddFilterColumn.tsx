@@ -91,7 +91,7 @@ export function ModalAddFilterColumn({
 		});
 	}, [availableFields, query]);
 
-	const getCheckedWokflowStatusItems = (
+	const getCheckedWorkflowStatusItems = (
 		itemValues: TWorkflowStatus[]
 	): IItem[] => {
 		let newItemsValues: IItem[] = [];
@@ -220,15 +220,15 @@ export function ModalAddFilterColumn({
 				let newItems: IItem[] = [];
 
 				if (editingFilter) {
-					newItems = getCheckedWokflowStatusItems(
+					newItems = getCheckedWorkflowStatusItems(
 						workflowStatusJSONArray
 					);
 				}
 				else {
-					newItems = workflowStatusJSONArray.map((worflowStatus) => {
+					newItems = workflowStatusJSONArray.map((workflowStatus) => {
 						return {
-							label: worflowStatus.label,
-							value: worflowStatus.value,
+							label: workflowStatus.label,
+							value: workflowStatus.value,
 						};
 					});
 				}
