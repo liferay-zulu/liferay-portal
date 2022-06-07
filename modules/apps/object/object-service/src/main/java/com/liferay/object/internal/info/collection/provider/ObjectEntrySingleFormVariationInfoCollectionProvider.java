@@ -279,18 +279,24 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		Map<String, String[]> configuration = configurationOptional.orElse(
 			Collections.emptyMap());
 
-		String[] assetCategoryIds = configuration.get(Field.ASSET_CATEGORY_IDS);
+		List<AssetVocabulary> assetVocabularies = _getAssetVocabularies(
+			serviceContext);
 
-		if (ArrayUtil.isNotEmpty(assetCategoryIds) &&
-			Validator.isNotNull(assetCategoryIds[0])) {
+		List<String> assetCategoryIds = new ArrayList<>();
 
-			searchContext.setAssetCategoryIds(
-				Arrays.stream(
-					assetCategoryIds
-				).mapToLong(
-					Long::parseLong
-				).toArray());
+		for (AssetVocabulary assetVocabulary : assetVocabularies) {
+			String[] categoryIds = configuration.get(
+				String.valueOf(assetVocabulary.getVocabularyId()));
+
+			if ((categoryIds != null) &&
+				!StringUtil.equals(categoryIds[0], "null")) {
+
+				Collections.addAll(assetCategoryIds, categoryIds);
+			}
 		}
+
+		searchContext.setAssetCategoryIds(
+			ListUtil.toLongArray(assetCategoryIds, Long::parseLong));
 
 		String[] assetTagNames = configuration.get(Field.ASSET_TAG_NAMES);
 
@@ -310,122 +316,10 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		return searchContext;
 	}
 
-	private boolean _hasCategorizationLayoutBox() {
-		List<ObjectLayout> objectLayouts = Stream.of(
-			ObjectLayoutLocalServiceUtil.getObjectLayouts(
-				_objectDefinition.getObjectDefinitionId())
-		).flatMap(
-			List::stream
-		).filter(
-			ObjectLayoutModel::isDefaultObjectLayout
-		).collect(
-			Collectors.toList()
-		);
-
-		if (!objectLayouts.isEmpty()) {
-			ObjectLayout objectLayout = objectLayouts.get(0);
-
-			for (ObjectLayoutTab objectLayoutTab :
-				objectLayout.getObjectLayoutTabs()) {
-
-				if (ListUtil.exists(
-					objectLayoutTab.getObjectLayoutBoxes(),
-					objectLayoutBox -> StringUtil.equals(
-						objectLayoutBox.getType(),
-						ObjectLayoutBoxConstants.
-							TYPE_CATEGORIZATION))) {
-
-					return true;
-				}
-			}
-
-		}
-
-		return false;
-	}
-
-	private List<InfoFieldSetEntry> _getVocabularyInfoField() {
-		if (!StringUtil.equals(
-			_objectDefinition.getStorageType(),
-			ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
-			!_hasCategorizationLayoutBox()) {
-
-			return Collections.emptyList();
-		}
-
-		List<AssetVocabulary> assetVocabularies = null;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		if (StringUtil.equals(
-			_objectDefinition.getScope(),
-			ObjectDefinitionConstants.SCOPE_COMPANY)) {
-
-			assetVocabularies = AssetVocabularyLocalServiceUtil.
-				getCompanyVocabularies(_objectDefinition.getCompanyId());
-		}
-		else {
-
-			try {
-				assetVocabularies = AssetVocabularyLocalServiceUtil.
-					getGroupVocabularies(serviceContext.getScopeGroupId());
-			}
-			catch (PortalException portalException) {
-				_log.error(portalException);
-			}
-		}
-
-		if(assetVocabularies == null || assetVocabularies.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		List<InfoFieldSetEntry> fieldSetEntries = new ArrayList<>();
-
-		for(AssetVocabulary assetVocabulary : assetVocabularies) {
-			List<AssetCategory> assetCategories =
-				_assetCategoryLocalService.getVocabularyCategories(
-					assetVocabulary.getVocabularyId(),
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-			List<SelectInfoFieldType.Option> options = new ArrayList<>();
-
-			for (AssetCategory assetCategory : assetCategories) {
-				options.add(
-					new SelectInfoFieldType.Option(
-						new SingleValueInfoLocalizedValue<>(assetCategory.getName()),
-						String.valueOf(assetCategory.getCategoryId())));
-			}
-
-			if (!options.isEmpty()) {
-				fieldSetEntries.add(
-					InfoField.builder(
-					).infoFieldType(
-						SelectInfoFieldType.INSTANCE
-					).namespace(
-						StringPool.BLANK
-					).name(
-						Field.ASSET_CATEGORY_IDS
-					).attribute(
-						SelectInfoFieldType.MULTIPLE, true
-					).attribute(
-						SelectInfoFieldType.OPTIONS, options
-					).labelInfoLocalizedValue(
-						InfoLocalizedValue.singleValue(
-							assetVocabulary.getTitle(serviceContext.getLocale()))
-					).localizable(
-						true
-					).build());
-			}
-		}
-
-		return fieldSetEntries;
-	}
-
 	private InfoField<?> _getAssetCategoriesInfoField() {
 		if (!StringUtil.equals(
-			_objectDefinition.getStorageType(),
-			ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
+				_objectDefinition.getStorageType(),
+				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
 			!_hasCategorizationLayoutBox()) {
 
 			return null;
@@ -439,7 +333,8 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		for (AssetCategory assetCategory : assetCategories) {
 			options.add(
 				new SelectInfoFieldType.Option(
-					new SingleValueInfoLocalizedValue<>(assetCategory.getName()),
+					new SingleValueInfoLocalizedValue<>(
+						assetCategory.getName()),
 					String.valueOf(assetCategory.getCategoryId())));
 		}
 
@@ -565,6 +460,22 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		return finalStep.build();
 	}
 
+	private List<AssetVocabulary> _getAssetVocabularies(
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		if (StringUtil.equals(
+				_objectDefinition.getScope(),
+				ObjectDefinitionConstants.SCOPE_COMPANY)) {
+
+			return AssetVocabularyLocalServiceUtil.getCompanyVocabularies(
+				_objectDefinition.getCompanyId());
+		}
+
+		return AssetVocabularyLocalServiceUtil.getGroupVocabularies(
+			serviceContext.getScopeGroupId());
+	}
+
 	private BooleanClause[] _getBooleanClauses(CollectionQuery collectionQuery)
 		throws ParseException {
 
@@ -688,6 +599,107 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		}
 
 		return options;
+	}
+
+	private List<InfoFieldSetEntry> _getVocabularyInfoField() {
+		if (!StringUtil.equals(
+				_objectDefinition.getStorageType(),
+				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
+			!_hasCategorizationLayoutBox()) {
+
+			return Collections.emptyList();
+		}
+
+		List<AssetVocabulary> assetVocabularies = null;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		try {
+			assetVocabularies = _getAssetVocabularies(serviceContext);
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException);
+		}
+
+		if (ListUtil.isEmpty(assetVocabularies)) {
+			return Collections.emptyList();
+		}
+
+		List<InfoFieldSetEntry> fieldSetEntries = new ArrayList<>();
+
+		for (AssetVocabulary assetVocabulary : assetVocabularies) {
+			List<AssetCategory> assetCategories =
+				_assetCategoryLocalService.getVocabularyCategories(
+					assetVocabulary.getVocabularyId(), QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null);
+
+			List<SelectInfoFieldType.Option> options = new ArrayList<>();
+
+			for (AssetCategory assetCategory : assetCategories) {
+				options.add(
+					new SelectInfoFieldType.Option(
+						new SingleValueInfoLocalizedValue<>(
+							assetCategory.getName()),
+						String.valueOf(assetCategory.getCategoryId())));
+			}
+
+			if (!options.isEmpty()) {
+				fieldSetEntries.add(
+					InfoField.builder(
+					).infoFieldType(
+						SelectInfoFieldType.INSTANCE
+					).namespace(
+						StringPool.BLANK
+					).name(
+						String.valueOf(assetVocabulary.getVocabularyId())
+					).attribute(
+						SelectInfoFieldType.MULTIPLE, true
+					).attribute(
+						SelectInfoFieldType.OPTIONS, options
+					).labelInfoLocalizedValue(
+						InfoLocalizedValue.singleValue(
+							assetVocabulary.getTitle(
+								serviceContext.getLocale()))
+					).localizable(
+						true
+					).build());
+			}
+		}
+
+		return fieldSetEntries;
+	}
+
+	private boolean _hasCategorizationLayoutBox() {
+		List<ObjectLayout> objectLayouts = Stream.of(
+			ObjectLayoutLocalServiceUtil.getObjectLayouts(
+				_objectDefinition.getObjectDefinitionId())
+		).flatMap(
+			List::stream
+		).filter(
+			ObjectLayoutModel::isDefaultObjectLayout
+		).collect(
+			Collectors.toList()
+		);
+
+		if (!objectLayouts.isEmpty()) {
+			ObjectLayout objectLayout = objectLayouts.get(0);
+
+			for (ObjectLayoutTab objectLayoutTab :
+					objectLayout.getObjectLayoutTabs()) {
+
+				if (ListUtil.exists(
+						objectLayoutTab.getObjectLayoutBoxes(),
+						objectLayoutBox -> StringUtil.equals(
+							objectLayoutBox.getType(),
+							ObjectLayoutBoxConstants.TYPE_CATEGORIZATION))) {
+
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
