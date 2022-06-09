@@ -284,4 +284,25 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 
 		submitForm(form);
 	}
+
+	var accountRestrictionToggleState =
+		'<%= objectDefinition.isAccountEntryRestricted() %>' === 'true';
+
+	function <portlet:namespace />handleAccountRestrictionToggleChange() {
+		const accountRestrictionSelectElement = document.getElementById(
+			'<portlet:namespace />accountEntryRestrictedObjectFieldId'
+		);
+
+		accountRestrictionToggleState = !accountRestrictionToggleState;
+
+		if (accountRestrictionToggleState) {
+			accountRestrictionSelectElement.removeAttribute('disabled');
+			accountRestrictionSelectElement.className = 'form-control';
+		}
+		else {
+			accountRestrictionSelectElement.setAttribute('disabled', '');
+			accountRestrictionSelectElement.className = 'form-control disabled';
+			accountRestrictionSelectElement.value = '0';
+		}
+	}
 </script>
