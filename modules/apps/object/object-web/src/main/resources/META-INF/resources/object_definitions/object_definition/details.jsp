@@ -23,7 +23,7 @@ ObjectDefinitionsDetailsDisplayContext objectDefinitionsDetailsDisplayContext = 
 
 ObjectDefinition objectDefinition = objectDefinitionsDetailsDisplayContext.getObjectDefinition();
 
-List<ObjectField> objectFields = (List<ObjectField>)request.getAttribute(ObjectWebKeys.OBJECT_FIELDS);
+List<ObjectField> objectNonrelationshipFields = objectDefinitionsDetailsDisplayContext.getObjectNonrelationshipFields();
 
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(backURL);
@@ -99,7 +99,7 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 							<aui:option label='<%= LanguageUtil.get(request, "id") %>' selected="<%= true %>" value="" />
 
 							<%
-							for (ObjectField objectField : objectFields) {
+							for (ObjectField objectField : objectNonrelationshipFields) {
 							%>
 
 								<aui:option label="<%= objectField.getLabel(locale) %>" selected="<%= Objects.equals(objectField.getObjectFieldId(), objectDefinition.getTitleObjectFieldId()) %>" value="<%= objectField.getObjectFieldId() %>" />
@@ -121,7 +121,7 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 						<aui:select disabled="<%= objectDefinition.isSystem() || !objectDefinitionsDetailsDisplayContext.hasUpdateObjectDefinitionPermission() %>" name="descriptionObjectFieldId" showEmptyOption="<%= true %>">
 
 							<%
-							for (ObjectField objectField : objectFields) {
+							for (ObjectField objectField : objectNonrelationshipFields) {
 							%>
 
 								<aui:option label="<%= objectField.getLabel(locale) %>" selected="<%= Objects.equals(objectField.getObjectFieldId(), objectDefinition.getDescriptionObjectFieldId()) %>" value="<%= objectField.getObjectFieldId() %>" />
