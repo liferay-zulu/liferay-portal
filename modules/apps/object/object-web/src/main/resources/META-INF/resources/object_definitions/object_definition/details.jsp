@@ -184,7 +184,7 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 			</clay:sheet-section>
 
 			<clay:sheet-section
-				cssClass='<%= objectDefinition.getName().equals("AccountEntry") ? "hide" : "" %>'
+				cssClass='<%= (objectDefinition.getName().equals("AccountEntry") || !GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-151877"))) ? "hide" : "" %>'
 			>
 				<h3 class="sheet-subtitle">
 					<%= LanguageUtil.get(request, "account-restriction") %>
