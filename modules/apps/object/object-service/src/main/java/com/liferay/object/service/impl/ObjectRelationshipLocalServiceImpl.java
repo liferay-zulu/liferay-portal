@@ -301,6 +301,14 @@ public class ObjectRelationshipLocalServiceImpl
 	}
 
 	@Override
+	public List<ObjectRelationship> getObjectRelationships(
+		long objectDefinitionId1, long objectDefinition2) {
+
+		return objectRelationshipPersistence.findByODI1_ODI2(
+			objectDefinitionId1, objectDefinition2);
+	}
+
+	@Override
 	public List<ObjectRelationship> getObjectRelationshipsByObjectDefinitionId2(
 		long objectDefinitionId2) {
 
