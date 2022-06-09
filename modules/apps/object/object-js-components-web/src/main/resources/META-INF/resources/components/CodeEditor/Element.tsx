@@ -41,6 +41,7 @@ export function Element({label, onClick, tooltip}: IProps) {
 						alignPosition="left"
 						disableScroll
 						header={label}
+						onShowChange={setShowPreview}
 						show={showPreview}
 						trigger={
 							<ClayIcon
