@@ -887,74 +887,6 @@ public class ObjectRelationshipUtil {
 	}
 
 	/**
-	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or throws a <code>NoSuchObjectRelationshipException</code> if it could not be found.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @return the matching object relationship
-	 * @throws NoSuchObjectRelationshipException if a matching object relationship could not be found
-	 */
-	public static ObjectRelationship findByODI1_N(
-			long objectDefinitionId1, String name)
-		throws com.liferay.object.exception.NoSuchObjectRelationshipException {
-
-		return getPersistence().findByODI1_N(objectDefinitionId1, name);
-	}
-
-	/**
-	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @return the matching object relationship, or <code>null</code> if a matching object relationship could not be found
-	 */
-	public static ObjectRelationship fetchByODI1_N(
-		long objectDefinitionId1, String name) {
-
-		return getPersistence().fetchByODI1_N(objectDefinitionId1, name);
-	}
-
-	/**
-	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching object relationship, or <code>null</code> if a matching object relationship could not be found
-	 */
-	public static ObjectRelationship fetchByODI1_N(
-		long objectDefinitionId1, String name, boolean useFinderCache) {
-
-		return getPersistence().fetchByODI1_N(
-			objectDefinitionId1, name, useFinderCache);
-	}
-
-	/**
-	 * Removes the object relationship where objectDefinitionId1 = &#63; and name = &#63; from the database.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @return the object relationship that was removed
-	 */
-	public static ObjectRelationship removeByODI1_N(
-			long objectDefinitionId1, String name)
-		throws com.liferay.object.exception.NoSuchObjectRelationshipException {
-
-		return getPersistence().removeByODI1_N(objectDefinitionId1, name);
-	}
-
-	/**
-	 * Returns the number of object relationships where objectDefinitionId1 = &#63; and name = &#63;.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @return the number of matching object relationships
-	 */
-	public static int countByODI1_N(long objectDefinitionId1, String name) {
-		return getPersistence().countByODI1_N(objectDefinitionId1, name);
-	}
-
-	/**
 	 * Returns all the object relationships where objectDefinitionId1 = &#63; and objectDefinitionId2 = &#63;.
 	 *
 	 * @param objectDefinitionId1 the object definition id1
@@ -1151,6 +1083,74 @@ public class ObjectRelationshipUtil {
 
 		return getPersistence().countByODI1_ODI2(
 			objectDefinitionId1, objectDefinitionId2);
+	}
+
+	/**
+	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or throws a <code>NoSuchObjectRelationshipException</code> if it could not be found.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @return the matching object relationship
+	 * @throws NoSuchObjectRelationshipException if a matching object relationship could not be found
+	 */
+	public static ObjectRelationship findByODI1_N(
+			long objectDefinitionId1, String name)
+		throws com.liferay.object.exception.NoSuchObjectRelationshipException {
+
+		return getPersistence().findByODI1_N(objectDefinitionId1, name);
+	}
+
+	/**
+	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @return the matching object relationship, or <code>null</code> if a matching object relationship could not be found
+	 */
+	public static ObjectRelationship fetchByODI1_N(
+		long objectDefinitionId1, String name) {
+
+		return getPersistence().fetchByODI1_N(objectDefinitionId1, name);
+	}
+
+	/**
+	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching object relationship, or <code>null</code> if a matching object relationship could not be found
+	 */
+	public static ObjectRelationship fetchByODI1_N(
+		long objectDefinitionId1, String name, boolean useFinderCache) {
+
+		return getPersistence().fetchByODI1_N(
+			objectDefinitionId1, name, useFinderCache);
+	}
+
+	/**
+	 * Removes the object relationship where objectDefinitionId1 = &#63; and name = &#63; from the database.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @return the object relationship that was removed
+	 */
+	public static ObjectRelationship removeByODI1_N(
+			long objectDefinitionId1, String name)
+		throws com.liferay.object.exception.NoSuchObjectRelationshipException {
+
+		return getPersistence().removeByODI1_N(objectDefinitionId1, name);
+	}
+
+	/**
+	 * Returns the number of object relationships where objectDefinitionId1 = &#63; and name = &#63;.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @return the number of matching object relationships
+	 */
+	public static int countByODI1_N(long objectDefinitionId1, String name) {
+		return getPersistence().countByODI1_N(objectDefinitionId1, name);
 	}
 
 	/**
