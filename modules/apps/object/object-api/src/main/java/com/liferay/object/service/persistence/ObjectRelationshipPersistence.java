@@ -673,59 +673,6 @@ public interface ObjectRelationshipPersistence
 	public int countByObjectFieldId2(long objectFieldId2);
 
 	/**
-	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or throws a <code>NoSuchObjectRelationshipException</code> if it could not be found.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @return the matching object relationship
-	 * @throws NoSuchObjectRelationshipException if a matching object relationship could not be found
-	 */
-	public ObjectRelationship findByODI1_N(
-			long objectDefinitionId1, String name)
-		throws NoSuchObjectRelationshipException;
-
-	/**
-	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @return the matching object relationship, or <code>null</code> if a matching object relationship could not be found
-	 */
-	public ObjectRelationship fetchByODI1_N(
-		long objectDefinitionId1, String name);
-
-	/**
-	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching object relationship, or <code>null</code> if a matching object relationship could not be found
-	 */
-	public ObjectRelationship fetchByODI1_N(
-		long objectDefinitionId1, String name, boolean useFinderCache);
-
-	/**
-	 * Removes the object relationship where objectDefinitionId1 = &#63; and name = &#63; from the database.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @return the object relationship that was removed
-	 */
-	public ObjectRelationship removeByODI1_N(
-			long objectDefinitionId1, String name)
-		throws NoSuchObjectRelationshipException;
-
-	/**
-	 * Returns the number of object relationships where objectDefinitionId1 = &#63; and name = &#63;.
-	 *
-	 * @param objectDefinitionId1 the object definition id1
-	 * @param name the name
-	 * @return the number of matching object relationships
-	 */
-	public int countByODI1_N(long objectDefinitionId1, String name);
-
-	/**
 	 * Returns all the object relationships where objectDefinitionId1 = &#63; and objectDefinitionId2 = &#63;.
 	 *
 	 * @param objectDefinitionId1 the object definition id1
@@ -882,6 +829,59 @@ public interface ObjectRelationshipPersistence
 	 */
 	public int countByODI1_ODI2(
 		long objectDefinitionId1, long objectDefinitionId2);
+
+	/**
+	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or throws a <code>NoSuchObjectRelationshipException</code> if it could not be found.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @return the matching object relationship
+	 * @throws NoSuchObjectRelationshipException if a matching object relationship could not be found
+	 */
+	public ObjectRelationship findByODI1_N(
+			long objectDefinitionId1, String name)
+		throws NoSuchObjectRelationshipException;
+
+	/**
+	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @return the matching object relationship, or <code>null</code> if a matching object relationship could not be found
+	 */
+	public ObjectRelationship fetchByODI1_N(
+		long objectDefinitionId1, String name);
+
+	/**
+	 * Returns the object relationship where objectDefinitionId1 = &#63; and name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching object relationship, or <code>null</code> if a matching object relationship could not be found
+	 */
+	public ObjectRelationship fetchByODI1_N(
+		long objectDefinitionId1, String name, boolean useFinderCache);
+
+	/**
+	 * Removes the object relationship where objectDefinitionId1 = &#63; and name = &#63; from the database.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @return the object relationship that was removed
+	 */
+	public ObjectRelationship removeByODI1_N(
+			long objectDefinitionId1, String name)
+		throws NoSuchObjectRelationshipException;
+
+	/**
+	 * Returns the number of object relationships where objectDefinitionId1 = &#63; and name = &#63;.
+	 *
+	 * @param objectDefinitionId1 the object definition id1
+	 * @param name the name
+	 * @return the number of matching object relationships
+	 */
+	public int countByODI1_N(long objectDefinitionId1, String name);
 
 	/**
 	 * Returns all the object relationships where objectDefinitionId1 = &#63; and objectDefinitionId2 = &#63; and name = &#63; and type = &#63;.
