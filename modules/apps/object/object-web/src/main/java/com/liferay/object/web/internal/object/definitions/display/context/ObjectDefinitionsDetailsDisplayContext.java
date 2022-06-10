@@ -162,7 +162,7 @@ public class ObjectDefinitionsDetailsDisplayContext
 			ObjectWebKeys.OBJECT_FIELDS);
 	}
 
-	public List<ObjectField> getObjectNonRelationshipFields() {
+	public List<ObjectField> getObjectNonrelationshipFields() {
 		return ListUtil.filter(
 			getObjectFields(),
 			objectField -> Validator.isNull(objectField.getRelationshipType()));
