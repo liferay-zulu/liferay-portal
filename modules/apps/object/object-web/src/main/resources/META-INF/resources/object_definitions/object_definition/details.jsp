@@ -52,6 +52,7 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 		<liferay-ui:error exception="<%= ObjectDefinitionPluralLabelException.class %>" />
 		<liferay-ui:error exception="<%= ObjectDefinitionScopeException.class %>" />
 		<liferay-ui:error exception="<%= ObjectDefinitionStatusException.class %>" />
+		<liferay-ui:error exception="<%= RequiredAccountRestrictionFieldException.class %>" message="if-account-restriction-is-active-a-field-must-be-selected" />
 		<liferay-ui:error exception="<%= RequiredObjectFieldException.class %>" message="at-least-one-field-must-be-added" />
 
 		<aui:model-context bean="<%= objectDefinition %>" model="<%= ObjectDefinition.class %>" />
@@ -184,7 +185,7 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 			</clay:sheet-section>
 
 			<clay:sheet-section
-				cssClass='<%= (objectDefinition.getName().equals("AccountEntry") || !GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-151877"))) ? "hide" : "" %>'
+				cssClass='<%= (objectDefinition.isSystem() || !GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-151877"))) ? "hide" : "" %>'
 			>
 				<h3 class="sheet-subtitle">
 					<%= LanguageUtil.get(request, "account-restriction") %>
