@@ -92,7 +92,9 @@ renderResponse.setTitle((oAuthClientEntry == null) ? LanguageUtil.get(request, "
 			'<portlet:namespace />parametersJSON'
 		).value = parametersJSON;
 
-		submitForm(document.getElementById('<portlet:namespace />oauth-client-entry-fm'));
+		submitForm(
+			document.getElementById('<portlet:namespace />oauth-client-entry-fm')
+		);
 	}
 
 	function <portlet:namespace />init() {
