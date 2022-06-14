@@ -451,13 +451,14 @@
 		<finder name="ObjectFieldId2" return-type="ObjectRelationship">
 			<finder-column name="objectFieldId2" />
 		</finder>
-		<finder name="ODI1_ODI2" return-type="Collection">
-			<finder-column name="objectDefinitionId1" />
-			<finder-column name="objectDefinitionId2" />
-		</finder>
 		<finder name="ODI1_N" return-type="ObjectRelationship">
 			<finder-column name="objectDefinitionId1" />
 			<finder-column name="name" />
+		</finder>
+		<finder name="ODI1_ODI2_T" return-type="Collection">
+			<finder-column name="objectDefinitionId1" />
+			<finder-column name="objectDefinitionId2" />
+			<finder-column name="type" />
 		</finder>
 		<finder name="ODI1_ODI2_N_T" return-type="Collection">
 			<finder-column name="objectDefinitionId1" />
@@ -638,6 +639,7 @@
 		<exception>ObjectActionName</exception>
 		<exception>ObjectActionTriggerKey</exception>
 		<exception>ObjectDefinitionAccountEntryRestricted</exception>
+		<exception>ObjectDefinitionAccountEntryRestrictedObjectFieldId</exception>
 		<exception>ObjectDefinitionActive</exception>
 		<exception>ObjectDefinitionLabel</exception>
 		<exception>ObjectDefinitionName</exception>
@@ -665,7 +667,6 @@
 		<exception>ObjectViewColumnFieldName</exception>
 		<exception>ObjectViewFilterColumn</exception>
 		<exception>ObjectViewSortColumn</exception>
-		<exception>RequiredAccountRestrictionField</exception>
 		<exception>RequiredObjectDefinition</exception>
 		<exception>RequiredObjectField</exception>
 		<exception>RequiredObjectRelationship</exception>
