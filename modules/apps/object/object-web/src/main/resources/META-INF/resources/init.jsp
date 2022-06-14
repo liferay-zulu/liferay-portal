@@ -32,13 +32,13 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.asset.kernel.model.AssetVocabularyConstants" %><%@
 page import="com.liferay.list.type.model.ListTypeDefinition" %><%@
 page import="com.liferay.list.type.model.ListTypeEntry" %><%@
+page import="com.liferay.object.exception.ObjectDefinitionAccountEntryRestrictedObjectFieldIdException" %><%@
 page import="com.liferay.object.exception.ObjectDefinitionActiveException" %><%@
 page import="com.liferay.object.exception.ObjectDefinitionLabelException" %><%@
 page import="com.liferay.object.exception.ObjectDefinitionNameException" %><%@
 page import="com.liferay.object.exception.ObjectDefinitionPluralLabelException" %><%@
 page import="com.liferay.object.exception.ObjectDefinitionScopeException" %><%@
 page import="com.liferay.object.exception.ObjectDefinitionStatusException" %><%@
-page import="com.liferay.object.exception.RequiredAccountRestrictionFieldException" %><%@
 page import="com.liferay.object.exception.RequiredObjectFieldException" %><%@
 page import="com.liferay.object.model.ObjectAction" %><%@
 page import="com.liferay.object.model.ObjectDefinition" %><%@
