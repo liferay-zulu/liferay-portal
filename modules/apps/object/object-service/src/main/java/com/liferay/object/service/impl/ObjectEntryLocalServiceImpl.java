@@ -1009,6 +1009,14 @@ public class ObjectEntryLocalServiceImpl
 
 		objectEntry = objectEntryPersistence.update(objectEntry);
 
+		ObjectDefinition objectDefinition =
+			_objectDefinitionPersistence.fetchByPrimaryKey(
+				objectEntry.getObjectDefinitionId());
+
+		_assetEntryLocalService.updateEntry(
+			objectDefinition.getClassName(), objectEntry.getObjectEntryId(),
+			null, null, true, objectEntry.isApproved());
+
 		_reindex(objectEntry);
 
 		return objectEntry;
