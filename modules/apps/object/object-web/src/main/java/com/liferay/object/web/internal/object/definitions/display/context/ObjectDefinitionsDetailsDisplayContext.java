@@ -19,6 +19,7 @@ import com.liferay.application.list.PanelCategory;
 import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.object.constants.ObjectActionKeys;
+import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
@@ -69,6 +70,39 @@ public class ObjectDefinitionsDetailsDisplayContext
 		_panelCategoryRegistry = panelCategoryRegistry;
 	}
 
+	public List<ObjectField> getAccountRelationshipObjectFields()
+		throws PortalException {
+
+		ObjectDefinition accountEntryObjectDefinition =
+			_objectDefinitionLocalService.fetchObjectDefinitionByClassName(
+				objectRequestHelper.getCompanyId(),
+				AccountEntry.class.getName());
+
+		Map<Long, ObjectField> objectFieldsMap = Stream.of(
+			getObjectFields()
+		).flatMap(
+			List::stream
+		).collect(
+			Collectors.toMap(
+				ObjectField::getObjectFieldId, objectField -> objectField)
+		);
+
+		return Stream.of(
+			_objectRelationshipLocalService.getObjectRelationships(
+				accountEntryObjectDefinition.getObjectDefinitionId(),
+				getObjectDefinitionId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY)
+		).flatMap(
+			List::stream
+		).map(
+			ObjectRelationship::getObjectFieldId2
+		).map(
+			objectFieldsMap::get
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	public List<KeyValuePair> getKeyValuePairs() {
 		List<KeyValuePair> keyValuePairs = new ArrayList<>();
 
@@ -114,36 +148,10 @@ public class ObjectDefinitionsDetailsDisplayContext
 		return keyValuePairs;
 	}
 
-	public List<ObjectField> getObjectAccountRelationshipFields()
-		throws PortalException {
-
-		ObjectDefinition accountEntryObjectDefinition =
-			_objectDefinitionLocalService.fetchObjectDefinitionByClassName(
-				objectRequestHelper.getCompanyId(),
-				AccountEntry.class.getName());
-
-		Map<Long, ObjectField> objectFieldsMap = Stream.of(
-			getObjectFields()
-		).flatMap(
-			List::stream
-		).collect(
-			Collectors.toMap(
-				ObjectField::getObjectFieldId, objectField -> objectField)
-		);
-
-		return Stream.of(
-			_objectRelationshipLocalService.getObjectRelationships(
-				accountEntryObjectDefinition.getObjectDefinitionId(),
-				getObjectDefinitionId())
-		).flatMap(
-			List::stream
-		).map(
-			ObjectRelationship::getObjectFieldId2
-		).map(
-			objectFieldsMap::get
-		).collect(
-			Collectors.toList()
-		);
+	public List<ObjectField> getNonrelationshipObjectFields() {
+		return ListUtil.filter(
+			getObjectFields(),
+			objectField -> Validator.isNull(objectField.getRelationshipType()));
 	}
 
 	public ObjectDefinition getObjectDefinition() {
@@ -160,12 +168,6 @@ public class ObjectDefinitionsDetailsDisplayContext
 
 		return (List<ObjectField>)httpServletRequest.getAttribute(
 			ObjectWebKeys.OBJECT_FIELDS);
-	}
-
-	public List<ObjectField> getObjectNonrelationshipFields() {
-		return ListUtil.filter(
-			getObjectFields(),
-			objectField -> Validator.isNull(objectField.getRelationshipType()));
 	}
 
 	public List<ObjectScopeProvider> getObjectScopeProviders() {
