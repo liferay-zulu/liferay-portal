@@ -1011,13 +1011,33 @@ public class ObjectDefinitionLocalServiceImpl
 
 		boolean originalActive = objectDefinition.isActive();
 
-		_validateActive(objectDefinition, active);
-		_validateAccountRestriction(
-			accountEntryRestrictedObjectFieldId, accountEntryRestricted);
 		_validateObjectFieldId(objectDefinition, descriptionObjectFieldId);
 		_validateObjectFieldId(objectDefinition, titleObjectFieldId);
+		_validateActive(objectDefinition, active);
 		_validateLabel(labelMap);
 		_validatePluralLabel(pluralLabelMap);
+		_validateAccountEntryRestrictedObjectFieldId(
+			accountEntryRestrictedObjectFieldId, accountEntryRestricted);
+
+		if (accountEntryRestricted) {
+			if (objectDefinition.getAccountEntryRestrictedObjectFieldId() !=
+					0) {
+
+				_objectFieldLocalService.updateRequired(
+					objectDefinition.getAccountEntryRestrictedObjectFieldId(),
+					false);
+			}
+
+			_objectFieldLocalService.updateRequired(
+				accountEntryRestrictedObjectFieldId, true);
+		}
+		else if (objectDefinition.getAccountEntryRestrictedObjectFieldId() !=
+					0) {
+
+			_objectFieldLocalService.updateRequired(
+				objectDefinition.getAccountEntryRestrictedObjectFieldId(),
+				false);
+		}
 
 		objectDefinition.setAccountEntryRestrictedObjectFieldId(
 			accountEntryRestrictedObjectFieldId);
@@ -1120,7 +1140,7 @@ public class ObjectDefinitionLocalServiceImpl
 		actionableDynamicQuery.performActions();
 	}
 
-	private void _validateAccountRestriction(
+	private void _validateAccountEntryRestrictedObjectFieldId(
 			long accountEntryRestrictedObjectFieldId,
 			boolean accountEntryRestricted)
 		throws RequiredAccountRestrictionFieldException {
