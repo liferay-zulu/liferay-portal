@@ -402,6 +402,19 @@ public class ObjectFieldLocalServiceImpl
 		return objectField;
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public ObjectField updateRequired(long objectFieldId, boolean required)
+		throws PortalException {
+
+		ObjectField objectField = objectFieldPersistence.findByPrimaryKey(
+			objectFieldId);
+
+		objectField.setRequired(required);
+
+		return objectFieldPersistence.update(objectField);
+	}
+
 	private ObjectField _addObjectField(
 			long userId, long listTypeDefinitionId, long objectDefinitionId,
 			String businessType, String dbColumnName, String dbTableName,

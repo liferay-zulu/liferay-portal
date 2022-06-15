@@ -32,6 +32,7 @@ import com.liferay.object.exception.ObjectDefinitionScopeException;
 import com.liferay.object.exception.ObjectDefinitionStatusException;
 import com.liferay.object.exception.ObjectDefinitionVersionException;
 import com.liferay.object.exception.ObjectFieldRelationshipTypeException;
+import com.liferay.object.exception.RequiredAccountRestrictionFieldException;
 import com.liferay.object.exception.RequiredObjectDefinitionException;
 import com.liferay.object.exception.RequiredObjectFieldException;
 import com.liferay.object.internal.deployer.ObjectDefinitionDeployerImpl;
@@ -1015,6 +1016,28 @@ public class ObjectDefinitionLocalServiceImpl
 		_validateActive(objectDefinition, active);
 		_validateLabel(labelMap);
 		_validatePluralLabel(pluralLabelMap);
+		_validateAccountEntryRestrictedObjectFieldId(
+			accountEntryRestrictedObjectFieldId, accountEntryRestricted);
+
+		if (accountEntryRestricted) {
+			if (objectDefinition.getAccountEntryRestrictedObjectFieldId() !=
+					0) {
+
+				_objectFieldLocalService.updateRequired(
+					objectDefinition.getAccountEntryRestrictedObjectFieldId(),
+					false);
+			}
+
+			_objectFieldLocalService.updateRequired(
+				accountEntryRestrictedObjectFieldId, true);
+		}
+		else if (objectDefinition.getAccountEntryRestrictedObjectFieldId() !=
+					0) {
+
+			_objectFieldLocalService.updateRequired(
+				objectDefinition.getAccountEntryRestrictedObjectFieldId(),
+				false);
+		}
 
 		objectDefinition.setAccountEntryRestrictedObjectFieldId(
 			accountEntryRestrictedObjectFieldId);
@@ -1115,6 +1138,18 @@ public class ObjectDefinitionLocalServiceImpl
 			});
 
 		actionableDynamicQuery.performActions();
+	}
+
+	private void _validateAccountEntryRestrictedObjectFieldId(
+			long accountEntryRestrictedObjectFieldId,
+			boolean accountEntryRestricted)
+		throws RequiredAccountRestrictionFieldException {
+
+		if (accountEntryRestricted &&
+			(accountEntryRestrictedObjectFieldId == 0)) {
+
+			throw new RequiredAccountRestrictionFieldException();
+		}
 	}
 
 	private void _validateActive(

@@ -370,4 +370,8 @@ public interface ObjectFieldLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public ObjectField updateObjectField(ObjectField objectField);
 
+	@Indexable(type = IndexableType.REINDEX)
+	public ObjectField updateRequired(long objectFieldId, boolean required)
+		throws PortalException;
+
 }

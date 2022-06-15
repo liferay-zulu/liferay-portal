@@ -427,10 +427,10 @@ public class ObjectRelationshipLocalServiceWrapper
 	@Override
 	public java.util.List<com.liferay.object.model.ObjectRelationship>
 		getObjectRelationships(
-			long objectDefinitionId1, long objectDefinition2) {
+			long objectDefinitionId1, long objectDefinition2, String type) {
 
 		return _objectRelationshipLocalService.getObjectRelationships(
-			objectDefinitionId1, objectDefinition2);
+			objectDefinitionId1, objectDefinition2, type);
 	}
 
 	@Override
