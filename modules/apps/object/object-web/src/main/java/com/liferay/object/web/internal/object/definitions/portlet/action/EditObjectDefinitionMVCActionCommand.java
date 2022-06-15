@@ -15,13 +15,13 @@
 package com.liferay.object.web.internal.object.definitions.portlet.action;
 
 import com.liferay.object.constants.ObjectPortletKeys;
+import com.liferay.object.exception.ObjectDefinitionAccountEntryRestrictedObjectFieldIdException;
 import com.liferay.object.exception.ObjectDefinitionActiveException;
 import com.liferay.object.exception.ObjectDefinitionLabelException;
 import com.liferay.object.exception.ObjectDefinitionNameException;
 import com.liferay.object.exception.ObjectDefinitionPluralLabelException;
 import com.liferay.object.exception.ObjectDefinitionScopeException;
 import com.liferay.object.exception.ObjectDefinitionStatusException;
-import com.liferay.object.exception.RequiredAccountRestrictionFieldException;
 import com.liferay.object.exception.RequiredObjectFieldException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionService;
@@ -111,13 +111,14 @@ public class EditObjectDefinitionMVCActionCommand extends BaseMVCActionCommand {
 			}
 		}
 		catch (Exception exception) {
-			if (exception instanceof ObjectDefinitionActiveException ||
+			if (exception instanceof
+					ObjectDefinitionAccountEntryRestrictedObjectFieldIdException ||
+				exception instanceof ObjectDefinitionActiveException ||
 				exception instanceof ObjectDefinitionLabelException ||
 				exception instanceof ObjectDefinitionNameException ||
 				exception instanceof ObjectDefinitionPluralLabelException ||
 				exception instanceof ObjectDefinitionScopeException ||
 				exception instanceof ObjectDefinitionStatusException ||
-				exception instanceof RequiredAccountRestrictionFieldException ||
 				exception instanceof RequiredObjectFieldException) {
 
 				SessionErrors.add(actionRequest, exception.getClass());
