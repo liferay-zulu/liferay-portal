@@ -511,6 +511,14 @@ public class ObjectFieldLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.object.model.ObjectField updateRequired(
+			long objectFieldId, boolean required)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectFieldLocalService.updateRequired(objectFieldId, required);
+	}
+
+	@Override
 	public ObjectFieldLocalService getWrappedService() {
 		return _objectFieldLocalService;
 	}

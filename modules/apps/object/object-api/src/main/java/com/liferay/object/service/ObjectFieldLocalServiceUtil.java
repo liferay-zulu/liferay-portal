@@ -441,6 +441,13 @@ public class ObjectFieldLocalServiceUtil {
 		return getService().updateObjectField(objectField);
 	}
 
+	public static ObjectField updateRequired(
+			long objectFieldId, boolean required)
+		throws PortalException {
+
+		return getService().updateRequired(objectFieldId, required);
+	}
+
 	public static ObjectFieldLocalService getService() {
 		return _service;
 	}
