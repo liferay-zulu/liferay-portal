@@ -42,6 +42,7 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 	<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 
 	<liferay-frontend:edit-form-body>
+		<liferay-ui:error exception="<%= ObjectDefinitionAccountEntryRestrictedObjectFieldIdException.class %>" message="if-activated-the-account-restriction-field-must-be-selected" />
 		<liferay-ui:error exception="<%= ObjectDefinitionActiveException.class %>" />
 		<liferay-ui:error exception="<%= ObjectDefinitionLabelException.class %>" />
 		<liferay-ui:error exception="<%= ObjectDefinitionNameException.class %>" />
@@ -52,7 +53,6 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 		<liferay-ui:error exception="<%= ObjectDefinitionPluralLabelException.class %>" />
 		<liferay-ui:error exception="<%= ObjectDefinitionScopeException.class %>" />
 		<liferay-ui:error exception="<%= ObjectDefinitionStatusException.class %>" />
-		<liferay-ui:error exception="<%= ObjectDefinitionAccountEntryRestrictedObjectFieldIdException.class %>" message="if-activated-the-account-restriction-field-must-be-selected" />
 		<liferay-ui:error exception="<%= RequiredObjectFieldException.class %>" message="at-least-one-field-must-be-added" />
 
 		<aui:model-context bean="<%= objectDefinition %>" model="<%= ObjectDefinition.class %>" />
