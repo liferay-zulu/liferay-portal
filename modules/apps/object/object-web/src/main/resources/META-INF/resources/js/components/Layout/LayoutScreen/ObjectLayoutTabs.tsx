@@ -138,13 +138,7 @@ const ObjectLayoutTabs: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
 														objectLayoutRows
 													}
 													tabIndex={tabIndex}
-													type={
-														!Liferay.FeatureFlags[
-															'LPS-149014'
-														]
-															? 'regular'
-															: type
-													}
+													type={type}
 												/>
 											)
 										)}
