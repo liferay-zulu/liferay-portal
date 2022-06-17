@@ -55,6 +55,7 @@ public class ObjectFieldUtil {
 					serviceBuilderObjectField.getBusinessType());
 				DBType = ObjectField.DBType.create(
 					serviceBuilderObjectField.getDBType());
+				defaultValue = serviceBuilderObjectField.getDefaultValue();
 				externalReferenceCode =
 					serviceBuilderObjectField.getExternalReferenceCode();
 				id = serviceBuilderObjectField.getObjectFieldId();
