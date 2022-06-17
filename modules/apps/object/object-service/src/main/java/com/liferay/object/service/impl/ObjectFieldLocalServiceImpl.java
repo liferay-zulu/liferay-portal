@@ -591,6 +591,15 @@ public class ObjectFieldLocalServiceImpl
 					objectField.getDBColumnName()));
 		}
 
+		if (objectDefinition.getAccountEntryRestrictedObjectFieldId() ==
+				objectField.getObjectFieldId()) {
+
+			objectDefinition.setAccountEntryRestrictedObjectFieldId(0);
+			objectDefinition.setAccountEntryRestricted(false);
+
+			_objectDefinitionPersistence.update(objectDefinition);
+		}
+
 		return objectField;
 	}
 
