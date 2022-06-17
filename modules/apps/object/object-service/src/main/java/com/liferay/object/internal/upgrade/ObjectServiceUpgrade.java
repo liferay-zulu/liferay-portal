@@ -129,6 +129,11 @@ public class ObjectServiceUpgrade implements UpgradeStepRegistrator {
 				}
 
 			});
+
+		registry.register(
+			"3.13.0", "3.14.0",
+			new com.liferay.object.internal.upgrade.v3_14_0.
+				ObjectFieldUpgradeProcess());
 	}
 
 }
