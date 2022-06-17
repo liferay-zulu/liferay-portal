@@ -133,6 +133,8 @@ components:
                 businessType:
                     enum: [Aggregation, Attachment, Boolean, Date, Decimal, Integer, LongInteger, LongText, Picklist, PrecisionDecimal, Relationship, RichText, Text]
                     type: string
+                defaultValue:
+                    type: string
                 externalReferenceCode:
                     type: string
                 id:
