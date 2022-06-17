@@ -155,6 +155,7 @@ public class ObjectLayoutResourceTest extends BaseObjectLayoutResourceTestCase {
 					_randomObjectLayoutRow()
 				};
 				priority = RandomTestUtil.randomInt();
+				type = Type.REGULAR;
 			}
 		};
 	}
