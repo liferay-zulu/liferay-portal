@@ -325,6 +325,13 @@ definition {
 				value1 = "${orderItemDeliveryGroup}");
 		}
 
+		if (isSet(orderItemMeasurementUnit)) {
+			Select(
+				key_fieldLabel = "Measurement Units",
+				locator1 = "Select#GENERIC_SELECT_FIELD",
+				value1 = "${orderItemMeasurementUnit}");
+		}
+
 		Button.clickSave();
 
 		KeyPress(
@@ -569,6 +576,28 @@ definition {
 		}
 	}
 
+	macro viewOrderPrices {
+		AssertTextEquals.assertPartialText(
+			key_priceName = "Subtotal",
+			locator1 = "CommerceOrders#ORDER_PRICES_SEPARETED",
+			value1 = "${subTotalPrice}");
+
+		AssertTextEquals.assertPartialText(
+			key_priceName = "Delivery",
+			locator1 = "CommerceOrders#ORDER_PRICES_SEPARETED",
+			value1 = "${deliveryPrice}");
+
+		AssertTextEquals.assertPartialText(
+			key_priceName = "Tax",
+			locator1 = "CommerceOrders#ORDER_PRICES_SEPARETED",
+			value1 = "${taxPrice}");
+
+		AssertTextEquals.assertPartialText(
+			key_priceName = "Total",
+			locator1 = "CommerceOrders#ORDER_PRICES_SEPARETED",
+			value1 = "${totalPrice}");
+	}
+
 	macro viewOrdersDetails {
 		if (isSet(productSku)) {
 			AssertElementPresent(
@@ -590,7 +619,7 @@ definition {
 
 		if (isSet(productDiscount)) {
 			AssertElementPresent(
-				key_productDiscount = "{productDiscount}",
+				key_productDiscount = "${productDiscount}",
 				locator1 = "CommerceOrders#ORDER_DETAILS_PRODUCT_DISCOUNT");
 		}
 

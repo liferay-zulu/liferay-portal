@@ -448,19 +448,20 @@ public class LayoutLookAndFeelDisplayContext {
 		for (ClientExtensionEntryRel clientExtensionEntryRel :
 				clientExtensionEntryRels) {
 
+			CET cet = cetManager.getCET(
+				_themeDisplay.getCompanyId(),
+				clientExtensionEntryRel.getCETExternalReferenceCode());
+
+			if (cet == null) {
+				continue;
+			}
+
 			jsonArray.put(
 				JSONUtil.put(
-					"externalReferenceCode",
-					clientExtensionEntryRel.getExternalReferenceCode()
+					"cetExternalReferenceCode",
+					clientExtensionEntryRel.getCETExternalReferenceCode()
 				).put(
-					"name",
-					() -> {
-						CET cet = cetManager.getCET(
-							_themeDisplay.getCompanyId(),
-							clientExtensionEntryRel.getExternalReferenceCode());
-
-						return cet.getName(_themeDisplay.getLocale());
-					}
+					"name", cet.getName(_themeDisplay.getLocale())
 				));
 		}
 

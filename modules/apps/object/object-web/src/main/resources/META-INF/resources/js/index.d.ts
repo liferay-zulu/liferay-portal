@@ -51,6 +51,7 @@ interface ObjectField {
 	DBType: string;
 	businessType: ObjectFieldBusinessType;
 	defaultValue: number;
+	externalReferenceCode?: string;
 	id?: number;
 	indexed: boolean;
 	indexedAsKeyword: boolean;

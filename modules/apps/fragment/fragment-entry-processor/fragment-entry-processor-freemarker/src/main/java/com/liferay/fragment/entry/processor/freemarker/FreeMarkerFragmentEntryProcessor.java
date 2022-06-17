@@ -439,9 +439,7 @@ public class FreeMarkerFragmentEntryProcessor
 				Optional<Boolean> decimalOptional =
 					infoField.getAttributeOptional(NumberInfoFieldType.DECIMAL);
 
-				boolean decimal = decimalOptional.orElse(false);
-
-				if (decimal) {
+				if (decimalOptional.orElse(false)) {
 					dataType = "decimal";
 				}
 			}
@@ -452,7 +450,7 @@ public class FreeMarkerFragmentEntryProcessor
 			inputShowHelpText, inputShowLabel, type, "value");
 
 		if ((infoField != null) &&
-			(infoField.getInfoFieldType() == SelectInfoFieldType.INSTANCE)) {
+			(infoField.getInfoFieldType() instanceof SelectInfoFieldType)) {
 
 			Optional<List<SelectInfoFieldType.Option>> optionsOptional =
 				infoField.getAttributeOptional(SelectInfoFieldType.OPTIONS);
