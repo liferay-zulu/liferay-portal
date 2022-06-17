@@ -50,9 +50,9 @@ public class ObjectCodeEditorUtil {
 					objectField -> HashMapBuilder.put(
 						"content", objectField.getName()
 					).put(
-						"label", objectField.getLabel(locale)
+						"helpText", StringPool.BLANK
 					).put(
-						"tooltip", StringPool.BLANK
+						"label", objectField.getLabel(locale)
 					).build()),
 				"fields", locale));
 
@@ -179,12 +179,12 @@ public class ObjectCodeEditorUtil {
 					HashMapBuilder.put(
 						"content", ddmExpressionFunction._content
 					).put(
+						"helpText",
+						LanguageUtil.get(
+							locale, ddmExpressionFunction._helpTextKey)
+					).put(
 						"label",
 						LanguageUtil.get(locale, ddmExpressionFunction._key)
-					).put(
-						"tooltip",
-						LanguageUtil.get(
-							locale, ddmExpressionFunction._tooltipKey)
 					).build());
 			}
 
@@ -192,16 +192,16 @@ public class ObjectCodeEditorUtil {
 		}
 
 		private DDMExpressionFunction(
-			String content, String key, String tooltipKey) {
+			String content, String key, String helpTextKey) {
 
 			_content = content;
 			_key = key;
-			_tooltipKey = tooltipKey;
+			_helpTextKey = helpTextKey;
 		}
 
 		private String _content;
+		private String _helpTextKey;
 		private String _key;
-		private String _tooltipKey;
 
 	}
 
@@ -236,12 +236,12 @@ public class ObjectCodeEditorUtil {
 					HashMapBuilder.put(
 						"content", ddmExpressionOperator._content
 					).put(
+						"helpText",
+						LanguageUtil.get(
+							locale, ddmExpressionOperator._helpTextKey)
+					).put(
 						"label",
 						LanguageUtil.get(locale, ddmExpressionOperator._key)
-					).put(
-						"tooltip",
-						LanguageUtil.get(
-							locale, ddmExpressionOperator._tooltipKey)
 					).build());
 			}
 
@@ -249,16 +249,16 @@ public class ObjectCodeEditorUtil {
 		}
 
 		private DDMExpressionOperator(
-			String content, String key, String tooltipKey) {
+			String content, String key, String helpTextKey) {
 
 			_content = content;
 			_key = key;
-			_tooltipKey = tooltipKey;
+			_helpTextKey = helpTextKey;
 		}
 
 		private String _content;
+		private String _helpTextKey;
 		private String _key;
-		private String _tooltipKey;
 
 	}
 

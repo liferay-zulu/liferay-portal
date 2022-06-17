@@ -31,8 +31,8 @@ export default function useMetadata(elementList: SidebarCategory[]) {
 			METADATA.forEach(({label, name}) => {
 				items.push({
 					content: name,
+					helpText: '',
 					label: label[defaultLanguageId],
-					tooltip: '',
 				});
 			});
 		}

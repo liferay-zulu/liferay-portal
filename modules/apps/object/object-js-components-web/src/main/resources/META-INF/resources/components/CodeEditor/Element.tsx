@@ -17,7 +17,7 @@ import ClayIcon from '@clayui/icon';
 import ClayPopover from '@clayui/popover';
 import React, {MouseEventHandler, useState} from 'react';
 
-export function Element({label, onClick, tooltip}: IProps) {
+export function Element({helpText, label, onClick}: IProps) {
 	const [showPreview, setShowPreview] = useState(false);
 
 	return (
@@ -36,7 +36,7 @@ export function Element({label, onClick, tooltip}: IProps) {
 			</div>
 
 			<div className="lfr-objects__code-editor-sidebar-element-popover-container">
-				{tooltip !== '' && (
+				{helpText !== '' && (
 					<ClayPopover
 						alignPosition="left"
 						disableScroll
@@ -54,7 +54,7 @@ export function Element({label, onClick, tooltip}: IProps) {
 							/>
 						}
 					>
-						<div dangerouslySetInnerHTML={{__html: tooltip}} />
+						<div dangerouslySetInnerHTML={{__html: helpText}} />
 					</ClayPopover>
 				)}
 			</div>
@@ -63,7 +63,7 @@ export function Element({label, onClick, tooltip}: IProps) {
 }
 
 interface IProps {
+	helpText: string;
 	label: string;
 	onClick?: MouseEventHandler;
-	tooltip: string;
 }
