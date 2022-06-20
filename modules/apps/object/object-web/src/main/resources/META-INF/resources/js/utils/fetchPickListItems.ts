@@ -29,5 +29,5 @@ export async function fetchPickListItems(listTypeDefinitionId: number) {
 		items: PickListItems[] | undefined;
 	};
 
-	return items.map(({id, name}) => ({id, name}));
+	return items.map(({key, name}) => ({key, name}));
 }

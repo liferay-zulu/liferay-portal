@@ -50,7 +50,7 @@ interface ObjectFieldType {
 interface ObjectField {
 	DBType: string;
 	businessType: ObjectFieldBusinessType;
-	defaultValue: number;
+	defaultValue: string;
 	externalReferenceCode?: string;
 	id?: number;
 	indexed: boolean;
@@ -105,7 +105,10 @@ interface ObjectRelationship {
 	type: string;
 }
 
-interface PickListItems extends ItemIdName {}
+interface PickListItems {
+	key: string;
+	name: string;
+}
 
 type ObjectValidationType = {
 	label: string;

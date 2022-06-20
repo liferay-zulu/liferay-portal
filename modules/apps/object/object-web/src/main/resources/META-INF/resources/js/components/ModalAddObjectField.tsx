@@ -44,6 +44,7 @@ function ModalAddObjectField({
 	};
 
 	const onSubmit = async (field: ObjectField) => {
+		console.log("Estou aqui");
 		const response = await fetch(apiURL, {
 			body: JSON.stringify({
 				...field,

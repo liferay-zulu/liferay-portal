@@ -142,6 +142,7 @@ export default function ObjectFieldFormBase({
 			setValues({
 				DBType: option.dbType,
 				businessType: option.businessType,
+				defaultValue: "",
 				indexedAsKeyword,
 				indexedLanguageId,
 				objectFieldSettings,
