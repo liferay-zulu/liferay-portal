@@ -49,8 +49,8 @@ public class ObjectFieldServiceImpl extends ObjectFieldServiceBaseImpl {
 	@Override
 	public ObjectField addCustomObjectField(
 			long listTypeDefinitionId, long objectDefinitionId,
-			String businessType, String dbType, boolean indexed,
-			boolean indexedAsKeyword, String indexedLanguageId,
+			String businessType, String dbType, String defaultValue,
+			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
 			Map<Locale, String> labelMap, String name, boolean required,
 			List<ObjectFieldSetting> objectFieldSettings)
 		throws PortalException {
@@ -71,8 +71,8 @@ public class ObjectFieldServiceImpl extends ObjectFieldServiceBaseImpl {
 
 		return objectFieldLocalService.addCustomObjectField(
 			getUserId(), listTypeDefinitionId, objectDefinitionId, businessType,
-			dbType, indexed, indexedAsKeyword, indexedLanguageId, labelMap,
-			name, required, objectFieldSettings);
+			dbType, defaultValue, indexed, indexedAsKeyword, indexedLanguageId,
+			labelMap, name, required, objectFieldSettings);
 	}
 
 	@Override
@@ -105,9 +105,9 @@ public class ObjectFieldServiceImpl extends ObjectFieldServiceBaseImpl {
 	public ObjectField updateObjectField(
 			long objectFieldId, String externalReferenceCode,
 			long listTypeDefinitionId, String businessType, String dbType,
-			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
-			Map<Locale, String> labelMap, String name, boolean required,
-			List<ObjectFieldSetting> objectFieldSettings)
+			String defaultValue, boolean indexed, boolean indexedAsKeyword,
+			String indexedLanguageId, Map<Locale, String> labelMap, String name,
+			boolean required, List<ObjectFieldSetting> objectFieldSettings)
 		throws PortalException {
 
 		ObjectField objectField = objectFieldPersistence.findByPrimaryKey(
@@ -121,9 +121,9 @@ public class ObjectFieldServiceImpl extends ObjectFieldServiceBaseImpl {
 			objectField.getUserId(), objectField.getObjectDefinitionId(),
 			objectFieldId, externalReferenceCode, listTypeDefinitionId,
 			businessType, objectField.getDBColumnName(),
-			objectField.getDBTableName(), dbType, indexed, indexedAsKeyword,
-			indexedLanguageId, labelMap, name, required, objectField.isSystem(),
-			objectFieldSettings);
+			objectField.getDBTableName(), dbType, defaultValue, indexed,
+			indexedAsKeyword, indexedLanguageId, labelMap, name, required,
+			objectField.isSystem(), objectFieldSettings);
 	}
 
 	@Reference(
