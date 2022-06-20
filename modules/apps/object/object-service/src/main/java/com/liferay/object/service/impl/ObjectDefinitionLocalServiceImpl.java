@@ -221,7 +221,8 @@ public class ObjectDefinitionLocalServiceImpl
 					newObjectField.getBusinessType(),
 					newObjectField.getDBColumnName(),
 					objectDefinition.getDBTableName(),
-					newObjectField.getDBType(), false, false, "",
+					newObjectField.getDBType(),
+					newObjectField.getDefaultValue(), false, false, "",
 					newObjectField.getLabelMap(), newObjectField.getName(),
 					newObjectField.isRequired());
 			}
@@ -765,8 +766,8 @@ public class ObjectDefinitionLocalServiceImpl
 			_objectFieldLocalService.addSystemObjectField(
 				userId, objectDefinition.getObjectDefinitionId(), "Date",
 				ObjectEntryTable.INSTANCE.status.getName(),
-				ObjectEntryTable.INSTANCE.getTableName(), "Date", false, false,
-				null,
+				ObjectEntryTable.INSTANCE.getTableName(), "Date", null, false,
+				false, null,
 				LocalizedMapUtil.getLocalizedMap(
 					LanguageUtil.get(LocaleUtil.getDefault(), "create-date")),
 				"dateCreated", false);
@@ -774,7 +775,7 @@ public class ObjectDefinitionLocalServiceImpl
 			_objectFieldLocalService.addSystemObjectField(
 				userId, objectDefinition.getObjectDefinitionId(), "Text",
 				ObjectEntryTable.INSTANCE.status.getName(),
-				ObjectEntryTable.INSTANCE.getTableName(), "String", false,
+				ObjectEntryTable.INSTANCE.getTableName(), "String", null, false,
 				false, null,
 				LocalizedMapUtil.getLocalizedMap(
 					LanguageUtil.get(LocaleUtil.getDefault(), "author")),
@@ -783,8 +784,8 @@ public class ObjectDefinitionLocalServiceImpl
 			_objectFieldLocalService.addSystemObjectField(
 				userId, objectDefinition.getObjectDefinitionId(), "Integer",
 				ObjectEntryTable.INSTANCE.status.getName(),
-				ObjectEntryTable.INSTANCE.getTableName(), "Integer", false,
-				false, null,
+				ObjectEntryTable.INSTANCE.getTableName(), "Integer", null,
+				false, false, null,
 				LocalizedMapUtil.getLocalizedMap(
 					LanguageUtil.get(LocaleUtil.getDefault(), "id")),
 				"id", false);
@@ -792,8 +793,8 @@ public class ObjectDefinitionLocalServiceImpl
 			_objectFieldLocalService.addSystemObjectField(
 				userId, objectDefinition.getObjectDefinitionId(), "Date",
 				ObjectEntryTable.INSTANCE.status.getName(),
-				ObjectEntryTable.INSTANCE.getTableName(), "Date", false, false,
-				null,
+				ObjectEntryTable.INSTANCE.getTableName(), "Date", null, false,
+				false, null,
 				LocalizedMapUtil.getLocalizedMap(
 					LanguageUtil.get(LocaleUtil.getDefault(), "modified-date")),
 				"dateModified", false);
@@ -801,8 +802,8 @@ public class ObjectDefinitionLocalServiceImpl
 			_objectFieldLocalService.addSystemObjectField(
 				userId, objectDefinition.getObjectDefinitionId(), "Text",
 				ObjectEntryTable.INSTANCE.status.getName(),
-				ObjectEntryTable.INSTANCE.getTableName(), "Integer", false,
-				false, null,
+				ObjectEntryTable.INSTANCE.getTableName(), "Integer", null,
+				false, false, null,
 				LocalizedMapUtil.getLocalizedMap(
 					LanguageUtil.get(LocaleUtil.getDefault(), "status")),
 				"status", false);
@@ -816,7 +817,8 @@ public class ObjectDefinitionLocalServiceImpl
 						objectField.getBusinessType(),
 						objectField.getDBColumnName(),
 						objectDefinition.getDBTableName(),
-						objectField.getDBType(), objectField.isIndexed(),
+						objectField.getDBType(), objectField.getDefaultValue(),
+						objectField.isIndexed(),
 						objectField.isIndexedAsKeyword(),
 						objectField.getIndexedLanguageId(),
 						objectField.getLabelMap(), objectField.getName(),
@@ -827,7 +829,7 @@ public class ObjectDefinitionLocalServiceImpl
 						userId, objectField.getListTypeDefinitionId(),
 						objectDefinition.getObjectDefinitionId(),
 						objectField.getBusinessType(), objectField.getDBType(),
-						objectField.isIndexed(),
+						objectField.getDefaultValue(), objectField.isIndexed(),
 						objectField.isIndexedAsKeyword(),
 						objectField.getIndexedLanguageId(),
 						objectField.getLabelMap(), objectField.getName(),
