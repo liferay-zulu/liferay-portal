@@ -496,6 +496,7 @@ public class ObjectFieldLocalServiceImpl
 			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId);
 		_validateLabel(labelMap);
 		_validateName(0, objectDefinition, name, system);
+		_validateState(required, state);
 		_validateDefaultValue(businessType, defaultValue);
 
 		ObjectField objectField = objectFieldPersistence.create(
@@ -719,7 +720,7 @@ public class ObjectFieldLocalServiceImpl
 				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, businessType)) {
 
 			throw new ObjectFieldDefaultValueException(
-				"Object Field with different business type from picklist " +
+				"Object field with different business type from picklist " +
 					"must not have default type!");
 		}
 	}
@@ -819,6 +820,15 @@ public class ObjectFieldLocalServiceImpl
 			(objectField.getObjectFieldId() != objectFieldId)) {
 
 			throw new ObjectFieldNameException.MustNotBeDuplicate(name);
+		}
+	}
+
+	private void _validateState(boolean required, boolean state)
+		throws PortalException {
+
+		if (state && !required) {
+			throw new ObjectFieldStateException(
+				"Object field must be mandatory when the state is true");
 		}
 	}
 
