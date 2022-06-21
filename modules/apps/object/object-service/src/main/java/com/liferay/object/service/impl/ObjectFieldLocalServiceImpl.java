@@ -20,6 +20,7 @@ import com.liferay.object.exception.DuplicateObjectFieldExternalReferenceCodeExc
 import com.liferay.object.exception.ObjectDefinitionStatusException;
 import com.liferay.object.exception.ObjectFieldBusinessTypeException;
 import com.liferay.object.exception.ObjectFieldDBTypeException;
+import com.liferay.object.exception.ObjectFieldDefaultValueException;
 import com.liferay.object.exception.ObjectFieldLabelException;
 import com.liferay.object.exception.ObjectFieldNameException;
 import com.liferay.object.exception.ObjectFieldRelationshipTypeException;
@@ -493,6 +494,7 @@ public class ObjectFieldLocalServiceImpl
 			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId);
 		_validateLabel(labelMap);
 		_validateName(0, objectDefinition, name, system);
+		_validateDefaultValue(businessType, defaultValue);
 
 		ObjectField objectField = objectFieldPersistence.create(
 			counterLocalService.increment());
@@ -696,6 +698,22 @@ public class ObjectFieldLocalServiceImpl
 			}
 
 			throw new ObjectFieldDBTypeException("Invalid DB type " + dbType);
+		}
+	}
+
+	private void _validateDefaultValue(String businessType, String defaultValue)
+		throws PortalException {
+
+		if (Validator.isNull(defaultValue)) {
+			return;
+		}
+
+		if (!Objects.equals(
+				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, businessType)) {
+
+			throw new ObjectFieldDefaultValueException(
+				"Object Field with different business type from picklist " +
+					"must not have default type!");
 		}
 	}
 
