@@ -676,6 +676,21 @@ public class ObjectEntryDisplayContext {
 		properties.forEach(
 			(key, value) -> ddmFormField.setProperty(key, value));
 
+		if (StringUtil.equals(
+				objectField.getBusinessType(),
+				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST)) {
+
+			LocalizedValue ddmFormFieldPredefinedValueLocalizedValue =
+				new LocalizedValue(_objectRequestHelper.getLocale());
+
+			ddmFormFieldPredefinedValueLocalizedValue.addString(
+				_objectRequestHelper.getLocale(),
+				objectField.getDefaultValue());
+
+			ddmFormField.setPredefinedValue(
+				ddmFormFieldPredefinedValueLocalizedValue);
+		}
+
 		if (Validator.isNotNull(objectField.getRelationshipType())) {
 			ObjectRelationship objectRelationship =
 				_objectRelationshipLocalService.
