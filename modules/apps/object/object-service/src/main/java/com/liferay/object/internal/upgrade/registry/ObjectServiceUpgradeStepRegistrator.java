@@ -141,6 +141,10 @@ public class ObjectServiceUpgradeStepRegistrator
 			"3.14.0", "3.15.0",
 			UpgradeStepFactory.addColumns(
 				"ObjectRelationship", "parameterObjectFieldId LONG"));
+
+		registry.register(
+			"3.15.0", "3.16.0",
+			UpgradeStepFactory.addColumns("ObjectField", "state_ BOOLEAN"));
 	}
 
 }
