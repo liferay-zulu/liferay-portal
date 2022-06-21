@@ -11,21 +11,20 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
-
 export declare const EVENT_TYPES: {
-	FIELD_SET: {
-		ADD: string;
-		UPDATE: string;
-		UPDATE_LIST: string;
-	};
-	RULE: {
-		ADD: string;
-		CHANGE: string;
-		DELETE: string;
-	};
-	SIDEBAR: {
-		FIELD: {
-			BLUR: string;
-		};
-	};
+    FIELD_SET: {
+        ADD: string;
+        UPDATE: string;
+        UPDATE_LIST: string;
+    };
+    RULE: {
+        ADD: string;
+        CHANGE: string;
+        DELETE: string;
+    };
+    SIDEBAR: {
+        FIELD: {
+            BLUR: string;
+        };
+    };
 };

@@ -16,6 +16,7 @@ package com.liferay.object.internal.field.business.type;
 
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
+import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.constants.ObjectFieldConstants;
@@ -88,6 +89,10 @@ public class PicklistObjectFieldBusinessType
 			_getDDMFormFieldOptions(
 				GetterUtil.getLong(objectField.getListTypeDefinitionId()),
 				objectFieldRenderingContext.getLocale())
+		).put(
+			"predefinedValue",
+			_getDDMFormFieldPredefinedValue(
+				objectField, objectFieldRenderingContext)
 		).build();
 	}
 
@@ -109,6 +114,20 @@ public class PicklistObjectFieldBusinessType
 		}
 
 		return ddmFormFieldOptions;
+	}
+
+	private LocalizedValue _getDDMFormFieldPredefinedValue(
+		ObjectField objectField,
+		ObjectFieldRenderingContext objectFieldRenderingContext) {
+
+		LocalizedValue ddmFormFieldPredefinedValueLocalizedValue =
+			new LocalizedValue(objectFieldRenderingContext.getLocale());
+
+		ddmFormFieldPredefinedValueLocalizedValue.addString(
+			objectFieldRenderingContext.getLocale(),
+			objectField.getDefaultValue());
+
+		return ddmFormFieldPredefinedValueLocalizedValue;
 	}
 
 	@Reference
