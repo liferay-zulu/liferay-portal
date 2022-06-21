@@ -72,6 +72,7 @@ public class ObjectFieldUtil {
 				relationshipType = ObjectField.RelationshipType.create(
 					serviceBuilderObjectField.getRelationshipType());
 				required = serviceBuilderObjectField.isRequired();
+				state = serviceBuilderObjectField.getState();
 				system = serviceBuilderObjectField.getSystem();
 				type = ObjectField.Type.create(
 					serviceBuilderObjectField.getDBType());
