@@ -348,9 +348,10 @@ public class ObjectViewLocalServiceTest {
 
 		ObjectField objectField = _objectFieldLocalService.addCustomObjectField(
 			TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(), "Text", "String", false,
-			false, null, LocalizedMapUtil.getLocalizedMap(objectFieldLabel),
-			objectFieldName, true, Collections.emptyList());
+			_objectDefinition.getObjectDefinitionId(), "Text", "String", null,
+			false, false, null,
+			LocalizedMapUtil.getLocalizedMap(objectFieldLabel), objectFieldName,
+			true, Collections.emptyList());
 
 		return objectField.getName();
 	}

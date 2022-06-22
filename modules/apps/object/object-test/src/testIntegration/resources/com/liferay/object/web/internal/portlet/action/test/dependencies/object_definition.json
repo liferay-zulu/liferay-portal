@@ -33,6 +33,7 @@
 		{
 			"DBType": "String",
 			"businessType": "Text",
+			"defaultValue": "",
 			"indexed": true,
 			"indexedAsKeyword": false,
 			"indexedLanguageId": "",
@@ -47,6 +48,7 @@
 		{
 			"DBType": "String",
 			"businessType": "Text",
+			"defaultValue": "",
 			"indexed": true,
 			"indexedAsKeyword": false,
 			"indexedLanguageId": "",
