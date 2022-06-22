@@ -102,7 +102,10 @@ const PanelHeader: React.FC<IPanelHeaderProps> = ({
 							'visibility-and-permissions-can-affect-how-the-categorization-block-will-be-displayed'
 						)}
 					>
-						<ClayIcon symbol="info-panel-open" />
+						<ClayIcon
+							className="object-admin-panel__tooltip-icon"
+							symbol="info-panel-open"
+						/>
 					</span>
 				)}
 
