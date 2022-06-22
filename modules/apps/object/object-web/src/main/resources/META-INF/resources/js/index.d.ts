@@ -143,7 +143,10 @@ interface ObjectRelationship {
 	type: string;
 }
 
-interface PickListItems extends ItemIdName {}
+interface PickListItem {
+	key: string;
+	name: string;
+}
 
 type ObjectValidationType = {
 	label: string;
