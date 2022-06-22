@@ -24,7 +24,7 @@ export default function StateDefinition({
 interface IProps {
 	disabled: boolean;
 	index: number;
-	initialValues: PickListItems[];
+	initialValues: PickListItem[];
 	stateName: string;
 }
 export {};

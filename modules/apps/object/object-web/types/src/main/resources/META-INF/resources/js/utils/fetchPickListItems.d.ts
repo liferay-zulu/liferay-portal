@@ -16,7 +16,7 @@ export declare function fetchPickListItems(
 	listTypeDefinitionId: number
 ): Promise<
 	{
-		id: string;
+		key: string;
 		name: string;
 	}[]
 >;
