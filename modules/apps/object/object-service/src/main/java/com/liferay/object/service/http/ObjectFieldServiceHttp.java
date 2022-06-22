@@ -53,7 +53,8 @@ public class ObjectFieldServiceHttp {
 	public static com.liferay.object.model.ObjectField addCustomObjectField(
 			HttpPrincipal httpPrincipal, long listTypeDefinitionId,
 			long objectDefinitionId, String businessType, String dbType,
-			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
+			String defaultValue, boolean indexed, boolean indexedAsKeyword,
+			String indexedLanguageId,
 			java.util.Map<java.util.Locale, String> labelMap, String name,
 			boolean required,
 			java.util.List<com.liferay.object.model.ObjectFieldSetting>
@@ -67,7 +68,7 @@ public class ObjectFieldServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, listTypeDefinitionId, objectDefinitionId,
-				businessType, dbType, indexed, indexedAsKeyword,
+				businessType, dbType, defaultValue, indexed, indexedAsKeyword,
 				indexedLanguageId, labelMap, name, required,
 				objectFieldSettings);
 
@@ -179,8 +180,8 @@ public class ObjectFieldServiceHttp {
 	public static com.liferay.object.model.ObjectField updateObjectField(
 			HttpPrincipal httpPrincipal, long objectFieldId,
 			String externalReferenceCode, long listTypeDefinitionId,
-			String businessType, String dbType, boolean indexed,
-			boolean indexedAsKeyword, String indexedLanguageId,
+			String businessType, String dbType, String defaultValue,
+			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
 			java.util.Map<java.util.Locale, String> labelMap, String name,
 			boolean required,
 			java.util.List<com.liferay.object.model.ObjectFieldSetting>
@@ -194,9 +195,9 @@ public class ObjectFieldServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, objectFieldId, externalReferenceCode,
-				listTypeDefinitionId, businessType, dbType, indexed,
-				indexedAsKeyword, indexedLanguageId, labelMap, name, required,
-				objectFieldSettings);
+				listTypeDefinitionId, businessType, dbType, defaultValue,
+				indexed, indexedAsKeyword, indexedLanguageId, labelMap, name,
+				required, objectFieldSettings);
 
 			Object returnObj = null;
 
@@ -231,9 +232,9 @@ public class ObjectFieldServiceHttp {
 
 	private static final Class<?>[] _addCustomObjectFieldParameterTypes0 =
 		new Class[] {
-			long.class, long.class, String.class, String.class, boolean.class,
-			boolean.class, String.class, java.util.Map.class, String.class,
-			boolean.class, java.util.List.class
+			long.class, long.class, String.class, String.class, String.class,
+			boolean.class, boolean.class, String.class, java.util.Map.class,
+			String.class, boolean.class, java.util.List.class
 		};
 	private static final Class<?>[] _deleteObjectFieldParameterTypes1 =
 		new Class[] {long.class};
@@ -242,8 +243,9 @@ public class ObjectFieldServiceHttp {
 	private static final Class<?>[] _updateObjectFieldParameterTypes3 =
 		new Class[] {
 			long.class, String.class, long.class, String.class, String.class,
-			boolean.class, boolean.class, String.class, java.util.Map.class,
-			String.class, boolean.class, java.util.List.class
+			String.class, boolean.class, boolean.class, String.class,
+			java.util.Map.class, String.class, boolean.class,
+			java.util.List.class
 		};
 
 }

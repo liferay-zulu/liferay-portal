@@ -41,8 +41,8 @@ public class ObjectFieldServiceUtil {
 	 */
 	public static ObjectField addCustomObjectField(
 			long listTypeDefinitionId, long objectDefinitionId,
-			String businessType, String dbType, boolean indexed,
-			boolean indexedAsKeyword, String indexedLanguageId,
+			String businessType, String dbType, String defaultValue,
+			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
 			Map<java.util.Locale, String> labelMap, String name,
 			boolean required,
 			List<com.liferay.object.model.ObjectFieldSetting>
@@ -51,8 +51,8 @@ public class ObjectFieldServiceUtil {
 
 		return getService().addCustomObjectField(
 			listTypeDefinitionId, objectDefinitionId, businessType, dbType,
-			indexed, indexedAsKeyword, indexedLanguageId, labelMap, name,
-			required, objectFieldSettings);
+			defaultValue, indexed, indexedAsKeyword, indexedLanguageId,
+			labelMap, name, required, objectFieldSettings);
 	}
 
 	public static ObjectField deleteObjectField(long objectFieldId)
@@ -79,17 +79,17 @@ public class ObjectFieldServiceUtil {
 	public static ObjectField updateObjectField(
 			long objectFieldId, String externalReferenceCode,
 			long listTypeDefinitionId, String businessType, String dbType,
-			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
-			Map<java.util.Locale, String> labelMap, String name,
-			boolean required,
+			String defaultValue, boolean indexed, boolean indexedAsKeyword,
+			String indexedLanguageId, Map<java.util.Locale, String> labelMap,
+			String name, boolean required,
 			List<com.liferay.object.model.ObjectFieldSetting>
 				objectFieldSettings)
 		throws PortalException {
 
 		return getService().updateObjectField(
 			objectFieldId, externalReferenceCode, listTypeDefinitionId,
-			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId,
-			labelMap, name, required, objectFieldSettings);
+			businessType, dbType, defaultValue, indexed, indexedAsKeyword,
+			indexedLanguageId, labelMap, name, required, objectFieldSettings);
 	}
 
 	public static ObjectFieldService getService() {
