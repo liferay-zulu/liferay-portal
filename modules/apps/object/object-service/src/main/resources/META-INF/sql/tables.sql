@@ -84,6 +84,7 @@ create table ObjectField (
 	dbColumnName VARCHAR(75) null,
 	dbTableName VARCHAR(75) null,
 	dbType VARCHAR(75) null,
+	defaultValue VARCHAR(75) null,
 	indexed BOOLEAN,
 	indexedAsKeyword BOOLEAN,
 	indexedLanguageId VARCHAR(75) null,
