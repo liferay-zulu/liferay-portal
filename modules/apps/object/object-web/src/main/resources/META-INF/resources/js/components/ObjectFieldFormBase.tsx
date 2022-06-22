@@ -212,6 +212,7 @@ export default function ObjectFieldFormBase({
 			setValues({
 				DBType: option.dbType,
 				businessType: option.businessType,
+				defaultValue: '',
 				indexedAsKeyword,
 				indexedLanguageId,
 				objectFieldSettings,
@@ -287,6 +288,7 @@ export default function ObjectFieldFormBase({
 					onChange={({target: {value}}: any) => {
 						if (Liferay.FeatureFlags['LPS-152677']) {
 							setValues({
+								defaultValue: '',
 								listTypeDefinitionId: Number(
 									pickList[value].id
 								),
@@ -328,7 +330,7 @@ export default function ObjectFieldFormBase({
 							label={Liferay.Language.get('mark-as-state')}
 							name="state"
 							onToggle={async (state) => {
-								setValues({state});
+								setValues({required: state, state});
 								setPickListItems(
 									await fetchPickListItems(
 										values.listTypeDefinitionId!
@@ -347,12 +349,11 @@ export default function ObjectFieldFormBase({
 					label={Liferay.Language.get('default-value')}
 					onChange={({target: {value}}: any) =>
 						setValues({
-							defaultValue: value,
+							defaultValue: pickListItems[value].key,
 						})
 					}
 					options={pickListItems.map(({name}) => name)}
 					required
-					value={values.defaultValue}
 				/>
 			)}
 		</>
