@@ -95,6 +95,20 @@ public class ObjectFieldSerDes {
 			sb.append("\"");
 		}
 
+		if (objectField.getDefaultValue() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"defaultValue\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(objectField.getDefaultValue()));
+
+			sb.append("\"");
+		}
+
 		if (objectField.getExternalReferenceCode() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -299,6 +313,14 @@ public class ObjectFieldSerDes {
 				"businessType", String.valueOf(objectField.getBusinessType()));
 		}
 
+		if (objectField.getDefaultValue() == null) {
+			map.put("defaultValue", null);
+		}
+		else {
+			map.put(
+				"defaultValue", String.valueOf(objectField.getDefaultValue()));
+		}
+
 		if (objectField.getExternalReferenceCode() == null) {
 			map.put("externalReferenceCode", null);
 		}
@@ -442,6 +464,11 @@ public class ObjectFieldSerDes {
 					objectField.setBusinessType(
 						ObjectField.BusinessType.create(
 							(String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "defaultValue")) {
+				if (jsonParserFieldValue != null) {
+					objectField.setDefaultValue((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(

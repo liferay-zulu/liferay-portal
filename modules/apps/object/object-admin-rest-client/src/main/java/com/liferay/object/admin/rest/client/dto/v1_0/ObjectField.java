@@ -115,6 +115,27 @@ public class ObjectField implements Cloneable, Serializable {
 
 	protected BusinessType businessType;
 
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public void setDefaultValue(
+		UnsafeSupplier<String, Exception> defaultValueUnsafeSupplier) {
+
+		try {
+			defaultValue = defaultValueUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String defaultValue;
+
 	public String getExternalReferenceCode() {
 		return externalReferenceCode;
 	}
