@@ -50,7 +50,7 @@ interface ObjectFieldType {
 interface ObjectField {
 	DBType: string;
 	businessType: ObjectFieldBusinessType;
-	defaultValue: number;
+	defaultValue?: string;
 	externalReferenceCode?: string;
 	id?: number;
 	indexed: boolean;
