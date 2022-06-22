@@ -20,6 +20,7 @@ import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -84,6 +85,7 @@ public class ObjectFieldResourceTest extends BaseObjectFieldResourceTestCase {
 
 		objectField.setBusinessType(ObjectField.BusinessType.create("Text"));
 		objectField.setDBType(ObjectField.DBType.create("String"));
+		objectField.setDefaultValue(StringPool.BLANK);
 		objectField.setIndexedAsKeyword(false);
 		objectField.setLabel(
 			Collections.singletonMap(

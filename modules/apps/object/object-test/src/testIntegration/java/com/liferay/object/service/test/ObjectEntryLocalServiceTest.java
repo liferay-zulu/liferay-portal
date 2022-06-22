@@ -218,13 +218,13 @@ public class ObjectEntryLocalServiceTest {
 		_objectFieldLocalService.addCustomObjectField(
 			TestPropsValues.getUserId(), 0,
 			_objectDefinition.getObjectDefinitionId(), "PrecisionDecimal",
-			"BigDecimal", true, false, null,
+			"BigDecimal", null, true, false, null,
 			LocalizedMapUtil.getLocalizedMap("Speed"), "speed", false,
 			Collections.emptyList());
 		_objectFieldLocalService.addCustomObjectField(
 			TestPropsValues.getUserId(), 0,
 			_objectDefinition.getObjectDefinitionId(), "Attachment", "Long",
-			true, false, null, LocalizedMapUtil.getLocalizedMap("Upload"),
+			null, true, false, null, LocalizedMapUtil.getLocalizedMap("Upload"),
 			"upload", false,
 			Arrays.asList(
 				_createObjectFieldSetting("acceptedFileExtensions", "txt"),
@@ -233,7 +233,7 @@ public class ObjectEntryLocalServiceTest {
 		_objectFieldLocalService.addCustomObjectField(
 			TestPropsValues.getUserId(), 0,
 			_objectDefinition.getObjectDefinitionId(), "Decimal", "Double",
-			true, false, null, LocalizedMapUtil.getLocalizedMap("Weight"),
+			null, true, false, null, LocalizedMapUtil.getLocalizedMap("Weight"),
 			"weight", false, Collections.emptyList());
 	}
 

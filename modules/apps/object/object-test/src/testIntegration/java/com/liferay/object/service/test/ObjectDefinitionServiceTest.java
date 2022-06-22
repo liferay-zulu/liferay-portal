@@ -406,7 +406,7 @@ public class ObjectDefinitionServiceTest {
 				_objectFieldLocalService.addCustomObjectField(
 					ownerUser.getUserId(), 0,
 					objectDefinition.getObjectDefinitionId(), "Text", "String",
-					false, false, null,
+					null, false, false, null,
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString()),
 					StringUtil.randomId(), false, Collections.emptyList());

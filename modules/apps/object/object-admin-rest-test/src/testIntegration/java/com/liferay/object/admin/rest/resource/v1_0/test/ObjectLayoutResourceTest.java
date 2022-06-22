@@ -62,9 +62,9 @@ public class ObjectLayoutResourceTest extends BaseObjectLayoutResourceTestCase {
 
 		_objectField = _objectFieldLocalService.addCustomObjectField(
 			TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(), "Text", "String", false,
-			false, null, LocalizedMapUtil.getLocalizedMap("Able"), "able", true,
-			Collections.emptyList());
+			_objectDefinition.getObjectDefinitionId(), "Text", "String", null,
+			false, false, null, LocalizedMapUtil.getLocalizedMap("Able"),
+			"able", true, Collections.emptyList());
 	}
 
 	@After

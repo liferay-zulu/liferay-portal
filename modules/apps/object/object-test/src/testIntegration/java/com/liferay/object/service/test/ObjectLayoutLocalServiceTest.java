@@ -382,8 +382,8 @@ public class ObjectLayoutLocalServiceTest {
 
 		ObjectField objectField = _objectFieldLocalService.addCustomObjectField(
 			TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(), "Text", "String", false,
-			false, null, LocalizedMapUtil.getLocalizedMap(name),
+			_objectDefinition.getObjectDefinitionId(), "Text", "String", null,
+			false, false, null, LocalizedMapUtil.getLocalizedMap(name),
 			StringUtil.randomId(), true, Collections.emptyList());
 
 		return objectField.getObjectFieldId();
