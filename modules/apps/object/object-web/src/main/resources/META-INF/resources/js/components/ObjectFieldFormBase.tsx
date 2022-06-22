@@ -91,7 +91,7 @@ export default function ObjectFieldFormBase({
 	}, [objectFieldTypes]);
 
 	const [pickList, setPickList] = useState<IPickList[]>([]);
-	const [pickListItems, setPickListItems] = useState<PickListItems[]>([]);
+	const [pickListItems, setPickListItems] = useState<PickListItem[]>([]);
 
 	const handleTypeChange = async (option: ObjectFieldType) => {
 		if (option.businessType === 'Picklist') {

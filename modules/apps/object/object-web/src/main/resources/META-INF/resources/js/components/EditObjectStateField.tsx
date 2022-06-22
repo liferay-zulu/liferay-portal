@@ -36,7 +36,7 @@ export default function EditObjectStateField({
 	objectField: initialValues,
 	readOnly,
 }: IProps) {
-	const [pickListItems, setPickListItems] = useState<PickListItems[]>();
+	const [pickListItems, setPickListItems] = useState<PickListItem[]>();
 
 	useEffect(() => {
 		async function fetchData() {
