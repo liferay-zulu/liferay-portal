@@ -180,6 +180,7 @@ public abstract class BaseObjectFieldResourceTestCase {
 
 		ObjectField objectField = randomObjectField();
 
+		objectField.setDefaultValue(regex);
 		objectField.setExternalReferenceCode(regex);
 		objectField.setIndexedLanguageId(regex);
 		objectField.setName(regex);
@@ -190,6 +191,7 @@ public abstract class BaseObjectFieldResourceTestCase {
 
 		objectField = ObjectFieldSerDes.toDTO(json);
 
+		Assert.assertEquals(regex, objectField.getDefaultValue());
 		Assert.assertEquals(regex, objectField.getExternalReferenceCode());
 		Assert.assertEquals(regex, objectField.getIndexedLanguageId());
 		Assert.assertEquals(regex, objectField.getName());
@@ -627,6 +629,14 @@ public abstract class BaseObjectFieldResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("defaultValue", additionalAssertFieldName)) {
+				if (objectField.getDefaultValue() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals(
 					"externalReferenceCode", additionalAssertFieldName)) {
 
@@ -848,6 +858,17 @@ public abstract class BaseObjectFieldResourceTestCase {
 				if (!Objects.deepEquals(
 						objectField1.getBusinessType(),
 						objectField2.getBusinessType())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("defaultValue", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						objectField1.getDefaultValue(),
+						objectField2.getDefaultValue())) {
 
 					return false;
 				}
@@ -1113,6 +1134,14 @@ public abstract class BaseObjectFieldResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("defaultValue")) {
+			sb.append("'");
+			sb.append(String.valueOf(objectField.getDefaultValue()));
+			sb.append("'");
+
+			return sb.toString();
+		}
+
 		if (entityFieldName.equals("externalReferenceCode")) {
 			sb.append("'");
 			sb.append(String.valueOf(objectField.getExternalReferenceCode()));
@@ -1231,6 +1260,8 @@ public abstract class BaseObjectFieldResourceTestCase {
 	protected ObjectField randomObjectField() throws Exception {
 		return new ObjectField() {
 			{
+				defaultValue = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				externalReferenceCode = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
