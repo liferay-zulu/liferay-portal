@@ -167,6 +167,34 @@ public class ObjectField implements Serializable {
 	protected BusinessType businessType;
 
 	@Schema
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	@JsonIgnore
+	public void setDefaultValue(
+		UnsafeSupplier<String, Exception> defaultValueUnsafeSupplier) {
+
+		try {
+			defaultValue = defaultValueUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String defaultValue;
+
+	@Schema
 	public String getExternalReferenceCode() {
 		return externalReferenceCode;
 	}
@@ -612,6 +640,20 @@ public class ObjectField implements Serializable {
 			sb.append("\"");
 
 			sb.append(businessType);
+
+			sb.append("\"");
+		}
+
+		if (defaultValue != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"defaultValue\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(defaultValue));
 
 			sb.append("\"");
 		}
