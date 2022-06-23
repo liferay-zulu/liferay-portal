@@ -14,6 +14,7 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.object.model.ObjectState;
 import com.liferay.object.service.base.ObjectStateLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 
@@ -28,4 +29,21 @@ import org.osgi.service.component.annotations.Component;
 )
 public class ObjectStateLocalServiceImpl
 	extends ObjectStateLocalServiceBaseImpl {
+
+	@Override
+	public ObjectState addObjectState(
+		long listTypeEntryId, long objectStateFlowId, long userId,
+		String userName) {
+
+		ObjectState objectState = createObjectState(
+			counterLocalService.increment());
+
+		objectState.setUserId(userId);
+		objectState.setUserName(userName);
+		objectState.setListTypeEntryId(listTypeEntryId);
+		objectState.setObjectStateFlowId(objectStateFlowId);
+
+		return updateObjectState(objectState);
+	}
+
 }
