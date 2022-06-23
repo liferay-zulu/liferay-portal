@@ -24,6 +24,7 @@ import com.liferay.object.exception.ObjectFieldDefaultValueException;
 import com.liferay.object.exception.ObjectFieldLabelException;
 import com.liferay.object.exception.ObjectFieldNameException;
 import com.liferay.object.exception.ObjectFieldRelationshipTypeException;
+import com.liferay.object.exception.ObjectFieldStateException;
 import com.liferay.object.exception.RequiredObjectFieldException;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
 import com.liferay.object.field.business.type.ObjectFieldBusinessTypeServicesTracker;
@@ -497,7 +498,7 @@ public class ObjectFieldLocalServiceImpl
 		_validateLabel(labelMap);
 		_validateName(0, objectDefinition, name, system);
 		_validateState(required, state);
-		_validateDefaultValue(businessType, defaultValue);
+		_validateDefaultValue(businessType, defaultValue, state);
 
 		ObjectField objectField = objectFieldPersistence.create(
 			counterLocalService.increment());
@@ -705,7 +706,8 @@ public class ObjectFieldLocalServiceImpl
 		}
 	}
 
-	private void _validateDefaultValue(String businessType, String defaultValue)
+	private void _validateDefaultValue(
+			String businessType, String defaultValue, boolean state)
 		throws PortalException {
 
 		if (Validator.isNull(defaultValue)) {
@@ -716,9 +718,16 @@ public class ObjectFieldLocalServiceImpl
 			throw new UnsupportedOperationException();
 		}
 
-		if (!Objects.equals(
+		if (Objects.equals(
 				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, businessType)) {
 
+			if (!state) {
+				throw new ObjectFieldStateException(
+					"Object Field default value can only be added when the " +
+						"state is true");
+			}
+		}
+		else {
 			throw new ObjectFieldDefaultValueException(
 				"Object field with different business type from picklist " +
 					"must not have default type!");
