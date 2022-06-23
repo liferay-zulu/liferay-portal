@@ -75,7 +75,7 @@ public interface ObjectFieldLocalService
 			String businessType, String dbType, String defaultValue,
 			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
 			Map<Locale, String> labelMap, String name, boolean required,
-			List<ObjectFieldSetting> objectFieldSettings)
+			boolean state, List<ObjectFieldSetting> objectFieldSettings)
 		throws PortalException;
 
 	/**
@@ -97,7 +97,7 @@ public interface ObjectFieldLocalService
 			String dbColumnName, String dbTableName, String dbType,
 			String defaultValue, boolean indexed, boolean indexedAsKeyword,
 			String indexedLanguageId, Map<Locale, String> labelMap, String name,
-			boolean required)
+			boolean required, boolean state)
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -106,7 +106,7 @@ public interface ObjectFieldLocalService
 			String dbColumnName, String dbTableName, String dbType,
 			String defaultValue, boolean indexed, boolean indexedAsKeyword,
 			String indexedLanguageId, Map<Locale, String> labelMap, String name,
-			boolean required)
+			boolean required, boolean state)
 		throws PortalException;
 
 	/**
@@ -375,7 +375,8 @@ public interface ObjectFieldLocalService
 			String dbType, String defaultValue, boolean indexed,
 			boolean indexedAsKeyword, String indexedLanguageId,
 			Map<Locale, String> labelMap, String name, boolean required,
-			boolean system, List<ObjectFieldSetting> objectFieldSettings)
+			boolean state, boolean system,
+			List<ObjectFieldSetting> objectFieldSettings)
 		throws PortalException;
 
 	/**
