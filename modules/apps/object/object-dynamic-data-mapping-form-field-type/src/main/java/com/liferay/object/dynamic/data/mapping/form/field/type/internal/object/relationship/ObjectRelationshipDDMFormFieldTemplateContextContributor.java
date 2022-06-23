@@ -103,7 +103,7 @@ public class ObjectRelationshipDDMFormFieldTemplateContextContributor
 				return value;
 			}
 		).put(
-			"valueKey", "externalReferenceCode"
+			"valueKey", "id"
 		).build();
 	}
 
