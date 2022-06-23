@@ -44,6 +44,14 @@ public class ObjectStateTransitionLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.object.service.impl.ObjectStateTransitionLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static ObjectStateTransition addObjectStateTransition(
+		long objectStateFlowId, long sourceObjectStateId,
+		long targetObjectStateId, long userId, String userName) {
+
+		return getService().addObjectStateTransition(
+			objectStateFlowId, sourceObjectStateId, targetObjectStateId, userId,
+			userName);
+	}
 
 	/**
 	 * Adds the object state transition to the database. Also notifies the appropriate model listeners.

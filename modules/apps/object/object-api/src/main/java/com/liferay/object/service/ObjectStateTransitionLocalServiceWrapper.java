@@ -37,6 +37,17 @@ public class ObjectStateTransitionLocalServiceWrapper
 		_objectStateTransitionLocalService = objectStateTransitionLocalService;
 	}
 
+	@Override
+	public com.liferay.object.model.ObjectStateTransition
+		addObjectStateTransition(
+			long objectStateFlowId, long sourceObjectStateId,
+			long targetObjectStateId, long userId, String userName) {
+
+		return _objectStateTransitionLocalService.addObjectStateTransition(
+			objectStateFlowId, sourceObjectStateId, targetObjectStateId, userId,
+			userName);
+	}
+
 	/**
 	 * Adds the object state transition to the database. Also notifies the appropriate model listeners.
 	 *

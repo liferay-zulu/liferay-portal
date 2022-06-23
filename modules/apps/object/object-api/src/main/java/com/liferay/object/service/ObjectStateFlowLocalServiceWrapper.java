@@ -37,6 +37,14 @@ public class ObjectStateFlowLocalServiceWrapper
 		_objectStateFlowLocalService = objectStateFlowLocalService;
 	}
 
+	@Override
+	public com.liferay.object.model.ObjectStateFlow addObjectStateFlow(
+		long objectFieldId, long userId, String userName) {
+
+		return _objectStateFlowLocalService.addObjectStateFlow(
+			objectFieldId, userId, userName);
+	}
+
 	/**
 	 * Adds the object state flow to the database. Also notifies the appropriate model listeners.
 	 *
