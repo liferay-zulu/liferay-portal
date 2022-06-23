@@ -432,7 +432,7 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				ObjectFieldConstants.DB_TYPE_STRING, null, false, true, "",
-				LocalizedMapUtil.getLocalizedMap("Able"), "able", false);
+				LocalizedMapUtil.getLocalizedMap("Able"), "able", false, false);
 
 			Assert.fail();
 		}
@@ -478,7 +478,7 @@ public class ObjectFieldLocalServiceTest {
 			objectDefinition.getObjectDefinitionId(),
 			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 			ObjectFieldConstants.DB_TYPE_STRING, null, false, true, "",
-			LocalizedMapUtil.getLocalizedMap("able"), "able", false,
+			LocalizedMapUtil.getLocalizedMap("able"), "able", false, false,
 			_getObjectFieldSettings(ObjectFieldConstants.BUSINESS_TYPE_TEXT));
 
 		Assert.assertNotNull(ableObjectField);
@@ -498,7 +498,7 @@ public class ObjectFieldLocalServiceTest {
 			objectDefinition.getObjectDefinitionId(),
 			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 			ObjectFieldConstants.DB_TYPE_STRING, null, false, true, "",
-			LocalizedMapUtil.getLocalizedMap("baker"), "baker", false,
+			LocalizedMapUtil.getLocalizedMap("baker"), "baker", false, false,
 			_getObjectFieldSettings(ObjectFieldConstants.BUSINESS_TYPE_TEXT));
 
 		ObjectField bakerObjectField =
@@ -573,7 +573,7 @@ public class ObjectFieldLocalServiceTest {
 			objectDefinition.getObjectDefinitionId(),
 			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 			ObjectFieldConstants.DB_TYPE_STRING, null, false, true, "",
-			LocalizedMapUtil.getLocalizedMap("baker"), "baker", false,
+			LocalizedMapUtil.getLocalizedMap("baker"), "baker", false, false,
 			_getObjectFieldSettings("Text"));
 
 		ObjectField bakerObjectField =
@@ -616,7 +616,7 @@ public class ObjectFieldLocalServiceTest {
 			ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT,
 			ObjectFieldConstants.DB_TYPE_LONG, null, true, false, null,
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			"upload", false,
+			"upload", false, false,
 			Arrays.asList(
 				_createObjectFieldSetting("acceptedFileExtensions", "txt"),
 				_createObjectFieldSetting("fileSource", "userComputer"),
@@ -694,7 +694,7 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT,
 				ObjectFieldConstants.DB_TYPE_LONG, null, true, false, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"upload", false, Collections.emptyList());
+				"upload", false, false, Collections.emptyList());
 		}
 		catch (ObjectFieldSettingValueException.MissingRequiredValues
 					objectFieldSettingValueException) {
@@ -712,7 +712,7 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 				ObjectFieldConstants.DB_TYPE_STRING, null, true, false, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"text", false,
+				"text", false, false,
 				Collections.singletonList(
 					_createObjectFieldSetting("showCounter", "true")));
 		}
@@ -733,7 +733,7 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 				ObjectFieldConstants.DB_TYPE_STRING, null, true, false, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"text", false,
+				"text", false, false,
 				Arrays.asList(
 					_createObjectFieldSetting("anySetting", "10"),
 					_createObjectFieldSetting("showCounter", "true")));
@@ -753,7 +753,7 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 				ObjectFieldConstants.DB_TYPE_STRING, null, true, false, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"text", false,
+				"text", false, false,
 				Arrays.asList(_createObjectFieldSetting("maxLength", null)));
 		}
 		catch (ObjectFieldSettingNameException.NotAllowedNames
@@ -771,7 +771,7 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 				ObjectFieldConstants.DB_TYPE_STRING, null, true, false, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"text", false,
+				"text", false, false,
 				Arrays.asList(
 					_createObjectFieldSetting("maxLength", "10"),
 					_createObjectFieldSetting("showCounter", "false")));
@@ -792,7 +792,7 @@ public class ObjectFieldLocalServiceTest {
 			ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT,
 			ObjectFieldConstants.DB_TYPE_LONG, null, true, false, null,
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			StringUtil.randomId(), false,
+			StringUtil.randomId(), false, false,
 			Arrays.asList(
 				_createObjectFieldSetting("acceptedFileExtensions", "jpg, png"),
 				_createObjectFieldSetting("fileSource", "userComputer"),
@@ -891,7 +891,7 @@ public class ObjectFieldLocalServiceTest {
 			objectDefinition.getObjectDefinitionId(),
 			ObjectFieldConstants.BUSINESS_TYPE_LONG_INTEGER,
 			ObjectFieldConstants.DB_TYPE_LONG, null, false, true, "",
-			LocalizedMapUtil.getLocalizedMap("able"), "able", false,
+			LocalizedMapUtil.getLocalizedMap("able"), "able", false, false,
 			Collections.emptyList());
 
 		Assert.assertEquals("able_", objectField.getDBColumnName());
