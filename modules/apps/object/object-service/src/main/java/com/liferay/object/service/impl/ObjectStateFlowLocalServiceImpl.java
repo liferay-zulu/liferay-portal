@@ -14,12 +14,22 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.list.type.model.ListTypeEntry;
+import com.liferay.list.type.service.ListTypeEntryLocalService;
+import com.liferay.object.model.ObjectField;
+import com.liferay.object.model.ObjectState;
 import com.liferay.object.model.ObjectStateFlow;
+import com.liferay.object.service.ObjectStateLocalService;
+import com.liferay.object.service.ObjectStateTransitionLocalService;
 import com.liferay.object.service.base.ObjectStateFlowLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ListUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -35,7 +45,49 @@ public class ObjectStateFlowLocalServiceImpl
 	extends ObjectStateFlowLocalServiceBaseImpl {
 
 	@Override
-	public ObjectStateFlow addObjectStateFlow(long userId, long objectFieldId)
+	public ObjectStateFlow addDefaultObjectStateFlow(ObjectField objectField)
+		throws PortalException {
+
+		if (!objectField.isState()) {
+			return null;
+		}
+
+		ObjectStateFlow objectStateFlow = addObjectStateFlow(
+			objectField.getObjectFieldId(), objectField.getUserId());
+
+		List<ListTypeEntry> listTypeEntries =
+			_listTypeEntryLocalService.getListTypeEntries(
+				objectField.getListTypeDefinitionId());
+
+		List<ObjectState> objectStates = new ArrayList<>();
+
+		for (ListTypeEntry listTypeEntry: listTypeEntries) {
+			objectStates.add(
+				_objectStateLocalService.addObjectState(
+					listTypeEntry.getListTypeEntryId(),
+					objectStateFlow.getObjectStateFlowId(),
+					objectField.getUserId()));
+		}
+
+		for (ObjectState sourceObjectState : objectStates) {
+			for (ObjectState targetObjectState : objectStates) {
+				if (sourceObjectState.equals(targetObjectState)) {
+					continue;
+				}
+
+				_objectStateTransitionLocalService.addObjectStateTransition(
+					objectStateFlow.getObjectStateFlowId(),
+					sourceObjectState.getObjectStateId(),
+					targetObjectState.getObjectStateId(),
+					objectField.getUserId());
+			}
+		}
+
+		return objectStateFlow;
+	}
+
+	@Override
+		public ObjectStateFlow addObjectStateFlow(long userId, long objectFieldId)
 		throws PortalException {
 
 		ObjectStateFlow objectStateFlow = createObjectStateFlow(
@@ -54,5 +106,15 @@ public class ObjectStateFlowLocalServiceImpl
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private ListTypeEntryLocalService _listTypeEntryLocalService;
+
+	@Reference
+	private ObjectStateLocalService _objectStateLocalService;
+
+	@Reference
+	private ObjectStateTransitionLocalService
+		_objectStateTransitionLocalService;
 
 }
