@@ -18,6 +18,8 @@ import com.liferay.object.model.ObjectStateTransition;
 import com.liferay.object.service.base.ObjectStateTransitionLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 
+import java.util.List;
+
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -45,6 +47,14 @@ public class ObjectStateTransitionLocalServiceImpl
 		objectStateTransition.setTargetObjectStateId(targetObjectStateId);
 
 		return addObjectStateTransition(objectStateTransition);
+	}
+
+	@Override
+	public List<ObjectStateTransition> findBySourceObjectStateId(
+		long sourceObjectStateId) {
+
+		return objectStateTransitionPersistence.findBySourceObjectStateId(
+			sourceObjectStateId);
 	}
 
 }
