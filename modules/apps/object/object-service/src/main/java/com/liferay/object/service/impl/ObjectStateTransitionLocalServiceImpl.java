@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 
+import java.util.List;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,6 +56,14 @@ public class ObjectStateTransitionLocalServiceImpl
 		objectStateTransition.setTargetObjectStateId(targetObjectStateId);
 
 		return addObjectStateTransition(objectStateTransition);
+	}
+
+	@Override
+	public List<ObjectStateTransition> findBySourceObjectStateId(
+		long sourceObjectStateId) {
+
+		return objectStateTransitionPersistence.findBySourceObjectStateId(
+			sourceObjectStateId);
 	}
 
 	@Reference
