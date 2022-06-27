@@ -1183,9 +1183,7 @@ public class ObjectEntryLocalServiceImpl
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
-		if (!objectDefinition.isAccountEntryRestricted() ||
-			(accountEntryIds == null)) {
-
+		if (!objectDefinition.isAccountEntryRestricted()) {
 			return null;
 		}
 
