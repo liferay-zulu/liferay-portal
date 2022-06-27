@@ -11,10 +11,11 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+
 import React from 'react';
 import './SidebarFieldSettings.scss';
 declare const SidebarFieldSettings: React.FC<IProps>;
 export default SidebarFieldSettings;
 interface IProps {
-    field: Field;
+	field: Field;
 }
