@@ -20,6 +20,7 @@ import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.filter.Filter;
 import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.portal.odata.filter.FilterParserProvider;
@@ -35,6 +36,10 @@ public class PredicateUtil {
 		FilterParserProvider filterParserProvider, String filterString,
 		long objectDefinitionId,
 		ObjectFieldLocalService objectFieldLocalService) {
+
+		if (Validator.isNull(filterString)) {
+			return null;
+		}
 
 		try {
 			FilterParser filterParser = filterParserProvider.provide(
