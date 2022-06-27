@@ -360,7 +360,7 @@ public class ObjectFieldLocalServiceImpl
 		return new DynamicObjectDefinitionTable(
 			objectDefinition,
 			objectFieldLocalService.getObjectFields(
-				objectDefinitionId, objectDefinition.getDBTableName()),
+				objectDefinitionId, objectDefinition.getExtensionDBTableName()),
 			objectDefinition.getExtensionDBTableName());
 	}
 
