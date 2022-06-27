@@ -314,7 +314,7 @@ public class DefaultObjectEntryManagerImpl
 
 		long groupId = getGroupId(objectDefinition, scopeKey);
 
-		long[] accountEntryIds = null;
+		long[] accountEntryIds = {_NONEXISTING_ACCOUNT_ENTRY_ID};
 
 		if (objectDefinition.isAccountEntryRestricted()) {
 			List<AccountEntry> accountEntries =
@@ -792,6 +792,8 @@ public class DefaultObjectEntryManagerImpl
 
 		return values;
 	}
+
+	private static final long _NONEXISTING_ACCOUNT_ENTRY_ID = -1L;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultObjectEntryManagerImpl.class);
