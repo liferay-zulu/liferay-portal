@@ -10,8 +10,8 @@
  */
 
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
-import {ClayDropDownWithItems} from '@clayui/drop-down';
 import ClayForm, {ClayInput, ClaySelect} from '@clayui/form';
+import {FormCustomSelect} from '@liferay/object-js-components-web';
 import PropTypes from 'prop-types';
 import React, {useContext, useEffect, useState} from 'react';
 
@@ -201,6 +201,8 @@ const NotificationsInfo = ({
 			value: 'userNotification',
 		},
 	];
+
+	const [items, setItems] = useState(notificationTypesOptions);
 
 	const updateSelectedItem = (values) => {
 		setSelectedItem((previousItem) => ({
@@ -551,14 +553,10 @@ const NotificationsInfo = ({
 					<span className="ml-1 mr-1 text-warning">*</span>
 				</label>
 
-				<ClayDropDownWithItems
-					items={notificationTypesOptions}
-					trigger={
-						<ClayInput
-							id="notification-types"
-							value={Liferay.Language.get('select')}
-						/>
-					}
+				<FormCustomSelect
+					multipleChoice
+					options={items}
+					setOptions={setItems}
 				/>
 			</ClayForm.Group>
 
