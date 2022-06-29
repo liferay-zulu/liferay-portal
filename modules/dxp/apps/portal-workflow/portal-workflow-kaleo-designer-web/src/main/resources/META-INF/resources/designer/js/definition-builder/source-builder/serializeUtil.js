@@ -381,7 +381,7 @@ function appendXMLNotifications(buffer, notifications, nodeName, exporting) {
 				recipientsAttrs.receptionType = recipients[index].receptionType;
 			}
 
-			if (!recipientsAttrs.receptionType && receptionType[0]) {
+			if (!recipientsAttrs.receptionType && receptionType?.[0]) {
 				recipientsAttrs.receptionType = receptionType[0];
 			}
 
