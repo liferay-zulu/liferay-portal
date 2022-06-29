@@ -579,7 +579,9 @@ definition {
 
 			SelectFrame(locator1 = "IFrame#MODAL_BODY");
 
-			Pause(locator1 = "2000");
+			WaitForElementPresent(
+				locator1 = "OAuth2#ADMIN_CLIENT_CREDENTIALS_USER_SELECTED",
+				value1 = "${clientCredentialsUser}");
 
 			Click(
 				key_clientCredentialsUser = "${clientCredentialsUser}",
