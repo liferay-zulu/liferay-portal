@@ -92,14 +92,6 @@ function getLocationValue(field, context) {
 					}
 					else {
 						for (const item of child.children) {
-							let itemAttributes = item.attributes;
-
-							if (itemAttributes && itemAttributes.length) {
-								for (let i = 0; i < itemAttributes.length; i++) {
-									childContent[itemAttributes[i].name] = itemAttributes[i].value;
-								}
-							}
-
 							if (item.children.length) {
 								let childNodesAttributes = [];
 								let grandChildren = [];
@@ -201,9 +193,23 @@ function getLocationValue(field, context) {
 											itemContent
 										);
 									}
+
 									childContent[
 										currentTagName
 									] = grandChildren;
+								}
+
+								const itemAttributes = item.attributes;
+
+								if (itemAttributes && itemAttributes.length) {
+									for (
+										let i = 0;
+										i < itemAttributes.length;
+										i++
+									) {
+										childContent[itemAttributes[i].name] =
+											itemAttributes[i].value;
+									}
 								}
 							}
 							else {
