@@ -14,12 +14,15 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.object.exception.NoSuchObjectStateTransitionException;
 import com.liferay.object.model.ObjectStateTransition;
 import com.liferay.object.service.base.ObjectStateTransitionLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.List;
 
@@ -59,9 +62,49 @@ public class ObjectStateTransitionLocalServiceImpl
 	}
 
 	@Override
+	public void createObjectStateTransitions(
+		List<ObjectStateTransition> objectStateTransitions)
+		throws PortalException {
+
+		if (ListUtil.isEmpty(objectStateTransitions)) {
+			return;
+		}
+
+		User user = _userLocalService.fetchUser(
+			PrincipalThreadLocal.getUserId());
+
+		for (ObjectStateTransition objectStateTransition :
+				objectStateTransitions) {
+
+			addObjectStateTransition(
+				objectStateTransition.getObjectStateFlowId(),
+				objectStateTransition.getSourceObjectStateId(),
+				objectStateTransition.getTargetObjectStateId(),
+				user.getUserId());
+		}
+	}
+
+	@Override
 	public void deleteByObjectStateFlowId(long objectStateFlowId) {
 		objectStateTransitionPersistence.removeByObjectStateFlowId(
 			objectStateFlowId);
+	}
+
+	@Override
+	public void deleteObjectStateTransitions(
+			List<ObjectStateTransition> objectStateTransitions)
+		throws NoSuchObjectStateTransitionException {
+
+		if (ListUtil.isEmpty(objectStateTransitions)) {
+			return;
+		}
+
+		for (ObjectStateTransition objectStateTransition :
+				objectStateTransitions) {
+
+			objectStateTransitionPersistence.remove(
+				objectStateTransition.getObjectStateTransitionId());
+		}
 	}
 
 	@Override

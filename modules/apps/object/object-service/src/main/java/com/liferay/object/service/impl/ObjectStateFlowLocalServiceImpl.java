@@ -27,7 +27,6 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +123,21 @@ public class ObjectStateFlowLocalServiceImpl
 	@Override
 	public ObjectStateFlow fetchByObjectFieldId(long objectFieldId) {
 		return objectStateFlowPersistence.fetchByObjectFieldId(objectFieldId);
+	}
+
+	@Override
+	public void updateObjectStateTransitions(ObjectStateFlow objectStateFlow)
+		throws PortalException {
+
+		if (objectStateFlow == null) {
+			return;
+		}
+
+		for (ObjectState objectState : objectStateFlow.getObjectStates()) {
+			_objectStateLocalService.updateObjectStateTransitions(
+				objectState.getObjectStateId(),
+				objectState.getObjectStateTransitions());
+		}
 	}
 
 	@Reference
