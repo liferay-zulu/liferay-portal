@@ -1,6 +1,8 @@
 #!/bin/bash
 
 function check_blade {
+	local bladePath
+
 	if [ -e ~/jpm/bin/blade ]
 	then
 		bladePath=~/jpm/bin/blade
@@ -11,7 +13,7 @@ function check_blade {
 		bladePath=~/Library/PackageManager/bin/blade
 	fi
 
-	if [ -z "$bladePath" ]
+	if [ -z "${bladePath}" ]
 	then
 		echo "Blade CLI is not available. To install Blade CLI, execute the following command:"
 		echo ""
@@ -21,11 +23,13 @@ function check_blade {
 		exit 1
 	fi
 
-	$bladePath  update -s
+	#${bladePath} update -s
+
+	echo "${bladePath}"
 }
 
 function refresh_sample_default_workspace {
-	check_blade
+	local bladePath=$(check_blade)
 
 	rm -fr sample-default-workspace
 
@@ -33,7 +37,7 @@ function refresh_sample_default_workspace {
 
 	cd sample-default-workspace
 
-	$bladePath init --liferay-version dxp-7.4-u30
+	${bladePath} init --liferay-version dxp-7.4-u30
 
 	echo -e "\n**/dist\n**/node_modules_cache\n.DS_Store" >> .gitignore
 
