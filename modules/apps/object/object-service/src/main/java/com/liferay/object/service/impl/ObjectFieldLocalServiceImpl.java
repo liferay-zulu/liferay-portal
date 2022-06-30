@@ -15,6 +15,8 @@
 package com.liferay.object.service.impl;
 
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
+import com.liferay.list.type.model.ListTypeEntryModel;
+import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.exception.DuplicateObjectFieldExternalReferenceCodeException;
 import com.liferay.object.exception.ObjectDefinitionStatusException;
@@ -59,6 +61,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -444,7 +447,8 @@ public class ObjectFieldLocalServiceImpl
 		_validateIndexed(
 			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId);
 		_validateState(required, state);
-		_validateDefaultValue(businessType, defaultValue, state);
+		_validateDefaultValue(
+			businessType, defaultValue, listTypeDefinitionId, state);
 
 		if (Validator.isNotNull(objectField.getRelationshipType())) {
 			if (!Objects.equals(objectField.getDBType(), dbType) ||
@@ -534,7 +538,8 @@ public class ObjectFieldLocalServiceImpl
 		_validateLabel(labelMap);
 		_validateName(0, objectDefinition, name, system);
 		_validateState(required, state);
-		_validateDefaultValue(businessType, defaultValue, state);
+		_validateDefaultValue(
+			businessType, defaultValue, listTypeDefinitionId, state);
 
 		ObjectField objectField = objectFieldPersistence.create(
 			counterLocalService.increment());
@@ -746,7 +751,8 @@ public class ObjectFieldLocalServiceImpl
 	}
 
 	private void _validateDefaultValue(
-			String businessType, String defaultValue, boolean state)
+			String businessType, String defaultValue, long listTypeDefinitionId,
+			boolean state)
 		throws PortalException {
 
 		if (Validator.isNull(defaultValue)) {
@@ -771,6 +777,19 @@ public class ObjectFieldLocalServiceImpl
 			throw new ObjectFieldStateException(
 				"Object field default value can only be added when the " +
 					"picklist is a state");
+		}
+
+		// TODO update integration tests to cover the scenario below:
+
+		List<String> listTypeEntryKeys = ListUtil.toList(
+			_listTypeEntryLocalService.getListTypeEntries(listTypeDefinitionId),
+			ListTypeEntryModel::getKey);
+
+		if (!listTypeEntryKeys.contains(defaultValue)) {
+			throw new ObjectFieldDefaultValueException(
+				StringBundler.concat(
+					"Default value \"", defaultValue, "\" is not an item of ",
+					"the selected list"));
 		}
 	}
 
@@ -906,6 +925,9 @@ public class ObjectFieldLocalServiceImpl
 
 	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
+
+	@Reference
+	private ListTypeEntryLocalService _listTypeEntryLocalService;
 
 	@Reference
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;
