@@ -215,7 +215,7 @@ public class ClientExtensionServicePreActionTest {
 				UnicodePropertiesBuilder.create(
 					true
 				).put(
-					"url", _FAVICON_URL
+					"url", _URL_FAVICON
 				).buildString());
 	}
 
@@ -231,9 +231,9 @@ public class ClientExtensionServicePreActionTest {
 				UnicodePropertiesBuilder.create(
 					true
 				).put(
-					"clayURL", _CLAY_CSS_URL
+					"clayURL", _URL_CLAY_CSS
 				).put(
-					"mainURL", _MAIN_CSS_URL
+					"mainURL", _URL_MAIN_CSS
 				).buildString());
 	}
 
@@ -247,7 +247,7 @@ public class ClientExtensionServicePreActionTest {
 			(ThemeDisplay)mockHttpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		Assert.assertEquals(_FAVICON_URL, themeDisplay.getFaviconURL());
+		Assert.assertEquals(_URL_FAVICON, themeDisplay.getFaviconURL());
 	}
 
 	private void _assertThemeCSSURLs() throws Exception {
@@ -260,8 +260,8 @@ public class ClientExtensionServicePreActionTest {
 			(ThemeDisplay)mockHttpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		Assert.assertEquals(_CLAY_CSS_URL, themeDisplay.getClayCSSURL());
-		Assert.assertEquals(_MAIN_CSS_URL, themeDisplay.getMainCSSURL());
+		Assert.assertEquals(_URL_CLAY_CSS, themeDisplay.getClayCSSURL());
+		Assert.assertEquals(_URL_MAIN_CSS, themeDisplay.getMainCSSURL());
 	}
 
 	private LifecycleAction _getLifecycleAction() {
@@ -323,13 +323,13 @@ public class ClientExtensionServicePreActionTest {
 				mockHttpServletRequest, new MockHttpServletResponse()));
 	}
 
-	private static final String _CLAY_CSS_URL =
+	private static final String _URL_CLAY_CSS =
 		"http://" + RandomTestUtil.randomString() + ".com/styles.css";
 
-	private static final String _FAVICON_URL =
+	private static final String _URL_FAVICON =
 		"http://" + RandomTestUtil.randomString() + ".com";
 
-	private static final String _MAIN_CSS_URL =
+	private static final String _URL_MAIN_CSS =
 		"http://" + RandomTestUtil.randomString() + ".com/main.css";
 
 	private ClientExtensionEntry _clientExtensionEntry;
