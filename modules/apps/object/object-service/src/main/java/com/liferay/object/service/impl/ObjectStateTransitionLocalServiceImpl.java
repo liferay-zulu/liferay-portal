@@ -91,6 +91,15 @@ public class ObjectStateTransitionLocalServiceImpl
 	}
 
 	@Override
+	public void deleteByObjectStateId(long objectStateId) {
+		objectStateTransitionPersistence.removeBySourceObjectStateId(
+			objectStateId);
+
+		objectStateTransitionPersistence.removeByTargetObjectStateId(
+			objectStateId);
+	}
+
+	@Override
 	public void deleteObjectStateTransitions(
 			List<ObjectStateTransition> objectStateTransitions)
 		throws NoSuchObjectStateTransitionException {
