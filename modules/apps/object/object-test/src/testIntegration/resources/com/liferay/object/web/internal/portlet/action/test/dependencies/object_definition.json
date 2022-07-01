@@ -41,6 +41,8 @@
 				"en_US": "Text Field 1"
 			},
 			"name": "textField1",
+			"objectFieldSettings": [
+			],
 			"required": false,
 			"state": false,
 			"system": false,
@@ -57,6 +59,8 @@
 				"en_US": "Text Field 2"
 			},
 			"name": "textField2",
+			"objectFieldSettings": [
+			],
 			"required": false,
 			"state": false,
 			"system": false,
