@@ -244,6 +244,12 @@ public class ObjectStateTransitionLocalServiceUtil {
 			uuid, companyId);
 	}
 
+	public static List<ObjectStateTransition> findBySourceObjectStateId(
+		long sourceObjectStateId) {
+
+		return getService().findBySourceObjectStateId(sourceObjectStateId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
