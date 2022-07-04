@@ -16,6 +16,7 @@ package com.liferay.object.service.impl;
 
 import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
+import com.liferay.object.exception.NoSuchObjectStateFlowException;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectState;
 import com.liferay.object.model.ObjectStateFlow;
@@ -102,6 +103,22 @@ public class ObjectStateFlowLocalServiceImpl
 		objectStateFlow.setObjectFieldId(objectFieldId);
 
 		return addObjectStateFlow(objectStateFlow);
+	}
+
+	@Override
+	public void deleteByObjectFieldId(long objectFieldId)
+		throws NoSuchObjectStateFlowException {
+
+		ObjectStateFlow objectStateFlow = fetchByObjectFieldId(objectFieldId);
+
+		objectStateFlowPersistence.remove(
+			objectStateFlow.getObjectStateFlowId());
+
+		_objectStateLocalService.deleteByObjectStateFlowId(
+			objectStateFlow.getObjectStateFlowId());
+
+		_objectStateTransitionLocalService.deleteByObjectStateFlowId(
+			objectStateFlow.getObjectStateFlowId());
 	}
 
 	@Override

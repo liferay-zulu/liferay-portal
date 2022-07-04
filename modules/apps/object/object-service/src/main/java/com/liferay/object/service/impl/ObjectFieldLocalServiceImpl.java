@@ -661,6 +661,11 @@ public class ObjectFieldLocalServiceImpl
 
 		objectField = objectFieldPersistence.remove(objectField);
 
+		if (objectField.isState()) {
+			_objectStateFlowLocalService.deleteByObjectFieldId(
+				objectField.getObjectFieldId());
+		}
+
 		if (objectDefinition.getAccountEntryRestrictedObjectFieldId() ==
 				objectField.getObjectFieldId()) {
 
