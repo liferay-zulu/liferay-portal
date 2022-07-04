@@ -250,6 +250,13 @@ public class ObjectStateFlowLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.object.model.ObjectStateFlow fetchByObjectFieldId(
+		long objectFieldId) {
+
+		return _objectStateFlowLocalService.fetchByObjectFieldId(objectFieldId);
+	}
+
+	@Override
 	public com.liferay.object.model.ObjectStateFlow fetchObjectStateFlow(
 		long objectStateFlowId) {
 

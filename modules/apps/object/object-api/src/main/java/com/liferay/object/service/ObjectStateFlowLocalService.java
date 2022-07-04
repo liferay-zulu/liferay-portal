@@ -211,6 +211,9 @@ public interface ObjectStateFlowLocalService
 		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ObjectStateFlow fetchByObjectFieldId(long objectFieldId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ObjectStateFlow fetchObjectStateFlow(long objectStateFlowId);
 
 	/**
