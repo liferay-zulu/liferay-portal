@@ -464,7 +464,11 @@ export function useObjectFieldForm({
 				errors.listTypeDefinitionId = REQUIRED_MSG;
 			}
 
-			if (Liferay.FeatureFlags['LPS-152677'] && !field.defaultValue) {
+			if (
+				Liferay.FeatureFlags['LPS-152677'] &&
+				field.state &&
+				!field.defaultValue
+			) {
 				errors.defaultValue = REQUIRED_MSG;
 			}
 		}
