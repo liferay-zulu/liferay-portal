@@ -83,6 +83,12 @@ public class ObjectStateTransitionLocalServiceUtil {
 			objectStateTransitionId);
 	}
 
+	public static void createObjectStateTransitions(
+		List<ObjectStateTransition> objectStateTransitions) {
+
+		getService().createObjectStateTransitions(objectStateTransitions);
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -130,6 +136,14 @@ public class ObjectStateTransitionLocalServiceUtil {
 		ObjectStateTransition objectStateTransition) {
 
 		return getService().deleteObjectStateTransition(objectStateTransition);
+	}
+
+	public static void deleteObjectStateTransitions(
+			List<ObjectStateTransition> objectStateTransitions)
+		throws com.liferay.object.exception.
+			NoSuchObjectStateTransitionException {
+
+		getService().deleteObjectStateTransitions(objectStateTransitions);
 	}
 
 	/**
