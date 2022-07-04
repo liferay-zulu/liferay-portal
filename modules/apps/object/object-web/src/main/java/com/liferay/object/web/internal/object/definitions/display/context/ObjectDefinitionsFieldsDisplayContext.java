@@ -192,6 +192,8 @@ public class ObjectDefinitionsFieldsDisplayContext
 		).put(
 			"required", objectField.isRequired()
 		).put(
+			"state", objectField.isState()
+		).put(
 			"system", objectField.isSystem()
 		);
 	}
