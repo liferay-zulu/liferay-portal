@@ -42,7 +42,7 @@ public class ListTypeEntryModelListener
 		throws ModelListenerException {
 
 		List<ObjectField> objectFields =
-			_objectFieldLocalService.findByListTypeDefinitionIdAndState(
+			_objectFieldLocalService.getListTypeDefinitionObjectFields(
 				listTypeEntry.getListTypeDefinitionId(), true);
 
 		if (objectFields.isEmpty()) {

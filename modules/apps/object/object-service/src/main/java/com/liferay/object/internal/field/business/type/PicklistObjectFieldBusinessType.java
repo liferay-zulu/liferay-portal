@@ -30,7 +30,6 @@ import com.liferay.object.rest.dto.v1_0.ListEntry;
 import com.liferay.object.service.ObjectStateFlowLocalService;
 import com.liferay.object.service.ObjectStateLocalService;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -152,7 +151,8 @@ public class PicklistObjectFieldBusinessType
 
 			listTypeEntries = TransformUtil.transform(
 				listTypeEntryIds,
-				listTypeEntryId -> _listTypeEntryLocalService.getListTypeEntry(listTypeEntryId));
+				listTypeEntryId -> _listTypeEntryLocalService.getListTypeEntry(
+					listTypeEntryId));
 		}
 
 		for (ListTypeEntry listTypeEntry : listTypeEntries) {
