@@ -84,7 +84,8 @@ public class ObjectStateTransitionLocalServiceUtil {
 	}
 
 	public static void createObjectStateTransitions(
-		List<ObjectStateTransition> objectStateTransitions) {
+			List<ObjectStateTransition> objectStateTransitions)
+		throws PortalException {
 
 		getService().createObjectStateTransitions(objectStateTransitions);
 	}

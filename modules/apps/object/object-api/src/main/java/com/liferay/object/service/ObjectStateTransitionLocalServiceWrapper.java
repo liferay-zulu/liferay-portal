@@ -85,8 +85,9 @@ public class ObjectStateTransitionLocalServiceWrapper
 
 	@Override
 	public void createObjectStateTransitions(
-		java.util.List<com.liferay.object.model.ObjectStateTransition>
-			objectStateTransitions) {
+			java.util.List<com.liferay.object.model.ObjectStateTransition>
+				objectStateTransitions)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_objectStateTransitionLocalService.createObjectStateTransitions(
 			objectStateTransitions);
