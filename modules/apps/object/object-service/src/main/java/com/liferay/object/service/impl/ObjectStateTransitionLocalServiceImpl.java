@@ -77,10 +77,10 @@ public class ObjectStateTransitionLocalServiceImpl
 				objectStateTransitions) {
 
 			addObjectStateTransition(
+				user.getUserId(),
 				objectStateTransition.getObjectStateFlowId(),
 				objectStateTransition.getSourceObjectStateId(),
-				objectStateTransition.getTargetObjectStateId(),
-				user.getUserId());
+				objectStateTransition.getTargetObjectStateId());
 		}
 	}
 
