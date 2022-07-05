@@ -14,6 +14,7 @@
 
 package com.liferay.object.field.business.type;
 
+import com.liferay.object.exception.NoSuchObjectStateException;
 import com.liferay.object.exception.ObjectFieldSettingNameException;
 import com.liferay.object.exception.ObjectFieldSettingValueException;
 import com.liferay.object.field.render.ObjectFieldRenderingContext;
@@ -54,8 +55,9 @@ public interface ObjectFieldBusinessType {
 	public String getName();
 
 	public default Map<String, Object> getProperties(
-		ObjectField objectField,
-		ObjectFieldRenderingContext objectFieldRenderingContext) {
+			ObjectField objectField,
+			ObjectFieldRenderingContext objectFieldRenderingContext)
+		throws NoSuchObjectStateException {
 
 		return Collections.emptyMap();
 	}
