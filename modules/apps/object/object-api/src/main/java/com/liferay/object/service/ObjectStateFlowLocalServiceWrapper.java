@@ -39,7 +39,8 @@ public class ObjectStateFlowLocalServiceWrapper
 
 	@Override
 	public com.liferay.object.model.ObjectStateFlow addDefaultObjectStateFlow(
-		com.liferay.object.model.ObjectField objectField) {
+			com.liferay.object.model.ObjectField objectField)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectStateFlowLocalService.addDefaultObjectStateFlow(
 			objectField);

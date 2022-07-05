@@ -94,7 +94,8 @@ public interface ObjectStateTransitionLocalService
 		long objectStateTransitionId);
 
 	public void createObjectStateTransitions(
-		List<ObjectStateTransition> objectStateTransitions);
+			List<ObjectStateTransition> objectStateTransitions)
+		throws PortalException;
 
 	/**
 	 * @throws PortalException
