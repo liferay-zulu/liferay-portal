@@ -83,6 +83,13 @@ public class ObjectStateTransitionLocalServiceUtil {
 			objectStateTransitionId);
 	}
 
+	public static void createObjectStateTransitions(
+			List<ObjectStateTransition> objectStateTransitions)
+		throws PortalException {
+
+		getService().createObjectStateTransitions(objectStateTransitions);
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -91,6 +98,14 @@ public class ObjectStateTransitionLocalServiceUtil {
 		throws PortalException {
 
 		return getService().createPersistedModel(primaryKeyObj);
+	}
+
+	public static void deleteByObjectStateFlowId(long objectStateFlowId) {
+		getService().deleteByObjectStateFlowId(objectStateFlowId);
+	}
+
+	public static void deleteByObjectStateId(long objectStateId) {
+		getService().deleteByObjectStateId(objectStateId);
 	}
 
 	/**
@@ -126,6 +141,14 @@ public class ObjectStateTransitionLocalServiceUtil {
 		ObjectStateTransition objectStateTransition) {
 
 		return getService().deleteObjectStateTransition(objectStateTransition);
+	}
+
+	public static void deleteObjectStateTransitions(
+			List<ObjectStateTransition> objectStateTransitions)
+		throws com.liferay.object.exception.
+			NoSuchObjectStateTransitionException {
+
+		getService().deleteObjectStateTransitions(objectStateTransitions);
 	}
 
 	/**
@@ -242,6 +265,18 @@ public class ObjectStateTransitionLocalServiceUtil {
 
 		return getService().fetchObjectStateTransitionByUuidAndCompanyId(
 			uuid, companyId);
+	}
+
+	public static List<ObjectStateTransition> findByObjectStateFlowId(
+		long objectStateFlowId) {
+
+		return getService().findByObjectStateFlowId(objectStateFlowId);
+	}
+
+	public static List<ObjectStateTransition> findBySourceObjectStateId(
+		long sourceObjectStateId) {
+
+		return getService().findBySourceObjectStateId(sourceObjectStateId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery

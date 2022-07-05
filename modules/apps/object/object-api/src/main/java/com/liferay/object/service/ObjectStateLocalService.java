@@ -15,7 +15,9 @@
 package com.liferay.object.service;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.object.exception.NoSuchObjectStateException;
 import com.liferay.object.model.ObjectState;
+import com.liferay.object.model.ObjectStateTransition;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -94,6 +96,10 @@ public interface ObjectStateLocalService
 	 */
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
+
+	public void deleteByListTypeEntryId(long listTypeEntryId);
+
+	public void deleteByObjectStateFlowId(long objectStateFlowId);
 
 	/**
 	 * Deletes the object state with the primary key from the database. Also notifies the appropriate model listeners.
@@ -216,6 +222,12 @@ public interface ObjectStateLocalService
 	public ObjectState fetchObjectStateByUuidAndCompanyId(
 		String uuid, long companyId);
 
+	public ObjectState findByListTypeEntryIdAndObjectStateFlowId(
+			long listTypeEntryId, long objectStateFlowId)
+		throws NoSuchObjectStateException;
+
+	public List<ObjectState> findByObjectStateFlowId(long objectStateFlowId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -225,6 +237,9 @@ public interface ObjectStateLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ObjectState> getNextObjectStates(long sourceObjectStateId);
 
 	/**
 	 * Returns the object state with the primary key.
@@ -299,5 +314,10 @@ public interface ObjectStateLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public ObjectState updateObjectState(ObjectState objectState);
+
+	public void updateObjectStateTransitions(
+			long objectStateId,
+			List<ObjectStateTransition> objectStateTransitions)
+		throws PortalException;
 
 }

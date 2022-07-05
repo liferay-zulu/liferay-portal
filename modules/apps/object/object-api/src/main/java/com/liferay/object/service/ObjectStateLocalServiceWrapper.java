@@ -87,6 +87,16 @@ public class ObjectStateLocalServiceWrapper
 		return _objectStateLocalService.createPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public void deleteByListTypeEntryId(long listTypeEntryId) {
+		_objectStateLocalService.deleteByListTypeEntryId(listTypeEntryId);
+	}
+
+	@Override
+	public void deleteByObjectStateFlowId(long objectStateFlowId) {
+		_objectStateLocalService.deleteByObjectStateFlowId(objectStateFlowId);
+	}
+
 	/**
 	 * Deletes the object state with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
@@ -259,6 +269,25 @@ public class ObjectStateLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.object.model.ObjectState
+			findByListTypeEntryIdAndObjectStateFlowId(
+				long listTypeEntryId, long objectStateFlowId)
+		throws com.liferay.object.exception.NoSuchObjectStateException {
+
+		return _objectStateLocalService.
+			findByListTypeEntryIdAndObjectStateFlowId(
+				listTypeEntryId, objectStateFlowId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.object.model.ObjectState>
+		findByObjectStateFlowId(long objectStateFlowId) {
+
+		return _objectStateLocalService.findByObjectStateFlowId(
+			objectStateFlowId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -280,6 +309,14 @@ public class ObjectStateLocalServiceWrapper
 		getIndexableActionableDynamicQuery() {
 
 		return _objectStateLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	@Override
+	public java.util.List<com.liferay.object.model.ObjectState>
+		getNextObjectStates(long sourceObjectStateId) {
+
+		return _objectStateLocalService.getNextObjectStates(
+			sourceObjectStateId);
 	}
 
 	/**
@@ -378,6 +415,17 @@ public class ObjectStateLocalServiceWrapper
 		com.liferay.object.model.ObjectState objectState) {
 
 		return _objectStateLocalService.updateObjectState(objectState);
+	}
+
+	@Override
+	public void updateObjectStateTransitions(
+			long objectStateId,
+			java.util.List<com.liferay.object.model.ObjectStateTransition>
+				objectStateTransitions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_objectStateLocalService.updateObjectStateTransitions(
+			objectStateId, objectStateTransitions);
 	}
 
 	@Override

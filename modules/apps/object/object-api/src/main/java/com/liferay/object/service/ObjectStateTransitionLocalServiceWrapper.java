@@ -83,6 +83,16 @@ public class ObjectStateTransitionLocalServiceWrapper
 			objectStateTransitionId);
 	}
 
+	@Override
+	public void createObjectStateTransitions(
+			java.util.List<com.liferay.object.model.ObjectStateTransition>
+				objectStateTransitions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_objectStateTransitionLocalService.createObjectStateTransitions(
+			objectStateTransitions);
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -93,6 +103,17 @@ public class ObjectStateTransitionLocalServiceWrapper
 
 		return _objectStateTransitionLocalService.createPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void deleteByObjectStateFlowId(long objectStateFlowId) {
+		_objectStateTransitionLocalService.deleteByObjectStateFlowId(
+			objectStateFlowId);
+	}
+
+	@Override
+	public void deleteByObjectStateId(long objectStateId) {
+		_objectStateTransitionLocalService.deleteByObjectStateId(objectStateId);
 	}
 
 	/**
@@ -133,6 +154,17 @@ public class ObjectStateTransitionLocalServiceWrapper
 
 		return _objectStateTransitionLocalService.deleteObjectStateTransition(
 			objectStateTransition);
+	}
+
+	@Override
+	public void deleteObjectStateTransitions(
+			java.util.List<com.liferay.object.model.ObjectStateTransition>
+				objectStateTransitions)
+		throws com.liferay.object.exception.
+			NoSuchObjectStateTransitionException {
+
+		_objectStateTransitionLocalService.deleteObjectStateTransitions(
+			objectStateTransitions);
 	}
 
 	/**
@@ -273,6 +305,22 @@ public class ObjectStateTransitionLocalServiceWrapper
 
 		return _objectStateTransitionLocalService.
 			fetchObjectStateTransitionByUuidAndCompanyId(uuid, companyId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.object.model.ObjectStateTransition>
+		findByObjectStateFlowId(long objectStateFlowId) {
+
+		return _objectStateTransitionLocalService.findByObjectStateFlowId(
+			objectStateFlowId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.object.model.ObjectStateTransition>
+		findBySourceObjectStateId(long sourceObjectStateId) {
+
+		return _objectStateTransitionLocalService.findBySourceObjectStateId(
+			sourceObjectStateId);
 	}
 
 	@Override

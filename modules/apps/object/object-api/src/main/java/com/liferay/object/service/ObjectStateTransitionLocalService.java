@@ -15,6 +15,7 @@
 package com.liferay.object.service;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.object.exception.NoSuchObjectStateTransitionException;
 import com.liferay.object.model.ObjectStateTransition;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -92,11 +93,19 @@ public interface ObjectStateTransitionLocalService
 	public ObjectStateTransition createObjectStateTransition(
 		long objectStateTransitionId);
 
+	public void createObjectStateTransitions(
+			List<ObjectStateTransition> objectStateTransitions)
+		throws PortalException;
+
 	/**
 	 * @throws PortalException
 	 */
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
+
+	public void deleteByObjectStateFlowId(long objectStateFlowId);
+
+	public void deleteByObjectStateId(long objectStateId);
 
 	/**
 	 * Deletes the object state transition with the primary key from the database. Also notifies the appropriate model listeners.
@@ -127,6 +136,10 @@ public interface ObjectStateTransitionLocalService
 	@Indexable(type = IndexableType.DELETE)
 	public ObjectStateTransition deleteObjectStateTransition(
 		ObjectStateTransition objectStateTransition);
+
+	public void deleteObjectStateTransitions(
+			List<ObjectStateTransition> objectStateTransitions)
+		throws NoSuchObjectStateTransitionException;
 
 	/**
 	 * @throws PortalException
@@ -221,6 +234,12 @@ public interface ObjectStateTransitionLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ObjectStateTransition fetchObjectStateTransitionByUuidAndCompanyId(
 		String uuid, long companyId);
+
+	public List<ObjectStateTransition> findByObjectStateFlowId(
+		long objectStateFlowId);
+
+	public List<ObjectStateTransition> findBySourceObjectStateId(
+		long sourceObjectStateId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
