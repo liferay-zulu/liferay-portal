@@ -20,8 +20,8 @@ import com.liferay.object.service.base.ObjectStateTransitionLocalServiceBaseImpl
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.List;
@@ -63,7 +63,7 @@ public class ObjectStateTransitionLocalServiceImpl
 
 	@Override
 	public void createObjectStateTransitions(
-		List<ObjectStateTransition> objectStateTransitions)
+			List<ObjectStateTransition> objectStateTransitions)
 		throws PortalException {
 
 		if (ListUtil.isEmpty(objectStateTransitions)) {
@@ -77,8 +77,7 @@ public class ObjectStateTransitionLocalServiceImpl
 				objectStateTransitions) {
 
 			addObjectStateTransition(
-				user.getUserId(),
-				objectStateTransition.getObjectStateFlowId(),
+				user.getUserId(), objectStateTransition.getObjectStateFlowId(),
 				objectStateTransition.getSourceObjectStateId(),
 				objectStateTransition.getTargetObjectStateId());
 		}
