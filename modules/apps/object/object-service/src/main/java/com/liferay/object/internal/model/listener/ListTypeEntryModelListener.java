@@ -21,6 +21,7 @@ import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectStateFlowLocalService;
 import com.liferay.object.service.ObjectStateLocalService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 
@@ -53,10 +54,15 @@ public class ListTypeEntryModelListener
 				_objectStateFlowLocalService.fetchByObjectFieldId(
 					objectField.getObjectFieldId());
 
-			_objectStateLocalService.addObjectState(
-				listTypeEntry.getListTypeEntryId(),
-				objectStateFlow.getObjectStateFlowId(),
-				listTypeEntry.getUserId(), listTypeEntry.getUserName());
+			try {
+				_objectStateLocalService.addObjectState(
+					listTypeEntry.getUserId(),
+					listTypeEntry.getListTypeEntryId(),
+					objectStateFlow.getObjectStateFlowId());
+			}
+			catch (PortalException portalException) {
+				throw new ModelListenerException(portalException);
+			}
 		}
 	}
 
