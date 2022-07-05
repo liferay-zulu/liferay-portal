@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.List;
 import java.util.Locale;
@@ -149,8 +150,9 @@ public class PicklistObjectFieldBusinessType
 
 			listTypeEntryIds.add(currentObjectState.getListTypeEntryId());
 
-			listTypeEntries = _listTypeEntryLocalService.findByListTypeEntryIds(
-				ArrayUtil.toLongArray(listTypeEntryIds));
+			listTypeEntries = TransformUtil.transform(
+				listTypeEntryIds,
+				listTypeEntryId -> _listTypeEntryLocalService.getListTypeEntry(listTypeEntryId));
 		}
 
 		for (ListTypeEntry listTypeEntry : listTypeEntries) {
