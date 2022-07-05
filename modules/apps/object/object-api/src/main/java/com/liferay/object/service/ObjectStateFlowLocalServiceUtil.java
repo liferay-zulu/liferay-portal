@@ -51,13 +51,6 @@ public class ObjectStateFlowLocalServiceUtil {
 		return getService().addDefaultObjectStateFlow(objectField);
 	}
 
-	public static ObjectStateFlow addObjectStateFlow(
-			long userId, long objectFieldId)
-		throws PortalException {
-
-		return getService().addObjectStateFlow(userId, objectFieldId);
-	}
-
 	/**
 	 * Adds the object state flow to the database. Also notifies the appropriate model listeners.
 	 *

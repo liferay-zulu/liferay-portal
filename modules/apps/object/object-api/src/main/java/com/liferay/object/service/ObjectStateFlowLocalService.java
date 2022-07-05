@@ -68,9 +68,6 @@ public interface ObjectStateFlowLocalService
 	public ObjectStateFlow addDefaultObjectStateFlow(ObjectField objectField)
 		throws PortalException;
 
-	public ObjectStateFlow addObjectStateFlow(long userId, long objectFieldId)
-		throws PortalException;
-
 	/**
 	 * Adds the object state flow to the database. Also notifies the appropriate model listeners.
 	 *
