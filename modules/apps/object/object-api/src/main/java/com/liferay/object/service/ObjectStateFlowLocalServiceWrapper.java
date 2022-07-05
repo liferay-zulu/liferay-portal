@@ -46,15 +46,6 @@ public class ObjectStateFlowLocalServiceWrapper
 			objectField);
 	}
 
-	@Override
-	public com.liferay.object.model.ObjectStateFlow addObjectStateFlow(
-			long userId, long objectFieldId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _objectStateFlowLocalService.addObjectStateFlow(
-			userId, objectFieldId);
-	}
-
 	/**
 	 * Adds the object state flow to the database. Also notifies the appropriate model listeners.
 	 *
