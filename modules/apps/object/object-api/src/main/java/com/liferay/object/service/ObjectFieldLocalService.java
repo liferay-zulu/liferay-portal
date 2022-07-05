@@ -259,9 +259,6 @@ public interface ObjectFieldLocalService
 	public ObjectField fetchObjectFieldByUuidAndCompanyId(
 		String uuid, long companyId);
 
-	public List<ObjectField> findByListTypeDefinitionIdAndState(
-		long listTypeDefinitionId, boolean state);
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -279,6 +276,10 @@ public interface ObjectFieldLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ObjectField> getListTypeDefinitionObjectFields(
+		long listTypeDefinitionId, boolean state);
 
 	/**
 	 * Returns the object field with the primary key.
