@@ -61,11 +61,10 @@ public class ObjectStateFlowLocalServiceImpl
 
 		List<ObjectState> objectStates = new ArrayList<>();
 
-		for (ListTypeEntry listTypeEntry: listTypeEntries) {
+		for (ListTypeEntry listTypeEntry : listTypeEntries) {
 			objectStates.add(
 				_objectStateLocalService.addObjectState(
-					objectField.getUserId(),
-					listTypeEntry.getListTypeEntryId(),
+					objectField.getUserId(), listTypeEntry.getListTypeEntryId(),
 					objectStateFlow.getObjectStateFlowId()));
 		}
 
@@ -140,9 +139,6 @@ public class ObjectStateFlowLocalServiceImpl
 	}
 
 	@Reference
-	private UserLocalService _userLocalService;
-
-	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
 
 	@Reference
@@ -151,5 +147,8 @@ public class ObjectStateFlowLocalServiceImpl
 	@Reference
 	private ObjectStateTransitionLocalService
 		_objectStateTransitionLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }
