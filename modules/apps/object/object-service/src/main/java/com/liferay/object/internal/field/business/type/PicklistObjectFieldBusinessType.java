@@ -20,7 +20,6 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.constants.ObjectFieldConstants;
-import com.liferay.object.exception.NoSuchObjectStateException;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
 import com.liferay.object.field.render.ObjectFieldRenderingContext;
 import com.liferay.object.model.ObjectField;
@@ -29,6 +28,7 @@ import com.liferay.object.model.ObjectStateFlow;
 import com.liferay.object.rest.dto.v1_0.ListEntry;
 import com.liferay.object.service.ObjectStateFlowLocalService;
 import com.liferay.object.service.ObjectStateLocalService;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -92,7 +92,7 @@ public class PicklistObjectFieldBusinessType
 	public Map<String, Object> getProperties(
 			ObjectField objectField,
 			ObjectFieldRenderingContext objectFieldRenderingContext)
-		throws NoSuchObjectStateException {
+		throws PortalException {
 
 		return HashMapBuilder.<String, Object>put(
 			"options",
@@ -107,7 +107,7 @@ public class PicklistObjectFieldBusinessType
 	private DDMFormFieldOptions _getDDMFormFieldOptions(
 			ObjectField objectField,
 			ObjectFieldRenderingContext objectFieldRenderingContext)
-		throws NoSuchObjectStateException {
+		throws PortalException {
 
 		DDMFormFieldOptions ddmFormFieldOptions = new DDMFormFieldOptions();
 
