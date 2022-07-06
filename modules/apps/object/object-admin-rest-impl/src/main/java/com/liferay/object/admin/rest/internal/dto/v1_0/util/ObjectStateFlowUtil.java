@@ -32,44 +32,45 @@ public class ObjectStateFlowUtil {
 	public static ObjectStateFlow toObjectStateFlow(
 		long objectFieldId,
 		com.liferay.object.admin.rest.dto.v1_0.ObjectStateFlow
-			objectStateFlowDTO) {
+			objectStateFlow) {
 
-		if (objectStateFlowDTO == null) {
+		if (objectStateFlow == null) {
 			return null;
 		}
 
-		ObjectStateFlow objectStateFlow =
+		ObjectStateFlow serviceBuilderObjectStateFlow =
 			ObjectStateFlowLocalServiceUtil.createObjectStateFlow(0L);
 
-		objectStateFlow.setObjectStateFlowId(objectStateFlowDTO.getId());
-		objectStateFlow.setObjectFieldId(objectFieldId);
-		objectStateFlow.setObjectStates(
+		serviceBuilderObjectStateFlow.setObjectStateFlowId(
+			objectStateFlow.getId());
+		serviceBuilderObjectStateFlow.setObjectFieldId(objectFieldId);
+		serviceBuilderObjectStateFlow.setObjectStates(
 			TransformUtil.transformToList(
-				objectStateFlowDTO.getObjectStates(),
+				objectStateFlow.getObjectStates(),
 				objectStateDTO -> _toObjectState(
-					objectStateDTO, objectStateFlowDTO.getId())));
+					objectStateDTO, objectStateFlow.getId())));
 
-		return objectStateFlow;
+		return serviceBuilderObjectStateFlow;
 	}
 
 	private static ObjectState _toObjectState(
-		com.liferay.object.admin.rest.dto.v1_0.ObjectState objectStateDTO,
+		com.liferay.object.admin.rest.dto.v1_0.ObjectState objectState,
 		long objectStateFlowId) {
 
-		ObjectState objectState = ObjectStateLocalServiceUtil.createObjectState(
-			0L);
+		ObjectState serviceBuilderObjectState =
+			ObjectStateLocalServiceUtil.createObjectState(0L);
 
-		objectState.setObjectStateId(objectStateDTO.getId());
-		objectState.setListTypeEntryId(objectStateDTO.getListTypeEntryId());
-		objectState.setObjectStateFlowId(objectStateFlowId);
-		objectState.setObjectStateTransitions(
+		serviceBuilderObjectState.setObjectStateId(objectState.getId());
+		serviceBuilderObjectState.setListTypeEntryId(
+			objectState.getListTypeEntryId());
+		serviceBuilderObjectState.setObjectStateFlowId(objectStateFlowId);
+		serviceBuilderObjectState.setObjectStateTransitions(
 			TransformUtil.transformToList(
-				objectStateDTO.getNextObjectStates(),
+				objectState.getNextObjectStates(),
 				nextObjectState -> _toObjectStateTransition(
-					nextObjectState, objectStateFlowId,
-					objectStateDTO.getId())));
+					nextObjectState, objectStateFlowId, objectState.getId())));
 
-		return objectState;
+		return serviceBuilderObjectState;
 	}
 
 	private static ObjectStateTransition _toObjectStateTransition(
