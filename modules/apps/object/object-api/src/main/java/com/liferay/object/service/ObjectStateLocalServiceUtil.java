@@ -86,6 +86,14 @@ public class ObjectStateLocalServiceUtil {
 		return getService().createPersistedModel(primaryKeyObj);
 	}
 
+	public static void deleteByListTypeEntryId(long listTypeEntryId) {
+		getService().deleteByListTypeEntryId(listTypeEntryId);
+	}
+
+	public static void deleteByObjectStateFlowId(long objectStateFlowId) {
+		getService().deleteByObjectStateFlowId(objectStateFlowId);
+	}
+
 	/**
 	 * Deletes the object state with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
@@ -229,6 +237,20 @@ public class ObjectStateLocalServiceUtil {
 		return getService().fetchObjectStateByUuidAndCompanyId(uuid, companyId);
 	}
 
+	public static ObjectState findByListTypeEntryIdAndObjectStateFlowId(
+			long listTypeEntryId, long objectStateFlowId)
+		throws com.liferay.object.exception.NoSuchObjectStateException {
+
+		return getService().findByListTypeEntryIdAndObjectStateFlowId(
+			listTypeEntryId, objectStateFlowId);
+	}
+
+	public static List<ObjectState> findByObjectStateFlowId(
+		long objectStateFlowId) {
+
+		return getService().findByObjectStateFlowId(objectStateFlowId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -248,6 +270,12 @@ public class ObjectStateLocalServiceUtil {
 			getIndexableActionableDynamicQuery() {
 
 		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	public static List<ObjectState> getNextObjectStates(
+		long sourceObjectStateId) {
+
+		return getService().getNextObjectStates(sourceObjectStateId);
 	}
 
 	/**
@@ -332,6 +360,16 @@ public class ObjectStateLocalServiceUtil {
 	 */
 	public static ObjectState updateObjectState(ObjectState objectState) {
 		return getService().updateObjectState(objectState);
+	}
+
+	public static void updateObjectStateTransitions(
+			long objectStateId,
+			List<com.liferay.object.model.ObjectStateTransition>
+				objectStateTransitions)
+		throws PortalException {
+
+		getService().updateObjectStateTransitions(
+			objectStateId, objectStateTransitions);
 	}
 
 	public static ObjectStateLocalService getService() {

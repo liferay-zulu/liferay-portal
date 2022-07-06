@@ -38,12 +38,12 @@ public class ObjectStateFlowLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.object.model.ObjectStateFlow addObjectStateFlow(
-			long userId, long objectFieldId)
+	public com.liferay.object.model.ObjectStateFlow addDefaultObjectStateFlow(
+			com.liferay.object.model.ObjectField objectField)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _objectStateFlowLocalService.addObjectStateFlow(
-			userId, objectFieldId);
+		return _objectStateFlowLocalService.addDefaultObjectStateFlow(
+			objectField);
 	}
 
 	/**
@@ -86,6 +86,13 @@ public class ObjectStateFlowLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectStateFlowLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void deleteByObjectFieldId(long objectFieldId)
+		throws com.liferay.object.exception.NoSuchObjectStateFlowException {
+
+		_objectStateFlowLocalService.deleteByObjectFieldId(objectFieldId);
 	}
 
 	/**
@@ -242,6 +249,13 @@ public class ObjectStateFlowLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.object.model.ObjectStateFlow fetchByObjectFieldId(
+		long objectFieldId) {
+
+		return _objectStateFlowLocalService.fetchByObjectFieldId(objectFieldId);
+	}
+
+	@Override
 	public com.liferay.object.model.ObjectStateFlow fetchObjectStateFlow(
 		long objectStateFlowId) {
 
@@ -386,6 +400,15 @@ public class ObjectStateFlowLocalServiceWrapper
 		com.liferay.object.model.ObjectStateFlow objectStateFlow) {
 
 		return _objectStateFlowLocalService.updateObjectStateFlow(
+			objectStateFlow);
+	}
+
+	@Override
+	public void updateObjectStateTransitions(
+			com.liferay.object.model.ObjectStateFlow objectStateFlow)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_objectStateFlowLocalService.updateObjectStateTransitions(
 			objectStateFlow);
 	}
 
