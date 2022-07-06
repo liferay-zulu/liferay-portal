@@ -48,47 +48,53 @@ public class ObjectFieldDTOConverter
 	@Override
 	public ObjectField toDTO(
 			DTOConverterContext dtoConverterContext,
-			com.liferay.object.model.ObjectField objectField)
+			com.liferay.object.model.ObjectField serviceBuilderObjectField)
 		throws Exception {
 
-		if (objectField == null) {
+		if (serviceBuilderObjectField == null) {
 			return null;
 		}
 
-		ObjectField objectFieldDTO = new ObjectField() {
+		ObjectField objectField = new ObjectField() {
 			{
 				businessType = ObjectField.BusinessType.create(
-					objectField.getBusinessType());
-				DBType = ObjectField.DBType.create(objectField.getDBType());
-				defaultValue = objectField.getDefaultValue();
-				externalReferenceCode = objectField.getExternalReferenceCode();
-				id = objectField.getObjectFieldId();
-				indexed = objectField.getIndexed();
-				indexedAsKeyword = objectField.getIndexedAsKeyword();
-				indexedLanguageId = objectField.getIndexedLanguageId();
+					serviceBuilderObjectField.getBusinessType());
+				DBType = ObjectField.DBType.create(
+					serviceBuilderObjectField.getDBType());
+				defaultValue = serviceBuilderObjectField.getDefaultValue();
+				externalReferenceCode =
+					serviceBuilderObjectField.getExternalReferenceCode();
+				id = serviceBuilderObjectField.getObjectFieldId();
+				indexed = serviceBuilderObjectField.getIndexed();
+				indexedAsKeyword =
+					serviceBuilderObjectField.getIndexedAsKeyword();
+				indexedLanguageId =
+					serviceBuilderObjectField.getIndexedLanguageId();
 				label = LocalizedMapUtil.getLanguageIdMap(
-					objectField.getLabelMap());
-				listTypeDefinitionId = objectField.getListTypeDefinitionId();
-				name = objectField.getName();
+					serviceBuilderObjectField.getLabelMap());
+				listTypeDefinitionId =
+					serviceBuilderObjectField.getListTypeDefinitionId();
+				name = serviceBuilderObjectField.getName();
 				objectFieldSettings = TransformUtil.transformToArray(
-					objectField.getObjectFieldSettings(),
+					serviceBuilderObjectField.getObjectFieldSettings(),
 					ObjectFieldSettingUtil::toObjectFieldSetting,
 					ObjectFieldSetting.class);
 				objectStateFlow = _toObjectStateFlowDTO(
 					_objectStateFlowLocalService.getObjectFieldObjectStateFlow(
-						objectField.getObjectFieldId()));
+						serviceBuilderObjectField.getObjectFieldId()));
 				relationshipType = ObjectField.RelationshipType.create(
-					objectField.getRelationshipType());
-				required = objectField.isRequired();
-				state = objectField.isState();
-				system = objectField.getSystem();
-				type = ObjectField.Type.create(objectField.getDBType());
+					serviceBuilderObjectField.getRelationshipType());
+				required = serviceBuilderObjectField.isRequired();
+				state = serviceBuilderObjectField.isState();
+				system = serviceBuilderObjectField.getSystem();
+				type = ObjectField.Type.create(
+					serviceBuilderObjectField.getDBType());
 			}
 		};
 
-		objectFieldDTO.setActions(dtoConverterContext.getActions());
+		objectField.setActions(dtoConverterContext.getActions());
 
-		return objectFieldDTO;
+		return objectField;
 	}
 
 	private NextObjectState _toNextObjectStateDTO(ObjectState nextObjectState) {
