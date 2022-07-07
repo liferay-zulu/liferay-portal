@@ -25,8 +25,6 @@ public class ObjectFieldParserUtil {
 
 	public static JSONObject parse(ObjectField objectField) {
 		return JSONUtil.put(
-			"indexedLanguageId", objectField.getIndexedLanguageId()
-		).put(
 			"businessType", objectField.getBusinessType()
 		).put(
 			"DBType", objectField.getDBType()
@@ -40,6 +38,8 @@ public class ObjectFieldParserUtil {
 			"indexed", objectField.isIndexed()
 		).put(
 			"indexedAsKeyword", objectField.isIndexedAsKeyword()
+		).put(
+			"indexedLanguageId", objectField.getIndexedLanguageId()
 		).put(
 			"label", objectField.getLabelMap()
 		).put(
@@ -60,4 +60,5 @@ public class ObjectFieldParserUtil {
 			"system", objectField.isSystem()
 		);
 	}
+
 }
