@@ -20,7 +20,6 @@ export {
 	CodeMirrorEditor,
 	SidebarCategory,
 } from './components/CodeEditor/index';
-export {CustomSelect} from './components/CustomSelect';
 export {DatePicker} from './components/DatePicker';
 export * from './components/ExpressionBuilder';
 export {FieldBase} from './components/FieldBase';
