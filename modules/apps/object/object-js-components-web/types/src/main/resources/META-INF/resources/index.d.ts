@@ -12,7 +12,7 @@
  * details.
  */
 
-export {AutoComplete} from './components/AutoComplete';
+export {default as AutoComplete} from './components/AutoComplete/index';
 export {Card} from './components/Card';
 export {CheckboxItem} from './components/CheckBoxItem';
 export {

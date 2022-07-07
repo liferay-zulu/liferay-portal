@@ -15,10 +15,10 @@
 import ClayDropDown from '@clayui/drop-down';
 import React, {useState} from 'react';
 
-import {CustomSelect} from './CustomSelect';
-import {FieldBase} from './FieldBase';
+import {FieldBase} from '../FieldBase';
 
-import './AutoComplete.scss';
+import './index.scss';
+import {CustomSelect} from './CustomSelect';
 
 interface IAutoCompleteProps extends React.HTMLAttributes<HTMLElement> {
 	children: (item: any) => React.ReactNode;
@@ -37,7 +37,7 @@ interface IAutoCompleteProps extends React.HTMLAttributes<HTMLElement> {
 	value?: string;
 }
 
-export function AutoComplete({
+export default function AutoComplete({
 	children,
 	className,
 	contentRight,
