@@ -19,7 +19,6 @@ import com.liferay.object.constants.ObjectConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectFieldSetting;
-import com.liferay.object.model.ObjectStateFlow;
 import com.liferay.object.service.base.ObjectFieldServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectDefinitionPersistence;
 import com.liferay.portal.aop.AopService;
@@ -109,8 +108,7 @@ public class ObjectFieldServiceImpl extends ObjectFieldServiceBaseImpl {
 			String defaultValue, boolean indexed, boolean indexedAsKeyword,
 			String indexedLanguageId, Map<Locale, String> labelMap, String name,
 			boolean required, boolean state,
-			List<ObjectFieldSetting> objectFieldSettings,
-			ObjectStateFlow objectStateFlow)
+			List<ObjectFieldSetting> objectFieldSettings)
 		throws PortalException {
 
 		ObjectField objectField = objectFieldPersistence.findByPrimaryKey(
@@ -126,8 +124,7 @@ public class ObjectFieldServiceImpl extends ObjectFieldServiceBaseImpl {
 			businessType, objectField.getDBColumnName(),
 			objectField.getDBTableName(), dbType, defaultValue, indexed,
 			indexedAsKeyword, indexedLanguageId, labelMap, name, required,
-			state, objectField.isSystem(), objectFieldSettings,
-			objectStateFlow);
+			state, objectField.isSystem(), objectFieldSettings);
 	}
 
 	@Reference(

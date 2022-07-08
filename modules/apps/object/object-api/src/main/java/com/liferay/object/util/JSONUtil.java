@@ -12,23 +12,25 @@
  * details.
  */
 
-package com.liferay.object.model.impl;
+package com.liferay.object.util;
 
-import com.liferay.object.model.ObjectStateFlow;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 
 /**
- * @author Marco Leo
+ * @author Feliphe Marinho
  */
-public class ObjectFieldSettingImpl extends ObjectFieldSettingBaseImpl {
+public class JSONUtil {
 
-	public ObjectStateFlow getObjectStateFlow() {
-		return _objectStateFlow;
+	public static String getJSONString(Object object) {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+
+		Gson gson = gsonBuilder.create();
+
+		JsonParser jsonParser = new JsonParser();
+
+		return gson.toJson(jsonParser.parse(object.toString()));
 	}
-
-	public void setObjectStateFlow(ObjectStateFlow objectStateFlow) {
-		_objectStateFlow = objectStateFlow;
-	}
-
-	private ObjectStateFlow _objectStateFlow;
 
 }
