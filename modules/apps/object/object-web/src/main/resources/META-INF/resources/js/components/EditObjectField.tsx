@@ -74,7 +74,7 @@ export default function EditObjectField({
 	const [editingFilter, setEditingFilter] = useState(false);
 	const [objectFields, setObjectFields] = useState<ObjectField[]>();
 	const [objectDefinitionId2, setObjectDefinitionId2] = useState<number>();
-	const [aggregationFilters, setAggregatonFilters] = useState<
+	const [aggregationFilters, setAggregationFilters] = useState<
 		AggregationFilters[]
 	>([]);
 
@@ -188,7 +188,7 @@ export default function EditObjectField({
 				aggregationFilter.filterBy !== objectFieldName
 		);
 
-		setAggregatonFilters(newAggregationFilters);
+		setAggregationFilters(newAggregationFilters);
 
 		setValues({
 			objectFieldSettings: newObjectFieldSettings,
@@ -272,7 +272,7 @@ export default function EditObjectField({
 				];
 			}
 
-			setAggregatonFilters(newAggregationFilters);
+			setAggregationFilters(newAggregationFilters);
 			setValues({
 				objectFieldSettings: newObjectFieldSettings,
 			});
@@ -332,7 +332,7 @@ export default function EditObjectField({
 					newFilter,
 				];
 
-				setAggregatonFilters(newAggregationFilters);
+				setAggregationFilters(newAggregationFilters);
 				setValues({
 					objectFieldSettings: newObjectFieldSettings,
 				});
@@ -403,7 +403,7 @@ export default function EditObjectField({
 					objectField={values}
 					objectFieldTypes={objectFieldTypes}
 					objectName={objectName}
-					onAggregationFilterChange={setAggregatonFilters}
+					onAggregationFilterChange={setAggregationFilters}
 					onRelationshipChange={setObjectDefinitionId2}
 					setValues={setValues}
 				>
