@@ -312,12 +312,21 @@ export default function ObjectFieldFormBase({
 							label={Liferay.Language.get('mark-as-state')}
 							name="state"
 							onToggle={async (state) => {
-								setValues({required: state, state});
-								setPickListItems(
-									await getPickListItems(
-										values.listTypeDefinitionId!
-									)
-								);
+								if (state) {
+									setValues({required: state, state});
+									setPickListItems(
+										await getPickListItems(
+											values.listTypeDefinitionId!
+										)
+									);
+								}
+								else {
+									setValues({
+										defaultValue: '',
+										required: state,
+										state,
+									});
+								}
 							}}
 							toggled={values.state}
 						/>
