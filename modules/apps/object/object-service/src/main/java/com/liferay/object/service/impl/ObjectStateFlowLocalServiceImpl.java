@@ -15,9 +15,12 @@
 package com.liferay.object.service.impl;
 
 import com.liferay.list.type.service.ListTypeEntryLocalService;
+import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.model.ObjectField;
+import com.liferay.object.model.ObjectFieldSetting;
 import com.liferay.object.model.ObjectState;
 import com.liferay.object.model.ObjectStateFlow;
+import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectStateLocalService;
 import com.liferay.object.service.ObjectStateTransitionLocalService;
 import com.liferay.object.service.base.ObjectStateFlowLocalServiceBaseImpl;
@@ -86,6 +89,23 @@ public class ObjectStateFlowLocalServiceImpl
 			}
 		}
 
+		ObjectFieldSetting objectFieldSetting =
+			_objectFieldSettingLocalService.fetchObjectFieldSetting(
+				objectField.getObjectFieldId(),
+				ObjectFieldSettingConstants.NAME_STATE_FLOW);
+
+		if (objectFieldSetting == null) {
+			_objectFieldSettingLocalService.addObjectFieldSetting(
+				objectField.getUserId(), objectField.getObjectFieldId(),
+				ObjectFieldSettingConstants.NAME_STATE_FLOW,
+				String.valueOf(objectStateFlowId));
+		}
+		else {
+			_objectFieldSettingLocalService.updateObjectFieldSetting(
+				objectFieldSetting.getObjectFieldSettingId(),
+				String.valueOf(objectStateFlowId));
+		}
+
 		return objectStateFlow;
 	}
 
@@ -105,6 +125,15 @@ public class ObjectStateFlowLocalServiceImpl
 		_objectStateTransitionLocalService.
 			deleteObjectStateFlowObjectStateTransitions(
 				objectStateFlow.getObjectStateFlowId());
+
+		ObjectFieldSetting objectFieldSetting =
+			_objectFieldSettingLocalService.fetchObjectFieldSetting(
+				objectFieldId, ObjectFieldSettingConstants.NAME_STATE_FLOW);
+
+		if (objectFieldSetting != null) {
+			_objectFieldSettingLocalService.deleteObjectFieldSetting(
+				objectFieldSetting.getObjectFieldSettingId());
+		}
 	}
 
 	@Override
@@ -112,8 +141,41 @@ public class ObjectStateFlowLocalServiceImpl
 		return objectStateFlowPersistence.fetchByObjectFieldId(objectFieldId);
 	}
 
+	@Override
+	public ObjectStateFlow updateDefaultObjectStateFlow(
+			ObjectField newObjectField, ObjectField oldObjectField)
+		throws PortalException {
+
+		if (!oldObjectField.isState() && !newObjectField.isState()) {
+			return null;
+		}
+
+		if (oldObjectField.isState() && !newObjectField.isState()) {
+			deleteObjectFieldObjectStateFlow(oldObjectField.getObjectFieldId());
+
+			return null;
+		}
+
+		if (!oldObjectField.isState() && newObjectField.isState()) {
+			return addDefaultObjectStateFlow(newObjectField);
+		}
+
+		if (oldObjectField.getListTypeDefinitionId() !=
+				newObjectField.getListTypeDefinitionId()) {
+
+			deleteObjectFieldObjectStateFlow(oldObjectField.getObjectFieldId());
+
+			addDefaultObjectStateFlow(newObjectField);
+		}
+
+		return null;
+	}
+
 	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
+
+	@Reference
+	private ObjectFieldSettingLocalService _objectFieldSettingLocalService;
 
 	@Reference
 	private ObjectStateLocalService _objectStateLocalService;
