@@ -17,6 +17,7 @@ package com.liferay.object.service.impl;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.model.ObjectField;
+import com.liferay.object.model.ObjectFieldSetting;
 import com.liferay.object.model.ObjectState;
 import com.liferay.object.model.ObjectStateFlow;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
@@ -88,10 +89,22 @@ public class ObjectStateFlowLocalServiceImpl
 			}
 		}
 
-		_objectFieldSettingLocalService.addObjectFieldSetting(
-			objectField.getUserId(), objectField.getObjectFieldId(),
-			ObjectFieldSettingConstants.NAME_STATE_FLOW,
-			String.valueOf(objectStateFlowId));
+		ObjectFieldSetting objectFieldSetting =
+			_objectFieldSettingLocalService.fetchObjectFieldSetting(
+				objectField.getObjectFieldId(),
+				ObjectFieldSettingConstants.NAME_STATE_FLOW);
+
+		if (objectFieldSetting == null) {
+			_objectFieldSettingLocalService.addObjectFieldSetting(
+				objectField.getUserId(), objectField.getObjectFieldId(),
+				ObjectFieldSettingConstants.NAME_STATE_FLOW,
+				String.valueOf(objectStateFlowId));
+		}
+		else {
+			_objectFieldSettingLocalService.updateObjectFieldSetting(
+				objectFieldSetting.getObjectFieldSettingId(),
+				String.valueOf(objectStateFlowId));
+		}
 
 		return objectStateFlow;
 	}
@@ -112,6 +125,15 @@ public class ObjectStateFlowLocalServiceImpl
 		_objectStateTransitionLocalService.
 			deleteObjectStateFlowObjectStateTransitions(
 				objectStateFlow.getObjectStateFlowId());
+
+		ObjectFieldSetting objectFieldSetting =
+			_objectFieldSettingLocalService.fetchObjectFieldSetting(
+				objectFieldId, ObjectFieldSettingConstants.NAME_STATE_FLOW);
+
+		if (objectFieldSetting != null) {
+			_objectFieldSettingLocalService.deleteObjectFieldSetting(
+				objectFieldSetting.getObjectFieldSettingId());
+		}
 	}
 
 	@Override
