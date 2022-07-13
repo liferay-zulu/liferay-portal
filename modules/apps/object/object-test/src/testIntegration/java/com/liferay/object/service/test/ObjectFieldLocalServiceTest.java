@@ -1264,6 +1264,9 @@ public class ObjectFieldLocalServiceTest {
 				expectedObjectField.getObjectFieldSettings());
 
 		Assert.assertEquals(
+			expectedObjectField.getExternalReferenceCode(),
+			objectField.getExternalReferenceCode());
+		Assert.assertEquals(
 			expectedObjectField.getDBColumnName(),
 			objectField.getDBColumnName());
 		Assert.assertEquals(
@@ -1271,9 +1274,6 @@ public class ObjectFieldLocalServiceTest {
 		Assert.assertEquals(
 			expectedObjectField.getDefaultValue(),
 			objectField.getDefaultValue());
-		Assert.assertEquals(
-			expectedObjectField.getExternalReferenceCode(),
-			objectField.getExternalReferenceCode());
 		Assert.assertEquals(
 			expectedObjectField.isIndexed(), objectField.isIndexed());
 		Assert.assertEquals(
