@@ -151,6 +151,21 @@ public class ObjectFieldLocalServiceTest {
 
 		ObjectFieldBuilder objectFieldBuilder = new ObjectFieldBuilder();
 
+		String defaultValue = RandomTestUtil.randomString();
+
+		_testAddCustomObjectField(
+			StringBundler.concat(
+				"Default value \"", defaultValue, "\" is not a list entry in ",
+				"list definition ",
+				_listTypeDefinition.getListTypeDefinitionId()),
+			objectFieldBuilder.businessType(
+				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST
+			).listTypeDefinitionId(
+				_listTypeDefinition.getListTypeDefinitionId()
+			).defaultValue(
+				defaultValue
+			).build());
+
 		_testAddCustomObjectField(
 			StringBundler.concat(
 				"Object field can only have a default type when the business ",
@@ -168,21 +183,6 @@ public class ObjectFieldLocalServiceTest {
 				"a" + RandomTestUtil.randomString()
 			).objectFieldSettings(
 				_getObjectFieldSettings(ObjectFieldConstants.BUSINESS_TYPE_TEXT)
-			).build());
-
-		String defaultValue = RandomTestUtil.randomString();
-
-		_testAddCustomObjectField(
-			StringBundler.concat(
-				"Default value \"", defaultValue, "\" is not a list entry in ",
-				"list definition ",
-				_listTypeDefinition.getListTypeDefinitionId()),
-			objectFieldBuilder.businessType(
-				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST
-			).listTypeDefinitionId(
-				_listTypeDefinition.getListTypeDefinitionId()
-			).defaultValue(
-				defaultValue
 			).build());
 
 		_testAddCustomObjectField(
