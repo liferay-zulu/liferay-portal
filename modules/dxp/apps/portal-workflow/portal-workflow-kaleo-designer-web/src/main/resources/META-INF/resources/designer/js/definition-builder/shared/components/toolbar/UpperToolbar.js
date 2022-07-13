@@ -65,6 +65,13 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 		translations,
 		version,
 	} = useContext(DefinitionBuilderContext);
+
+	function setAlert(alertMessage, alertType, showAlert) {
+		setAlertMessage(alertMessage);
+		setAlertType(alertType);
+		setShowAlert(showAlert);
+	}
+
 	const inputRef = useRef(null);
 
 	const availableLocales = getAvailableLocalesObject(
@@ -151,11 +158,24 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 
 		if (!definitionTitle) {
 			alertMessage = Liferay.Language.get('name-workflow-before-publish');
-
-			setAlertMessage(alertMessage);
-			setAlertType('danger');
-
-			setShowAlert(true);
+			setAlert(alertMessage, 'danger', true);
+		}
+		else if (blockingErrors.errorType !== '') {
+			switch (blockingErrors.errorType) {
+				case 'emptyField':
+					alertMessage = Liferay.Language.get(
+						'please-fill-out-the-fields-before-saving-or-publishing'
+					);
+					break;
+				case 'duplicated':
+					alertMessage = Liferay.Language.get(
+						'please-rename-this-with-another-words'
+					);
+					break;
+				default:
+					alertMessage = Liferay.Language.get('error');
+			}
+			setAlert(alertMessage, 'danger', true);
 		}
 		else {
 			if (definitionNotPublished) {
@@ -169,8 +189,6 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 				);
 			}
 
-			setAlertMessage(alertMessage);
-
 			publishDefinitionRequest({
 				active,
 				content: getXMLContent(true),
@@ -180,9 +198,7 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 				version,
 			}).then((response) => {
 				if (response.ok) {
-					setAlertType('success');
-
-					setShowAlert(true);
+					setAlert(alertMessage, 'success', true);
 
 					response.json().then(({name, version}) => {
 						setDefinitionId(name);
@@ -191,10 +207,7 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 				}
 				else {
 					response.json().then(({title}) => {
-						setAlertMessage(title);
-						setAlertType('danger');
-
-						setShowAlert(true);
+						setAlert(title, 'danger', true);
 					});
 				}
 			});
@@ -211,17 +224,11 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 		);
 
 		if (blockingErrors.errorType === 'emptyField') {
-			setAlertMessage(emptyFieldAlertMessage);
-			setAlertType('danger');
-
-			setShowAlert(true);
+			setAlert(emptyFieldAlertMessage, 'danger', true);
 		}
 
 		if (blockingErrors.errorType === 'duplicated') {
-			setAlertMessage(duplicatedAlertMessage);
-			setAlertType('danger');
-
-			setShowAlert(true);
+			setAlert(duplicatedAlertMessage, 'danger', true);
 		}
 
 		if (blockingErrors.errorType === '') {
@@ -233,10 +240,7 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 				version,
 			}).then((response) => {
 				if (response.ok) {
-					setAlertMessage(successMessage);
-					setAlertType('success');
-
-					setShowAlert(true);
+					setAlert(successMessage, 'success', true);
 
 					response.json().then(({name, version}) => {
 						setDefinitionId(name);
@@ -387,7 +391,7 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 						title={
 							alertType === 'success'
 								? `${Liferay.Language.get('success')}:`
-								: `${errorTitle()}:`
+								: `${errorTitle().slice(0, -1)}:`
 						}
 					>
 						{alertMessage}
