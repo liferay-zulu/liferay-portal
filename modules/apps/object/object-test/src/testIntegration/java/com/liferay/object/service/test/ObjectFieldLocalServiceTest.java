@@ -1183,7 +1183,7 @@ public class ObjectFieldLocalServiceTest {
 	}
 
 	private void _testAddCustomObjectField(ObjectField... objectFields)
-		throws PortalException {
+		throws Exception {
 
 		ObjectDefinition objectDefinition = null;
 
