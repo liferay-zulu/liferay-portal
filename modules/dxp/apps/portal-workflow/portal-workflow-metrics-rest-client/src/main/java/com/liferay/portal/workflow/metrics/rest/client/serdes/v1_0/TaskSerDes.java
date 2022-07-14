@@ -59,6 +59,20 @@ public class TaskSerDes {
 		DateFormat liferayToJSONDateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ssXX");
 
+		if (task.getAction() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"action\": ");
+
+			sb.append("\"");
+
+			sb.append(task.getAction());
+
+			sb.append("\"");
+		}
+
 		if (task.getAssetTitle() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -316,6 +330,13 @@ public class TaskSerDes {
 		DateFormat liferayToJSONDateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ssXX");
 
+		if (task.getAction() == null) {
+			map.put("action", null);
+		}
+		else {
+			map.put("action", String.valueOf(task.getAction()));
+		}
+
 		if (task.getAssetTitle() == null) {
 			map.put("assetTitle", null);
 		}
@@ -484,7 +505,13 @@ public class TaskSerDes {
 			Task task, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
-			if (Objects.equals(jsonParserFieldName, "assetTitle")) {
+			if (Objects.equals(jsonParserFieldName, "action")) {
+				if (jsonParserFieldValue != null) {
+					task.setAction(
+						Task.Action.create((String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "assetTitle")) {
 				if (jsonParserFieldValue != null) {
 					task.setAssetTitle((String)jsonParserFieldValue);
 				}

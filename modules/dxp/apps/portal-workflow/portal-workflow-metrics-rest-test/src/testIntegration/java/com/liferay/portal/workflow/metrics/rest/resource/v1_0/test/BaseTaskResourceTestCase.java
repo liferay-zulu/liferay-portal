@@ -486,6 +486,14 @@ public abstract class BaseTaskResourceTestCase {
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
 
+			if (Objects.equals("action", additionalAssertFieldName)) {
+				if (task.getAction() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("assetTitle", additionalAssertFieldName)) {
 				if (task.getAssetTitle() == null) {
 					valid = false;
@@ -712,6 +720,14 @@ public abstract class BaseTaskResourceTestCase {
 
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
+
+			if (Objects.equals("action", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(task1.getAction(), task2.getAction())) {
+					return false;
+				}
+
+				continue;
+			}
 
 			if (Objects.equals("assetTitle", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
@@ -1004,6 +1020,11 @@ public abstract class BaseTaskResourceTestCase {
 		sb.append(" ");
 		sb.append(operator);
 		sb.append(" ");
+
+		if (entityFieldName.equals("action")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
 
 		if (entityFieldName.equals("assetTitle")) {
 			sb.append("'");

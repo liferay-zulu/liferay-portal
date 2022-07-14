@@ -530,7 +530,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {processTask(processId: ___, taskId: ___){assetTitle, assetTitle_i18n, assetType, assetType_i18n, assignee, className, classPK, completed, completionUserId, dateCompletion, dateCreated, dateModified, duration, id, instanceId, label, name, nodeId, processId, processVersion}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {processTask(processId: ___, taskId: ___){action, assetTitle, assetTitle_i18n, assetType, assetType_i18n, assignee, className, classPK, completed, completionUserId, dateCompletion, dateCreated, dateModified, duration, id, instanceId, label, name, nodeId, processId, processVersion}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
 	public Task processTask(
