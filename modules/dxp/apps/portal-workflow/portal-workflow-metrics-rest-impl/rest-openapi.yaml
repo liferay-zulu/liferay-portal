@@ -454,6 +454,10 @@ components:
             description:
                 https://www.schema.org/Task
             properties:
+                action:
+                    enum: [REASSIGN, TRANSITION, UPDATE_DUE_DATE]
+                    readOnly: true
+                    type: string
                 assetTitle:
                     readOnly: true
                     type: string
