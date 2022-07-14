@@ -22,6 +22,12 @@ public class WorkflowConstants {
 
 	public static final int ACTION_PUBLISH = 1;
 
+	public static final String ACTION_TASK_REASSIGN = "reassign";
+
+	public static final String ACTION_TASK_TRANSITION = "transition";
+
+	public static final String ACTION_TASK_UPDATE_DUE_DATE = "due-date";
+
 	public static final int ACTION_SAVE_DRAFT = 2;
 
 	public static final String CONTEXT_COMMAND = "command";
