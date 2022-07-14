@@ -18,11 +18,14 @@ import {InstanceListContext} from '../../../../InstanceListPageProvider.es';
 import {ModalContext} from '../../../ModalProvider.es';
 
 const useFetchTasks = ({
+	action = '',
 	callback,
 	page = 1,
 	pageSize = 10000,
 	withoutUnassigned,
 } = {}) => {
+	console.log("linha 27: " + action);
+
 	const {
 		filterValues: {
 			assigneeIds: userIds = [],
@@ -50,6 +53,7 @@ const useFetchTasks = ({
 
 	let {data, postData: fetchTasks} = usePost({
 		body: {
+			action,
 			assigneeIds: withoutUnassigned ? availableUsers : assigneeIds,
 			instanceIds,
 			processId,

@@ -35,6 +35,7 @@ export default function BulkTransitionModal() {
 		visibleModal,
 	} = useContext(ModalContext);
 	const {clearFilters, fetchTasks} = useFetchTasks({
+		action: 'transition',
 		callback: ({items}) => {
 			setFetching(false);
 			setSelectTasks({selectAll, tasks: items});
