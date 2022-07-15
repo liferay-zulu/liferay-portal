@@ -230,6 +230,7 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 				content: getXMLContent(true),
 				name: definitionId,
 				title: definitionTitle,
+				title_i18n: translations,
 				version,
 			}).then((response) => {
 				if (response.ok) {
