@@ -330,7 +330,7 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 	}
 
 	@Override
-	public WorkflowTask getWorkflowTask(long companyId, long workflowTaskId)
+	public WorkflowTask getWorkflowTask(long workflowTaskId)
 		throws WorkflowException {
 
 		try {
