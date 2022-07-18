@@ -22,8 +22,6 @@ import com.liferay.object.service.persistence.ObjectStatePersistence;
 import com.liferay.object.service.persistence.ObjectStateTransitionPersistence;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -54,32 +52,6 @@ public class ObjectStateTransitionLocalServiceTest
 			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(
 				Propagation.REQUIRED, "com.liferay.object.service"));
-
-	@Test
-	public void testAddObjectStateTransition() throws PortalException {
-		long objectStateFlowId = RandomTestUtil.randomLong();
-		long sourceObjectStateId = RandomTestUtil.randomLong();
-		long targetObjectStateId = RandomTestUtil.randomLong();
-
-		ObjectStateTransition objectStateTransition =
-			objectStateTransitionLocalService.addObjectStateTransition(
-				TestPropsValues.getUserId(), objectStateFlowId,
-				sourceObjectStateId, targetObjectStateId);
-
-		Assert.assertEquals(
-			TestPropsValues.getUserId(), objectStateTransition.getUserId());
-		Assert.assertEquals(
-			TestPropsValues.getCompanyId(),
-			objectStateTransition.getCompanyId());
-		Assert.assertEquals(
-			objectStateFlowId, objectStateTransition.getObjectStateFlowId());
-		Assert.assertEquals(
-			sourceObjectStateId,
-			objectStateTransition.getSourceObjectStateId());
-		Assert.assertEquals(
-			targetObjectStateId,
-			objectStateTransition.getTargetObjectStateId());
-	}
 
 	@Test
 	public void testDeleteObjectStateObjectStateTransitions() {
