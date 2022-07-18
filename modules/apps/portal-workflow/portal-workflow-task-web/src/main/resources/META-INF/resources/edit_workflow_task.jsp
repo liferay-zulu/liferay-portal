@@ -116,7 +116,7 @@ renderResponse.setTitle(workflowTaskDisplayContext.getHeaderTitle(workflowTask))
 						</aui:fieldset>
 					</aui:field-wrapper>
 
-					<aui:field-wrapper label="task">
+					<aui:field-wrapper label="task-name">
 						<aui:fieldset>
 							<%= workflowTaskDisplayContext.getState(workflowTask) %>
 						</aui:fieldset>
