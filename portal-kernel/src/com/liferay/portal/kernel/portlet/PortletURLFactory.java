@@ -82,4 +82,8 @@ public interface PortletURLFactory {
 	public LiferayPortletURL create(
 		PortletRequest portletRequest, String portletId, String lifecycle);
 
+	public LiferayPortletURL create(
+		HttpServletRequest httpServletRequest, String portletId,
+		String lifecycle, boolean isItFromNotification);
+
 }
