@@ -32,6 +32,7 @@ export default function BulkUpdateDueDateModal() {
 		visibleModal,
 	} = useContext(ModalContext);
 	const {clearFilters, fetchTasks} = useFetchTasks({
+		action: 'transition',
 		callback: ({items}) => {
 			setCurrentStep('selectDueDate');
 			setFetching(false);

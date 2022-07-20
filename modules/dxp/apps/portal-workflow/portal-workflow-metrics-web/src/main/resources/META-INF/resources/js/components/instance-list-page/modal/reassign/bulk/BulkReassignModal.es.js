@@ -32,6 +32,7 @@ export default function BulkReassignModal() {
 		visibleModal,
 	} = useContext(ModalContext);
 	const {clearFilters, fetchTasks} = useFetchTasks({
+		action: 'transition',
 		callback: ({items}) => {
 			setFetching(false);
 			setSelectTasks({selectAll, tasks: items});
