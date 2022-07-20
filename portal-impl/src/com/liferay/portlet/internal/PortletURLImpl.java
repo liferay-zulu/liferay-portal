@@ -942,10 +942,6 @@ public class PortletURLImpl
 		_toString = null;
 	}
 
-	protected void setLayoutFriendlyURL(String layoutFriendlyURL){
-		_layoutFriendlyURL = layoutFriendlyURL;
-	}
-
 	protected String generateToString() {
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)_httpServletRequest.getAttribute(
@@ -1270,6 +1266,10 @@ public class PortletURLImpl
 
 			return value;
 		}
+	}
+
+	protected void setLayoutFriendlyURL(String layoutFriendlyURL) {
+		_layoutFriendlyURL = layoutFriendlyURL;
 	}
 
 	private PortletURLImpl(

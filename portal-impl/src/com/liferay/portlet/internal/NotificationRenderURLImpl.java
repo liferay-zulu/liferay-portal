@@ -19,35 +19,35 @@ import com.liferay.portal.kernel.model.Portlet;
 
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Kristóf Loneck
  */
-public class NotificationRenderURLImpl extends RenderURLImpl{
+public class NotificationRenderURLImpl extends RenderURLImpl {
+
 	public NotificationRenderURLImpl(
-		HttpServletRequest httpServletRequest,
-		Portlet portlet,
-		Layout layout, String lifecycle,
-		MimeResponse.Copy copy) {
+		HttpServletRequest httpServletRequest, Portlet portlet, Layout layout,
+		String lifecycle, MimeResponse.Copy copy) {
+
 		super(httpServletRequest, portlet, layout, lifecycle, copy);
 	}
 
 	public NotificationRenderURLImpl(
-		PortletRequest portletRequest,
-		Portlet portlet, Layout layout, String lifecycle,
-		MimeResponse.Copy copy) {
+		PortletRequest portletRequest, Portlet portlet, Layout layout,
+		String lifecycle, MimeResponse.Copy copy) {
+
 		super(portletRequest, portlet, layout, lifecycle, copy);
 	}
 
-	/*
-	In case of Notification the LayoutFriendlyURL supposed to be "/manage"
-	based on LPP-45783.
-	*/
 	@Override
 	protected String generateToString() {
-		if(getLayoutFriendlyURL() == null)
+		if (getLayoutFriendlyURL() == null) {
 			setLayoutFriendlyURL("/manage");
+		}
+
 		return super.generateToString();
 	}
+
 }

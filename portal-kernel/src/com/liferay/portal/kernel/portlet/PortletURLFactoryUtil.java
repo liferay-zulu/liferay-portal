@@ -78,10 +78,10 @@ public class PortletURLFactoryUtil {
 
 	public static LiferayPortletURL create(
 		HttpServletRequest httpServletRequest, String portletId,
-		String lifecycle, boolean isItNotification) {
+		String lifecycle, boolean notification) {
 
 		return _portletURLFactory.create(
-			httpServletRequest, portletId, lifecycle, isItNotification);
+			httpServletRequest, portletId, lifecycle, notification);
 	}
 
 	public static LiferayPortletURL create(
