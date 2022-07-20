@@ -123,6 +123,30 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 	@Override
 	public LiferayPortletURL create(
+		HttpServletRequest httpServletRequest, String portletId,
+		String lifecycle, boolean fromNotification) {
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		Layout layout = themeDisplay.getLayout();
+
+		if (layout == null) {
+			layout = _getLayout(
+				(Layout)httpServletRequest.getAttribute(WebKeys.LAYOUT),
+				themeDisplay.getPlid());
+		}
+
+		return _create(
+			httpServletRequest,
+			PortletLocalServiceUtil.getPortletById(
+				PortalUtil.getCompanyId(httpServletRequest), portletId),
+			layout, lifecycle, null, fromNotification);
+	}
+
+	@Override
+	public LiferayPortletURL create(
 		PortletRequest portletRequest, Portlet portlet, Layout layout,
 		String lifecycle) {
 
@@ -189,6 +213,9 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 			lifecycle, copy);
 	}
 
+	/*
+	Tried to minimalizing overwriting existing code as much as possible.
+	 */
 	@Override
 	public LiferayPortletURL create(
 		PortletRequest portletRequest, String portletId, String lifecycle) {
@@ -205,31 +232,6 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 		}
 
 		return _create(portletRequest, portletId, layout, lifecycle, null);
-	}
-	/*
-	Tried to minimalizing overwriting existing code as much as possible.
-	 */
-	@Override
-	public LiferayPortletURL create(
-		HttpServletRequest httpServletRequest, String portletId,
-		String lifecycle, boolean isItFromNotification) {
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		Layout layout = themeDisplay.getLayout();
-
-		if (layout == null) {
-			layout = _getLayout(
-				(Layout)httpServletRequest.getAttribute(WebKeys.LAYOUT),
-				themeDisplay.getPlid());
-		}
-
-		return _create(
-			httpServletRequest,
-			PortletLocalServiceUtil.getPortletById(
-				PortalUtil.getCompanyId(httpServletRequest), portletId),
-			layout, lifecycle, null, isItFromNotification);
 	}
 
 	private LiferayPortletURL _create(
@@ -251,11 +253,15 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 	private LiferayPortletURL _create(
 		HttpServletRequest httpServletRequest, Portlet portlet, Layout layout,
-		String lifecycle, MimeResponse.Copy copy, boolean isItNotificaitonPortlet) {
+		String lifecycle, MimeResponse.Copy copy,
+		boolean fromNotification) {
 
-		if(PortletRequest.RENDER_PHASE.equals(lifecycle) && isItNotificaitonPortlet)
+		if (PortletRequest.RENDER_PHASE.equals(lifecycle) &&
+			fromNotification)
+
 			return new NotificationRenderURLImpl(
 				httpServletRequest, portlet, layout, lifecycle, copy);
+
 		return _create(httpServletRequest, portlet, layout, lifecycle, copy);
 	}
 
