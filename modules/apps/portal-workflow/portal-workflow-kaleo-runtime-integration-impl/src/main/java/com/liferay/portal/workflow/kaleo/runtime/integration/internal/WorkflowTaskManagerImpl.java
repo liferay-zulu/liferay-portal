@@ -158,7 +158,7 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 			boolean waitForCompletion)
 		throws PortalException {
 
-		WorkflowTask workflowTask = getWorkflowTask(companyId, workflowTaskId);
+		WorkflowTask workflowTask = getWorkflowTask(workflowTaskId);
 
 		List<WorkflowTaskAssignee> workflowTaskAssignees =
 			workflowTask.getWorkflowTaskAssignees();
