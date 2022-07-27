@@ -15,10 +15,7 @@
 import ClayButton from '@clayui/button';
 import ClayForm from '@clayui/form';
 import ClayModal from '@clayui/modal';
-import {
-	AutoComplete,
-	FormCustomSelect,
-} from '@liferay/object-js-components-web';
+import {AutoComplete, SingleSelect} from '@liferay/object-js-components-web';
 import React, {
 	FormEvent,
 	useContext,
@@ -158,7 +155,7 @@ export function ModalAddDefaultSortColumn({
 						</AutoComplete>
 					)}
 
-					<FormCustomSelect
+					<SingleSelect
 						label={Liferay.Language.get('sorting')}
 						onChange={(item: TSortOptions) => {
 							setSelectedObjetSort(item);

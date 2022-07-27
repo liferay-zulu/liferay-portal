@@ -18,8 +18,9 @@ import {
 	API,
 	AutoComplete,
 	DatePicker,
-	FormCustomSelect,
 	Input,
+	MultipleSelect,
+	SingleSelect,
 	invalidateRequired,
 } from '@liferay/object-js-components-web';
 import React, {
@@ -370,7 +371,7 @@ export function ModalAddFilter({
 				)}
 
 				{selectedFilterBy?.businessType !== 'Date' && (
-					<FormCustomSelect
+					<SingleSelect
 						error={errors.selectedFilterType}
 						label={Liferay.Language.get('filter-type')}
 						onChange={(target: LabelValueObject) =>
@@ -389,7 +390,7 @@ export function ModalAddFilter({
 
 				{selectedFilterBy?.businessType === 'Date' &&
 					!disableDateValues && (
-						<FormCustomSelect
+						<SingleSelect
 							error={errors.selectedFilterType}
 							label={Liferay.Language.get('filter-type')}
 							onChange={(target: LabelValueObject) =>
@@ -418,10 +419,9 @@ export function ModalAddFilter({
 
 				{(selectedFilterBy?.name === 'status' ||
 					selectedFilterBy?.businessType === 'Picklist') && (
-					<FormCustomSelect
+					<MultipleSelect
 						error={errors.items}
 						label={Liferay.Language.get('value')}
-						multipleChoice
 						options={items}
 						required
 						setOptions={setItems}

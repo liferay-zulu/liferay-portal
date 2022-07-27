@@ -16,10 +16,10 @@ import ClayForm, {ClayToggle} from '@clayui/form';
 import {
 	API,
 	AutoComplete,
-	FormCustomSelect,
 	FormError,
 	Input,
 	Select,
+	SingleSelect,
 	Toggle,
 	invalidateRequired,
 	useForm,
@@ -217,7 +217,7 @@ export default function ObjectFieldFormBase({
 				}
 			/>
 
-			<FormCustomSelect<ObjectFieldType>
+			<SingleSelect<ObjectFieldType>
 				disabled={disabled}
 				error={errors.businessType}
 				label={Liferay.Language.get('type')}
@@ -776,7 +776,7 @@ function AggregationSourceProperty({
 				)}
 			</AutoComplete>
 
-			<FormCustomSelect
+			<SingleSelect
 				disabled={disabled}
 				error={errors.function}
 				label={Liferay.Language.get('function')}
@@ -872,7 +872,7 @@ function AttachmentSourceProperty({
 
 	return (
 		<>
-			<FormCustomSelect
+			<SingleSelect
 				disabled={disabled}
 				error={error}
 				label={Liferay.Language.get('request-files')}
