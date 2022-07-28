@@ -137,20 +137,6 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 		}
 	};
 
-	const onInputBlur = () => {
-		if (definitionTitle) {
-			let languageId = defaultLanguageId;
-
-			if (selectedLanguageId) {
-				languageId = selectedLanguageId;
-			}
-
-			setTranslations((previous) => {
-				return {...previous, [languageId]: definitionTitle};
-			});
-		}
-	};
-
 	const definitionNotPublished = version === 0 || !active;
 
 	const publishDefinition = () => {
@@ -288,7 +274,6 @@ export default function UpperToolbar({displayNames, isView, languageIds}) {
 								className="form-control-inline"
 								disabled={isView}
 								id="definition-title"
-								onBlur={() => onInputBlur()}
 								onChange={({target: {value}}) => {
 									setDefinitionTitle(value);
 								}}

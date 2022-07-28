@@ -41,10 +41,18 @@ import populateNotificationsData from './util/populateNotificationsData';
 
 const deserializeUtil = new DeserializeUtil();
 
+function findEmptyElements(element, selectedLanguageId) {
+	if (element.data.label) {
+		if (!(selectedLanguageId in element.data.label)) {
+			return true;
+		}
+	}
+}
 export default function DiagramBuilder() {
 	const {
 		currentEditor,
 		definitionId,
+		definitionTitle,
 		deserialize,
 		elements,
 		selectedLanguageId,
@@ -55,6 +63,8 @@ export default function DiagramBuilder() {
 		setDeserialize,
 		setElements,
 		setShowDefinitionInfo,
+		setTranslations,
+		translations,
 		version,
 	} = useContext(DefinitionBuilderContext);
 	const reactFlowWrapperRef = useRef(null);
@@ -334,6 +344,32 @@ export default function DiagramBuilder() {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentEditor, deserialize, version]);
+
+	useEffect(() => {
+		let languageId = defaultLanguageId;
+		if (selectedLanguageId) {
+			languageId = selectedLanguageId;
+			const emptyLabel = elements.find((elements) =>
+				findEmptyElements(elements, selectedLanguageId)
+			);
+
+			if (!emptyLabel) {
+				setTranslations((previous) => {
+					return {...previous, [languageId]: definitionTitle};
+				});
+			}
+			else {
+				delete translations[languageId];
+				setTranslations(translations);
+			}
+		}
+		else {
+			setTranslations((previous) => {
+				return {...previous, [languageId]: definitionTitle};
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [definitionTitle, elements.length, selectedItem?.data.label]);
 
 	useEffect(() => {
 		if (definitionId && version !== 0 && !deserialize) {
