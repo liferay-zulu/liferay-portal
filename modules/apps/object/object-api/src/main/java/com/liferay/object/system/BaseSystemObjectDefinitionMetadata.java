@@ -18,10 +18,10 @@ import com.liferay.object.action.engine.ObjectActionEngine;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
-import com.liferay.object.service.ObjectValidationRuleLocalService;
 import com.liferay.object.system.model.listener.SystemObjectDefinitionMetadataModelListener;
 import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.object.util.ObjectFieldUtil;
+import com.liferay.object.validation.rule.ObjectValidationRuleExecutor;
 import com.liferay.petra.sql.dsl.Table;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -78,7 +78,7 @@ public abstract class BaseSystemObjectDefinitionMetadata
 			new SystemObjectDefinitionMetadataModelListener(
 				dtoConverterRegistry, jsonFactory, getModelClass(),
 				objectActionEngine, objectDefinitionLocalService,
-				objectEntryLocalService, objectValidationRuleLocalService,
+				objectEntryLocalService, objectValidationRuleExecutor,
 				userLocalService),
 			null);
 	}
@@ -125,7 +125,7 @@ public abstract class BaseSystemObjectDefinitionMetadata
 	protected ObjectEntryLocalService objectEntryLocalService;
 
 	@Reference
-	protected ObjectValidationRuleLocalService objectValidationRuleLocalService;
+	protected ObjectValidationRuleExecutor objectValidationRuleExecutor;
 
 	@Reference
 	protected UserLocalService userLocalService;

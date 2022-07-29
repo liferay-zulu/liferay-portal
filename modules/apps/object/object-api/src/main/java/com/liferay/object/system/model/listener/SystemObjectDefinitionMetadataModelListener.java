@@ -19,7 +19,7 @@ import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
-import com.liferay.object.service.ObjectValidationRuleLocalService;
+import com.liferay.object.validation.rule.ObjectValidationRuleExecutor;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -52,7 +52,7 @@ public class SystemObjectDefinitionMetadataModelListener<T extends BaseModel<T>>
 		Class<?> modelClass, ObjectActionEngine objectActionEngine,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectEntryLocalService objectEntryLocalService,
-		ObjectValidationRuleLocalService objectValidationRuleLocalService,
+		ObjectValidationRuleExecutor objectValidationRuleExecutor,
 		UserLocalService userLocalService) {
 
 		_dtoConverterRegistry = dtoConverterRegistry;
@@ -61,7 +61,7 @@ public class SystemObjectDefinitionMetadataModelListener<T extends BaseModel<T>>
 		_objectActionEngine = objectActionEngine;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectEntryLocalService = objectEntryLocalService;
-		_objectValidationRuleLocalService = objectValidationRuleLocalService;
+		_objectValidationRuleExecutor = objectValidationRuleExecutor;
 		_userLocalService = userLocalService;
 	}
 
@@ -291,7 +291,7 @@ public class SystemObjectDefinitionMetadataModelListener<T extends BaseModel<T>>
 				return;
 			}
 
-			_objectValidationRuleLocalService.validate(
+			_objectValidationRuleExecutor.executeObjectValidations(
 				model, objectDefinition.getObjectDefinitionId());
 		}
 		catch (PortalException portalException) {
@@ -308,8 +308,7 @@ public class SystemObjectDefinitionMetadataModelListener<T extends BaseModel<T>>
 	private final ObjectActionEngine _objectActionEngine;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private final ObjectEntryLocalService _objectEntryLocalService;
-	private final ObjectValidationRuleLocalService
-		_objectValidationRuleLocalService;
+	private final ObjectValidationRuleExecutor _objectValidationRuleExecutor;
 	private final UserLocalService _userLocalService;
 
 }
