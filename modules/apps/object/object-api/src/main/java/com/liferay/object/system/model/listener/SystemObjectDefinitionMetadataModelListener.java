@@ -17,6 +17,7 @@ package com.liferay.object.system.model.listener;
 import com.liferay.object.action.engine.ObjectActionEngine;
 import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.model.ObjectValidationRule;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectValidationRuleLocalService;
@@ -38,6 +39,7 @@ import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -288,6 +290,14 @@ public class SystemObjectDefinitionMetadataModelListener<T extends BaseModel<T>>
 					_getCompanyId(model), _modelClass.getName());
 
 			if (objectDefinition == null) {
+				return;
+			}
+
+			List<ObjectValidationRule> objectValidationRules =
+				_objectValidationRuleLocalService.getObjectValidationRules(
+					objectDefinition.getObjectDefinitionId(), true);
+
+			if (objectValidationRules.isEmpty()) {
 				return;
 			}
 
