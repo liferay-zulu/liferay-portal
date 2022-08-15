@@ -15,7 +15,6 @@
 package com.liferay.portal.workflow.kaleo.runtime.integration.internal;
 
 import com.liferay.depot.constants.DepotRolesConstants;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -121,13 +120,20 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 			long companyId, long userId, long workflowTaskId,
 			long assigneeUserId, String comment, Date dueDate,
 			Map<String, Serializable> workflowContext)
-		throws WorkflowException {
+		throws PortalException {
 
 		PermissionChecker permissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
 
-		if (permissionChecker.getUserId() != userId) {
-			ReflectionUtil.throwException(new PrincipalException());
+		List<User> assignableUsers = getAssignableUsers(
+			companyId, workflowTaskId);
+
+		if (!assignableUsers.contains(assigneeUserId) ||
+			(permissionChecker.getUserId() != userId)) {
+
+			throw new PrincipalException.MustHavePermission(
+				userId, WorkflowTask.class.getName(), workflowTaskId,
+				ActionKeys.VIEW);
 		}
 
 		ServiceContext serviceContext = new ServiceContext();
