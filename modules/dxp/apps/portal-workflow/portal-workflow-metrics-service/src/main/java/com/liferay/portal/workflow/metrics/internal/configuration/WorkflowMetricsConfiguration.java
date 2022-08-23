@@ -35,4 +35,11 @@ public interface WorkflowMetricsConfiguration {
 	)
 	public int checkSLAJobInterval();
 
+	@Meta.AD(
+		deflt = "10",
+		description = "check-sla-definitions-job-interval-description",
+		name = "check-sla-definitions-job-interval", required = false
+	)
+	public int checkSLADefinitionsJobInterval();
+
 }
