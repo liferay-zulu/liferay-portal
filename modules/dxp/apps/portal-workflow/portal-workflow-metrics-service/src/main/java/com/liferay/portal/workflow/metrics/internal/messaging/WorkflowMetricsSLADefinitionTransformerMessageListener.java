@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.metrics.internal.messaging;
 
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -38,6 +39,7 @@ import com.liferay.portal.search.hits.SearchHit;
 import com.liferay.portal.search.hits.SearchHits;
 import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
+import com.liferay.portal.workflow.metrics.internal.configuration.WorkflowMetricsConfiguration;
 import com.liferay.portal.workflow.metrics.internal.sla.transformer.WorkflowMetricsSLADefinitionTransformer;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 
@@ -55,6 +57,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Rafael Praxedes
  */
 @Component(
+	configurationPid = "com.liferay.portal.workflow.metrics.internal.configuration.WorkflowMetricsConfiguration",
 	immediate = true,
 	service = {
 		MessageListener.class,
@@ -67,12 +70,17 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
+		_workflowMetricsConfiguration = ConfigurableUtil.createConfigurable(
+			WorkflowMetricsConfiguration.class, properties);
+
 		Class<?> clazz = getClass();
 
 		String className = clazz.getName();
 
 		Trigger trigger = _triggerFactory.createTrigger(
-			className, className, null, null, 1, TimeUnit.MINUTE);
+			className, className, null, null,
+			_workflowMetricsConfiguration.checkSLADefinitionsJobInterval(),
+			TimeUnit.MINUTE);
 
 		SchedulerEntry schedulerEntry = new SchedulerEntryImpl(
 			className, trigger);
@@ -188,6 +196,8 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 
 	@Reference
 	private TriggerFactory _triggerFactory;
+
+	private volatile WorkflowMetricsConfiguration _workflowMetricsConfiguration;
 
 	@Reference
 	private WorkflowMetricsSLADefinitionTransformer
